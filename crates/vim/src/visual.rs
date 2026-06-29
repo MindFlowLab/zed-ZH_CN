@@ -392,7 +392,7 @@ impl Vim {
                     }
                 }
 
-                if positions.start <= laid_out_line.width {
+                if positions.start <= laid_out_line.width() {
                     let selection = Selection {
                         id: s.new_selection_id(),
                         start: start.to_point(map),
