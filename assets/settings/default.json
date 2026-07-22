@@ -67,6 +67,11 @@
   "ui_font_weight": 400,
   // The default font size for text in the UI
   "ui_font_size": 16,
+  // The display language of the Zed user interface.
+  // 界面显示语言。取值:"zh-CN"(简体中文,默认)、"en"(English)。
+  // Restart recommended for full effect (menus are built at startup).
+  // 完全生效建议重启(菜单等在启动时构建)。
+  "ui_language": "zh-CN",
   // The default font size for agent responses in the agent panel. Falls back to the UI font size if unset.
   "agent_ui_font_size": null,
   // The default font size for user messages in the agent panel.

@@ -5,6 +5,7 @@ mod editorconfig_store;
 mod keymap_file;
 mod settings_file;
 mod settings_store;
+mod ui_language_setting;
 mod vscode_import;
 
 pub use settings_macros::RegisterSetting;
@@ -32,6 +33,7 @@ use util::asset_str;
 
 pub use ::settings_content::*;
 pub use base_keymap_setting::*;
+pub use ui_language_setting::*;
 pub use content_into_gpui::IntoGpui;
 pub use editable_setting_control::*;
 pub use editorconfig_store::{
