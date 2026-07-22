@@ -56,8 +56,8 @@ workspace.notifications.shift_click_to_suppress = "按住 Shift 点击以抑制"
 workspace.notifications.ok = "确定"
 
 # status_bar.rs — 侧边栏切换 tooltip
-workspace.status_bar.open_threads_sidebar = "打开线程侧边栏"
-workspace.status_bar.open_threads_sidebar_aria = "打开线程侧边栏"
+workspace.status_bar.open_threads_sidebar = "打开对话侧边栏"
+workspace.status_bar.open_threads_sidebar_aria = "打开对话侧边栏"
 
 # tasks.rs — Toast 通知
 workspace.tasks.task_spawn_failed = "任务启动失败：%{error}"

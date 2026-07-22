@@ -20,7 +20,7 @@ paste_text = "粘贴文本"
 select_all = "全选"
 clear = "清空"
 inline_assist = "内联辅助"
-add_to_agent_thread = "添加到智能体会话"
+add_to_agent_thread = "添加到智能体对话"
 close_terminal_tab = "关闭终端标签页"
 
 [terminal_view.panel]
