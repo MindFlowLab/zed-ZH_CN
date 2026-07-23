@@ -613,7 +613,7 @@ impl TitleBar {
             }
             #[cfg(any(test, feature = "test-support"))]
             RemoteConnectionOptions::Mock(_) => {
-                (None, "Mock Remote Project".to_string(), IconName::Server)
+                (None, t!("title_bar.remote.mock_remote_project"), IconName::Server)
             }
         };
 
@@ -816,7 +816,7 @@ impl TitleBar {
         let display_name = if let Some(ref name) = name {
             util::truncate_and_trailoff(name, MAX_PROJECT_NAME_LENGTH)
         } else {
-            t!("title_bar.project.open_recent_project")
+            t!("title_bar.project.open_recent_project").to_string()
         };
 
         let is_sidebar_open = self

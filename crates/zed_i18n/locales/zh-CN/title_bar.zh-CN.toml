@@ -8,6 +8,7 @@ title_bar.status.signing_in = "登录中…"
 
 title_bar.remote.remote_project = "远程项目"
 title_bar.remote.dev_container = "开发容器"
+title_bar.remote.mock_remote_project = "模拟远程项目"
 title_bar.remote.connecting_to = "正在连接: %{host}"
 title_bar.remote.connected_to = "已连接到: %{host}"
 title_bar.remote.heartbeat_missed = "与 %{host} 的连接尝试失败,正在重试…"

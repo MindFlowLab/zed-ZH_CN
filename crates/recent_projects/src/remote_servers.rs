@@ -2760,7 +2760,7 @@ impl RemoteServerProjects {
                     PromptLevel::Warning,
                     &prompt_message,
                     None,
-                    &[yes.as_str(), no.as_str()],
+                    &[&*yes, &*no],
                     cx,
                 );
 
@@ -2919,7 +2919,7 @@ impl RemoteServerProjects {
                         PromptLevel::Warning,
                         &prompt_message,
                         None,
-                        &[yes.as_str(), no.as_str()],
+                        &[&*yes, &*no],
                         cx,
                     );
 

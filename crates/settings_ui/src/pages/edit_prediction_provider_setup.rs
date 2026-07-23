@@ -123,7 +123,9 @@ fn render_provider_dropdown(window: &mut Window, cx: &mut App) -> AnyElement {
     let current_provider_name = current_provider
         .display_name()
         .map(ToString::to_string)
-        .unwrap_or_else(|| t!("settings_ui.edit_prediction_provider_setup.no_provider_set"));
+        .unwrap_or_else(|| {
+            t!("settings_ui.edit_prediction_provider_setup.no_provider_set").to_string()
+        });
 
     let menu = ContextMenu::build(window, cx, move |mut menu, _, cx| {
         let available_providers = get_available_providers(cx);

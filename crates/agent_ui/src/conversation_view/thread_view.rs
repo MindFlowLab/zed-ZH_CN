@@ -3000,7 +3000,7 @@ impl ThreadView {
 
         let retry_message = if state.max_attempts == 1 {
             if next_attempt_in_secs == 1 {
-                t!("agent_ui.thread_view.retry_next_attempt_1s")
+                t!("agent_ui.thread_view.retry_next_attempt_1s").to_string()
             } else {
                 t!(
                     "agent_ui.thread_view.retry_next_attempt",
@@ -3707,7 +3707,7 @@ impl ThreadView {
                 })
         } else {
             let status_label = if stats.pending == 0 {
-                t!("agent_ui.thread_view.all_done")
+                t!("agent_ui.thread_view.all_done").to_string()
             } else if stats.completed == 0 {
                 t!(
                     "agent_ui.thread_view.task_count",
@@ -3868,7 +3868,7 @@ impl ThreadView {
                             )
                             .child(
                                 Label::new(if entries.len() == 1 {
-                                    t!("agent_ui.thread_view.completed_plan_step")
+                                    t!("agent_ui.thread_view.completed_plan_step").to_string()
                                 } else {
                                     t!(
                                         "agent_ui.thread_view.completed_plan_steps",
@@ -4068,7 +4068,7 @@ impl ThreadView {
                         if pending_edits {
                             this.child(
                                 Label::new(if changed_buffers.len() == 1 {
-                                    t!("agent_ui.thread_view.editing_file_single")
+                                    t!("agent_ui.thread_view.editing_file_single").to_string()
                                 } else {
                                     t!(
                                         "agent_ui.thread_view.editing_files",
@@ -4101,7 +4101,7 @@ impl ThreadView {
                             .child(dot_divider())
                             .child(
                                 Label::new(if changed_buffers.len() == 1 {
-                                    t!("agent_ui.thread_view.file_count_single")
+                                    t!("agent_ui.thread_view.file_count_single").to_string()
                                 } else {
                                     t!(
                                         "agent_ui.thread_view.file_count",
@@ -5897,7 +5897,7 @@ impl Render for TokenUsageTooltip {
                                                 Button::new(
                                                     "open-project-rules",
                                                     if project_rules_count == 1 {
-                                                        t!("agent_ui.thread_view.project_rule_single")
+                                                        t!("agent_ui.thread_view.project_rule_single").to_string()
                                                     } else {
                                                         t!(
                                                             "agent_ui.thread_view.project_rules_count",
@@ -7992,7 +7992,7 @@ impl ThreadView {
                     )
                 }
             } else {
-                t!("agent_ui.thread_view.output_was_truncated")
+                t!("agent_ui.thread_view.output_was_truncated").to_string()
             }
         });
 
@@ -11646,7 +11646,7 @@ impl ThreadView {
 
         let warning_count = description_warnings.len();
         let title = if warning_count == 1 {
-            t!("agent_ui.thread_view.skill_long_description_single")
+            t!("agent_ui.thread_view.skill_long_description_single").to_string()
         } else {
             t!(
                 "agent_ui.thread_view.skill_long_description_multiple",
@@ -11825,7 +11825,7 @@ impl ThreadView {
         let button_label = if has_version {
             t!("agent_ui.thread_view.update_to_version", version = version)
         } else {
-            t!("agent_ui.thread_view.reconnect")
+            t!("agent_ui.thread_view.reconnect").to_string()
         };
 
         v_flex().w_full().justify_end().child(

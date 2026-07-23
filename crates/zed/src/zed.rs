@@ -1865,7 +1865,7 @@ fn open_log_file(workspace: &mut Workspace, window: &mut Window, cx: &mut Contex
             });
 
             let buffer = cx.new(|cx| {
-                MultiBuffer::singleton(buffer, cx).with_title(t!("zed.open_log.title"))
+                MultiBuffer::singleton(buffer, cx).with_title(t!("zed.open_log.title").to_string())
             });
 
             let editor = cx

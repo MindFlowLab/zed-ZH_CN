@@ -127,8 +127,8 @@ pub(crate) fn render_sandbox_settings_page(
                     .tab_index(0),
                 )
                 .child(render_list_section(
-                    t!("settings_ui.sandbox_settings.allowed_domains"),
-                    t!("settings_ui.sandbox_settings.domains_description"),
+                    t!("settings_ui.sandbox_settings.allowed_domains").to_string(),
+                    t!("settings_ui.sandbox_settings.domains_description").to_string(),
                     host_rows,
                     add_host_input,
                     empty_border,
@@ -155,8 +155,8 @@ pub(crate) fn render_sandbox_settings_page(
                     .tab_index(0),
                 )
                 .child(render_list_section(
-                    t!("settings_ui.sandbox_settings.writable_paths"),
-                    t!("settings_ui.sandbox_settings.write_paths_description"),
+                    t!("settings_ui.sandbox_settings.writable_paths").to_string(),
+                    t!("settings_ui.sandbox_settings.write_paths_description").to_string(),
                     path_rows,
                     add_path_input,
                     empty_border,
@@ -412,17 +412,20 @@ fn canonicalize_host(host: &str) -> Result<String, String> {
 
     HostPattern::parse(host)
         .map(|pattern| pattern.to_string())
-        .map_err(|error| match error {
-            HostPatternError::Empty => t!("settings_ui.sandbox_settings.error_domain_empty"),
-            HostPatternError::IpLiteral(_) => {
-                t!("settings_ui.sandbox_settings.error_ip_not_allowed")
+        .map_err(|error| {
+            match error {
+                HostPatternError::Empty => t!("settings_ui.sandbox_settings.error_domain_empty"),
+                HostPatternError::IpLiteral(_) => {
+                    t!("settings_ui.sandbox_settings.error_ip_not_allowed")
+                }
+                HostPatternError::InvalidWildcard(_) => {
+                    t!("settings_ui.sandbox_settings.error_invalid_wildcard")
+                }
+                HostPatternError::Invalid { .. } => {
+                    t!("settings_ui.sandbox_settings.error_invalid_domain")
+                }
             }
-            HostPatternError::InvalidWildcard(_) => {
-                t!("settings_ui.sandbox_settings.error_invalid_wildcard")
-            }
-            HostPatternError::Invalid { .. } => {
-                t!("settings_ui.sandbox_settings.error_invalid_domain")
-            }
+            .to_string()
         })
 }
 

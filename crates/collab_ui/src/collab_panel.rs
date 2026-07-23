@@ -360,7 +360,7 @@ impl CollabPanel {
             let filter_editor = cx.new(|cx| {
                 let mut editor = Editor::single_line(window, cx);
                 editor.set_placeholder_text(
-                    t!("collab_ui.collab_panel.search_channels").as_str(),
+                    &t!("collab_ui.collab_panel.search_channels"),
                     window,
                     cx,
                 );
@@ -1246,7 +1246,7 @@ impl CollabPanel {
         cx: &mut Context<Self>,
     ) -> impl IntoElement {
         let project_name: SharedString = if worktree_root_names.is_empty() {
-            t!("collab_ui.collab_panel.untitled")
+            t!("collab_ui.collab_panel.untitled").to_string()
         } else {
             worktree_root_names.join(", ")
         }
@@ -1449,9 +1449,9 @@ impl CollabPanel {
                             })
                             .detach_and_prompt_err(&err_msg, window, cx, |e, _, _| {
                                 match e.error_code() {
-                                    ErrorCode::NeedsCla => {
-                                        Some(t!("collab_ui.collab_panel.cla_not_signed"))
-                                    }
+                                    ErrorCode::NeedsCla => Some(
+                                        t!("collab_ui.collab_panel.cla_not_signed").to_string(),
+                                    ),
                                     _ => None,
                                 }
                             })
@@ -2256,11 +2256,12 @@ impl CollabPanel {
             .detach_and_prompt_err(&err_msg, window, cx, |e, _, _| match e.error_code() {
                 ErrorCode::BadPublicNesting => {
                     if e.error_tag("direction") == Some("parent") {
-                        Some(t!("collab_ui.collab_panel.public_requires_public_parent"))
+                        Some(t!("collab_ui.collab_panel.public_requires_public_parent").to_string())
                     } else {
-                        Some(t!(
-                            "collab_ui.collab_panel.private_requires_private_subchannels"
-                        ))
+                        Some(
+                            t!("collab_ui.collab_panel.private_requires_private_subchannels")
+                                .to_string(),
+                        )
                     }
                 }
                 _ => None,
@@ -2311,14 +2312,14 @@ impl CollabPanel {
                 channel_store.move_channel(channel_id, to, cx)
             })
             .detach_and_prompt_err(&err_msg, window, cx, |e, _, _| match e.error_code() {
-                ErrorCode::BadPublicNesting => Some(t!(
-                    "collab_ui.collab_panel.public_channels_need_public_parents"
-                )),
+                ErrorCode::BadPublicNesting => Some(
+                    t!("collab_ui.collab_panel.public_channels_need_public_parents").to_string(),
+                ),
                 ErrorCode::CircularNesting => {
-                    Some(t!("collab_ui.collab_panel.cannot_move_into_itself"))
+                    Some(t!("collab_ui.collab_panel.cannot_move_into_itself").to_string())
                 }
                 ErrorCode::WrongMoveTarget => {
-                    Some(t!("collab_ui.collab_panel.cannot_move_into_different_root"))
+                    Some(t!("collab_ui.collab_panel.cannot_move_into_different_root").to_string())
                 }
                 _ => None,
             })
@@ -2527,7 +2528,7 @@ impl CollabPanel {
             PromptLevel::Warning,
             &prompt_message,
             None,
-            &[leave.as_str(), cancel.as_str()],
+            &[&*leave, &*cancel],
             cx,
         );
         cx.spawn_in(window, async move |this, cx| {
@@ -2562,7 +2563,7 @@ impl CollabPanel {
                 PromptLevel::Warning,
                 &prompt_message,
                 None,
-                &[remove.as_str(), cancel.as_str()],
+                &[&*remove, &*cancel],
                 cx,
             );
             let workspace = self.workspace.clone();
@@ -2600,7 +2601,7 @@ impl CollabPanel {
             PromptLevel::Warning,
             &prompt_message,
             None,
-            &[remove.as_str(), cancel.as_str()],
+            &[&*remove, &*cancel],
             cx,
         );
         let workspace = self.workspace.clone();

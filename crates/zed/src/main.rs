@@ -1468,7 +1468,7 @@ pub(crate) async fn restore_or_create_workspace(
 
         if error_count > 0 {
             let message = if error_count == 1 {
-                t!("zed.toast.restore_failed_one")
+                t!("zed.toast.restore_failed_one").to_string()
             } else {
                 t!("zed.toast.restore_failed_many", count = error_count)
             };

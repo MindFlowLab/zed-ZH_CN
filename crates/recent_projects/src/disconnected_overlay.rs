@@ -153,20 +153,22 @@ impl Render for DisconnectedOverlay {
         let can_reconnect = matches!(self.host, Host::RemoteServerProject(..));
 
         let message = match &self.host {
-            Host::CollabGuestProject => t!("recent_projects.disconnected.connection_lost_collab"),
+            Host::CollabGuestProject => {
+                t!("recent_projects.disconnected.connection_lost_collab").to_string()
+            }
             Host::RemoteServerProject(options, server_not_running) => {
                 let autosave = if ProjectSettings::get_global(cx)
                     .session
                     .restore_unsaved_buffers
                 {
-                    t!("recent_projects.disconnected.autosave_note")
+                    t!("recent_projects.disconnected.autosave_note").to_string()
                 } else {
                     String::new()
                 };
                 let reason = if *server_not_running {
-                    t!("recent_projects.disconnected.reason_process_exit")
+                    t!("recent_projects.disconnected.reason_process_exit").to_string()
                 } else {
-                    t!("recent_projects.disconnected.reason_not_responding")
+                    t!("recent_projects.disconnected.reason_not_responding").to_string()
                 };
                 format!(
                     "{}{autosave}",

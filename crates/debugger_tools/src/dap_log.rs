@@ -544,7 +544,9 @@ impl Render for DapLogToolbarItemView {
                             view = view_label
                         )
                     })
-                    .unwrap_or_else(|| t!("debugger_tools.dap_log.no_adapter_selected")),
+                    .unwrap_or_else(|| {
+                        t!("debugger_tools.dap_log.no_adapter_selected").to_string()
+                    }),
             ))
             .menu(move |window, cx| {
                 let log_view = log_view.clone();

@@ -2132,11 +2132,11 @@ impl Render for KeymapEditor {
                     ))
                     .header(vec![
                         String::new(),
-                        t!("keymap_editor.editor.action_label"),
-                        t!("keymap_editor.editor.arguments_label"),
-                        t!("keymap_editor.editor.keystrokes_label"),
-                        t!("keymap_editor.editor.context_label"),
-                        t!("keymap_editor.editor.source_label"),
+                        t!("keymap_editor.editor.action_label").to_string(),
+                        t!("keymap_editor.editor.arguments_label").to_string(),
+                        t!("keymap_editor.editor.keystrokes_label").to_string(),
+                        t!("keymap_editor.editor.context_label").to_string(),
+                        t!("keymap_editor.editor.source_label").to_string(),
                     ])
                     .uniform_list(
                         "keymap-editor-table",
@@ -2344,7 +2344,7 @@ impl Render for KeymapEditor {
                                                             None
                                                         }
                                                     }.map(|source| t!("keymap_editor.editor.overridden_by_source", action = binding.action().humanized_name, source = source))
-                                                }).unwrap_or_else(|| t!("keymap_editor.editor.binding_overridden"));
+                                                }).unwrap_or_else(|| t!("keymap_editor.editor.binding_overridden").to_string());
 
                                                 row.tooltip(Tooltip::text(context))
                                             },
@@ -2850,7 +2850,7 @@ impl KeybindingEditorModal {
                                 "Could not find action in keybindings with index {}",
                                 first_conflict_index
                             );
-                            t!("keymap_editor.editor.conflict_with_other_actions")
+                            t!("keymap_editor.editor.conflict_with_other_actions").to_string()
                         }
                     };
 

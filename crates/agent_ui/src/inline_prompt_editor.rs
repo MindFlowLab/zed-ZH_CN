@@ -1591,12 +1591,14 @@ impl GenerationMode {
             GenerationMode::Generate => t!("agent_ui.inline_prompt_editor.generate"),
             GenerationMode::Transform => t!("agent_ui.inline_prompt_editor.transform"),
         }
+        .to_string()
     }
     fn tooltip_interrupt(self) -> String {
         match self {
             GenerationMode::Generate => t!("agent_ui.inline_prompt_editor.interrupt_generation"),
             GenerationMode::Transform => t!("agent_ui.inline_prompt_editor.interrupt_transform"),
         }
+        .to_string()
     }
 
     fn tooltip_restart(self) -> String {
@@ -1604,6 +1606,7 @@ impl GenerationMode {
             GenerationMode::Generate => t!("agent_ui.inline_prompt_editor.restart_generation"),
             GenerationMode::Transform => t!("agent_ui.inline_prompt_editor.restart_transform"),
         }
+        .to_string()
     }
 
     fn tooltip_accept(self) -> String {
@@ -1611,6 +1614,7 @@ impl GenerationMode {
             GenerationMode::Generate => t!("agent_ui.inline_prompt_editor.accept_generation"),
             GenerationMode::Transform => t!("agent_ui.inline_prompt_editor.accept_transform"),
         }
+        .to_string()
     }
 }
 

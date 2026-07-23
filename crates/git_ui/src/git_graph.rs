@@ -42,6 +42,7 @@ use search::{
 };
 use smallvec::{SmallVec, smallvec};
 use std::{
+    borrow::Cow,
     cell::Cell,
     ops::Range,
     rc::Rc,
@@ -617,7 +618,7 @@ fn timestamp_format() -> &'static [BorrowedFormatItem<'static>] {
 
 fn format_timestamp(timestamp: i64) -> String {
     let Ok(datetime) = OffsetDateTime::from_unix_timestamp(timestamp) else {
-        return t!("git_ui.git_graph.unknown");
+        return t!("git_ui.git_graph.unknown").to_string();
     };
 
     let local_offset = UtcOffset::current_local_offset().unwrap_or(UtcOffset::UTC);
@@ -2497,7 +2498,7 @@ impl GitGraph {
         cx: &mut Context<Self>,
     ) {
         let is_path_history = matches!(self.log_source, LogSource::Path(_));
-        let columns: Vec<String> = if is_path_history {
+        let columns: Vec<Cow<'static, str>> = if is_path_history {
             vec![
                 t!("git_ui.git_graph.column_description"),
                 t!("git_ui.git_graph.column_date"),
@@ -3754,9 +3755,9 @@ impl Render for GitGraph {
             let message = if let Some(error) = &error {
                 t!("git_ui.git_graph.error_loading", error = error)
             } else if is_loading {
-                t!("git_ui.git_graph.loading")
+                t!("git_ui.git_graph.loading").to_string()
             } else {
-                t!("git_ui.git_graph.no_commits_found")
+                t!("git_ui.git_graph.no_commits_found").to_string()
             };
             let label = Label::new(message)
                 .color(Color::Muted)

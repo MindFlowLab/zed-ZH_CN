@@ -1779,7 +1779,7 @@ impl SettingsWindow {
         let current_file = SettingsUiFile::User;
         let search_bar = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text(t!("settings_ui.search.placeholder").as_str(), window, cx);
+            editor.set_placeholder_text(&t!("settings_ui.search.placeholder"), window, cx);
             editor
         });
         cx.subscribe(&search_bar, |this, _, event: &EditorEvent, cx| {
@@ -2951,7 +2951,7 @@ impl SettingsWindow {
 
     pub(crate) fn display_name(&self, file: &SettingsUiFile) -> Option<String> {
         match file {
-            SettingsUiFile::User => Some(t!("settings_ui.scope.user")),
+            SettingsUiFile::User => Some(t!("settings_ui.scope.user").to_string()),
             SettingsUiFile::Project((worktree_id, path)) => self
                 .worktree_root_dirs
                 .get(&worktree_id)
@@ -3749,7 +3749,7 @@ impl SettingsWindow {
                 current_sub_page.link.json_path == Some(AGENT_SKILLS_SETTINGS_PATH);
             let is_llm_providers_page = current_sub_page.link.json_path == Some("llm_providers")
                 && current_sub_page.link.title.as_ref()
-                    == t!("settings_ui.page_data.llm_providers_title").as_str();
+                    == &*t!("settings_ui.page_data.llm_providers_title");
             let is_external_agents_page = current_sub_page.link.json_path == Some("agent_servers");
             let is_mcp_servers_page = current_sub_page.link.json_path == Some("context_servers");
 
@@ -3885,7 +3885,7 @@ impl SettingsWindow {
                 .gap_2()
                 .when_some(parse_error, |this, err| {
                     this.child(banner(
-                        t!("settings_ui.banner.failed_to_load"),
+                        t!("settings_ui.banner.failed_to_load").to_string(),
                         err,
                         &mut self.shown_errors,
                         cx,
@@ -3893,11 +3893,13 @@ impl SettingsWindow {
                 })
                 .map(|this| match &error.migration_status {
                     settings::MigrationStatus::Succeeded => this.child(banner(
-                        t!("settings_ui.banner.out_of_date"),
+                        t!("settings_ui.banner.out_of_date").to_string(),
                         match &self.current_file {
-                            SettingsUiFile::User => t!("settings_ui.banner.migrate_automatically"),
+                            SettingsUiFile::User => {
+                                t!("settings_ui.banner.migrate_automatically").to_string()
+                            }
                             SettingsUiFile::Server(_) | SettingsUiFile::Project(_) => {
-                                t!("settings_ui.banner.migrate_manually")
+                                t!("settings_ui.banner.migrate_manually").to_string()
                             }
                         },
                         &mut self.shown_errors,
@@ -3905,7 +3907,7 @@ impl SettingsWindow {
                     )),
                     settings::MigrationStatus::Failed { error: err } if !parse_failed => this
                         .child(banner(
-                            t!("settings_ui.banner.migration_failed"),
+                            t!("settings_ui.banner.migration_failed").to_string(),
                             err.clone(),
                             &mut self.shown_errors,
                             cx,

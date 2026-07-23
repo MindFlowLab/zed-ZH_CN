@@ -233,7 +233,7 @@ impl Output {
                                                 MultiBuffer::singleton(buffer.clone(), cx);
 
                                             multi_buffer.set_title(
-                                                t!("repl.outputs.repl_output_title"),
+                                                t!("repl.outputs.repl_output_title").to_string(),
                                                 cx,
                                             );
                                             multi_buffer
@@ -357,7 +357,7 @@ impl Output {
                                                 let mut multi_buffer =
                                                     MultiBuffer::singleton(buffer.clone(), cx);
                                                 multi_buffer.set_title(
-                                                    t!("repl.outputs.full_error_title"),
+                                                    t!("repl.outputs.full_error_title").to_string(),
                                                     cx,
                                                 );
                                                 multi_buffer
@@ -409,7 +409,7 @@ impl Output {
                     content: cx.new(|_| json_view),
                     display_id,
                 },
-                Err(_) => Output::Message(t!("repl.outputs.failed_to_parse_json")),
+                Err(_) => Output::Message(t!("repl.outputs.failed_to_parse_json").to_string()),
             },
             Some(MimeType::Plain(text)) => Output::Plain {
                 content: cx.new(|cx| TerminalOutput::from(text, window, cx)),
@@ -449,7 +449,7 @@ impl Output {
                 },
             },
             // Any other media types are not supported
-            _ => Output::Message(t!("repl.outputs.unsupported_media_type")),
+            _ => Output::Message(t!("repl.outputs.unsupported_media_type").to_string()),
         }
     }
 }
@@ -544,7 +544,7 @@ impl ExecutionView {
 
             let editor = cx.new(|cx| {
                 let mut editor = Editor::single_line(window, cx);
-                editor.set_placeholder_text(t!("repl.outputs.type_here").as_str(), window, cx);
+                editor.set_placeholder_text(&t!("repl.outputs.type_here"), window, cx);
                 if password {
                     editor.set_masked(true, cx);
                 }
@@ -803,7 +803,7 @@ impl Render for ExecutionView {
 
         let pending_input_element = self.pending_input.as_ref().map(|pending_input| {
             let prompt_label = if pending_input.prompt.is_empty() {
-                t!("repl.outputs.input")
+                t!("repl.outputs.input").to_string()
             } else {
                 pending_input.prompt.clone()
             };

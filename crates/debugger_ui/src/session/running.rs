@@ -1345,7 +1345,7 @@ impl RunningState {
             .clone()
             .filter(|title| !title.is_empty())
             .or_else(|| command.clone())
-            .unwrap_or_else(|| t!("debugger_ui.pane.debug_terminal"));
+            .unwrap_or_else(|| t!("debugger_ui.pane.debug_terminal").to_string());
         let kind = task::SpawnInTerminal {
             id: task::TaskId("debug".to_string()),
             full_label: title.clone(),

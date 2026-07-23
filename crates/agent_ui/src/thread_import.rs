@@ -410,7 +410,7 @@ impl ThreadImportModal {
             )
         } else {
             let message = if imported_count == 1 {
-                t!("agent_ui.thread_import.imported_one_thread")
+                t!("agent_ui.thread_import.imported_one_thread").to_string()
             } else {
                 t!(
                     "agent_ui.thread_import.imported_threads",
@@ -988,7 +988,7 @@ fn show_cross_channel_import_toast(
         )
     } else {
         let message = if imported_count == 1 {
-            t!("agent_ui.thread_import.imported_one_thread_cross_channel")
+            t!("agent_ui.thread_import.imported_one_thread_cross_channel").to_string()
         } else {
             t!(
                 "agent_ui.thread_import.imported_threads_cross_channel",

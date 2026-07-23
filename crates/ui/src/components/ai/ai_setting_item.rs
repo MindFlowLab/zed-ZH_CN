@@ -1,5 +1,6 @@
 use crate::{IconDecoration, IconDecorationKind, Tooltip, prelude::*};
 use gpui::{Animation, AnimationExt, SharedString, pulsating_between};
+use std::borrow::Cow;
 use std::time::Duration;
 use zed_i18n::t;
 
@@ -16,7 +17,7 @@ pub enum AiSettingItemStatus {
 }
 
 impl AiSettingItemStatus {
-    fn tooltip_text(&self) -> String {
+    fn tooltip_text(&self) -> Cow<'static, str> {
         match self {
             Self::Stopped => t!("ui.ai_setting_item.status_stopped"),
             Self::Starting => t!("ui.ai_setting_item.status_starting"),

@@ -229,7 +229,7 @@ fn render_tool_list_item(
         let mut parts = Vec::new();
         if rule_count > 0 {
             if rule_count == 1 {
-                parts.push(t!("settings_ui.tool_permissions_setup.rule_count_one"));
+                parts.push(t!("settings_ui.tool_permissions_setup.rule_count_one").to_string());
             } else {
                 parts.push(t!(
                     "settings_ui.tool_permissions_setup.rule_count",
@@ -475,7 +475,7 @@ fn render_verification_section(
     let editor = window.use_keyed_state(input_id, cx, |window, cx| {
         let mut editor = editor::Editor::single_line(window, cx);
         editor.set_placeholder_text(
-            t!("settings_ui.tool_permissions_setup.verification_placeholder").as_str(),
+            &t!("settings_ui.tool_permissions_setup.verification_placeholder"),
             window,
             cx,
         );
@@ -808,6 +808,7 @@ fn mode_display_label(mode: ToolPermissionMode) -> String {
         ToolPermissionMode::Deny => t!("settings_ui.tool_permissions_setup.mode_deny"),
         ToolPermissionMode::Confirm => t!("settings_ui.tool_permissions_setup.mode_confirm"),
     }
+    .to_string()
 }
 
 fn verdict_color(mode: ToolPermissionMode) -> Color {
@@ -871,10 +872,14 @@ fn render_invalid_patterns_section(
                 .gap_1p5()
                 .children(invalid_patterns.iter().map(|invalid| {
                     let rule_type_label = match invalid.rule_type.as_str() {
-                        "always_allow" => t!("settings_ui.tool_permissions_setup.always_allow"),
-                        "always_deny" => t!("settings_ui.tool_permissions_setup.always_deny"),
+                        "always_allow" => {
+                            t!("settings_ui.tool_permissions_setup.always_allow").to_string()
+                        }
+                        "always_deny" => {
+                            t!("settings_ui.tool_permissions_setup.always_deny").to_string()
+                        }
                         "always_confirm" => {
-                            t!("settings_ui.tool_permissions_setup.always_confirm")
+                            t!("settings_ui.tool_permissions_setup.always_confirm").to_string()
                         }
                         other => other.to_string(),
                     };
@@ -1052,9 +1057,10 @@ fn render_user_pattern_row(
                     );
 
                     let validation_error = if !updated {
-                        Some(t!(
-                            "settings_ui.tool_permissions_setup.pattern_already_exists"
-                        ))
+                        Some(
+                            t!("settings_ui.tool_permissions_setup.pattern_already_exists")
+                                .to_string(),
+                        )
                     } else {
                         match regex::Regex::new(&new_pattern) {
                             Err(err) => Some(t!(

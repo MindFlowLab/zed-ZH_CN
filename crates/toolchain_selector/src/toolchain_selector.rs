@@ -822,7 +822,7 @@ impl ToolchainSelectorDelegate {
                     .await?;
                 let pretty_path = {
                     if relative_path.is_empty() {
-                        t!("toolchain_selector.worktree_root")
+                        t!("toolchain_selector.worktree_root").to_string()
                     } else {
                         format!("`{}`", relative_path.display(path_style))
                     }

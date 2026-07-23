@@ -539,9 +539,9 @@ impl StageIntent {
 
     fn label(self, stage_status: impl FnOnce() -> StageStatus) -> String {
         if self.resolve_with(stage_status) {
-            t!("git_ui.common.stage")
+            t!("git_ui.common.stage").to_string()
         } else {
-            t!("git_ui.common.unstage")
+            t!("git_ui.common.unstage").to_string()
         }
     }
 }
@@ -585,6 +585,7 @@ impl GitHeaderEntry {
             Section::Staged => t!("git_ui.git_panel.section_staged"),
             Section::Unstaged => t!("git_ui.git_panel.section_unstaged"),
         }
+        .to_string()
     }
 }
 
@@ -4883,7 +4884,7 @@ impl GitPanel {
 
         let suggested_commit_message = self.suggest_commit_message(cx);
         let placeholder_text = suggested_commit_message
-            .unwrap_or_else(|| t!("git_ui.git_panel.enter_commit_message"));
+            .unwrap_or_else(|| t!("git_ui.git_panel.enter_commit_message").to_string());
 
         self.commit_editor.update(cx, |editor, cx| {
             editor.set_placeholder_text(&placeholder_text, window, cx)
@@ -5482,20 +5483,26 @@ impl GitPanel {
 
     pub fn configure_commit_button(&self, cx: &mut Context<Self>) -> (bool, String) {
         if self.generate_commit_message_task.is_some() {
-            (false, t!("git_ui.git_panel.generating_commit_message"))
+            (
+                false,
+                t!("git_ui.git_panel.generating_commit_message").to_string(),
+            )
         } else if self.has_unstaged_conflicts() {
             (
                 false,
-                t!("git_ui.git_panel.must_resolve_conflicts_before_commit"),
+                t!("git_ui.git_panel.must_resolve_conflicts_before_commit").to_string(),
             )
         } else if !self.has_staged_changes() && !self.has_tracked_changes() && !self.amend_pending {
-            (false, t!("git_ui.git_panel.no_changes_to_commit"))
+            (
+                false,
+                t!("git_ui.git_panel.no_changes_to_commit").to_string(),
+            )
         } else if self.pending_commit.is_some() {
-            (false, t!("git_ui.git_panel.commit_in_progress"))
+            (false, t!("git_ui.git_panel.commit_in_progress").to_string())
         } else if !self.has_commit_message(cx) {
-            (false, t!("git_ui.git_panel.no_commit_message"))
+            (false, t!("git_ui.git_panel.no_commit_message").to_string())
         } else if !self.has_write_access(cx) {
-            (false, t!("git_ui.git_panel.no_write_access"))
+            (false, t!("git_ui.git_panel.no_write_access").to_string())
         } else {
             (true, self.commit_button_title())
         }
@@ -5504,16 +5511,16 @@ impl GitPanel {
     pub fn commit_button_title(&self) -> String {
         if self.amend_pending {
             if self.has_staged_changes() {
-                t!("git_ui.common.amend")
+                t!("git_ui.common.amend").to_string()
             } else if self.has_tracked_changes() {
-                t!("git_ui.git_panel.amend_tracked")
+                t!("git_ui.git_panel.amend_tracked").to_string()
             } else {
-                t!("git_ui.common.amend")
+                t!("git_ui.common.amend").to_string()
             }
         } else if self.has_staged_changes() {
-            t!("git_ui.common.commit")
+            t!("git_ui.common.commit").to_string()
         } else {
-            t!("git_ui.git_panel.commit_tracked")
+            t!("git_ui.git_panel.commit_tracked").to_string()
         }
     }
 

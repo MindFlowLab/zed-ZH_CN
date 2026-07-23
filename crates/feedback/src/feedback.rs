@@ -63,7 +63,7 @@ pub fn init(cx: &mut App) {
 
                     let message = t!("feedback.copy.copied_into_clipboard");
                     let ok = t!("feedback.copy.ok");
-                    cx.prompt(PromptLevel::Info, &message, Some(&specs), &[ok.as_str()])
+                    cx.prompt(PromptLevel::Info, &message, Some(&specs), &[&*ok])
                         .await
                 })
                 .detach();
@@ -77,7 +77,7 @@ pub fn init(cx: &mut App) {
                     PromptLevel::Info,
                     &message,
                     Some(&clipboard_text),
-                    &[ok.as_str()],
+                    &[&*ok],
                     cx,
                 ));
             })

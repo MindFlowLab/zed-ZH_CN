@@ -85,7 +85,7 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
         RemoteAction::Fetch(remote) => {
             if output.stderr.is_empty() {
                 SuccessMessage {
-                    message: t!("git_ui.remote_output.fetch_up_to_date"),
+                    message: t!("git_ui.remote_output.fetch_up_to_date").to_string(),
                     style: SuccessStyle::Toast,
                 }
             } else {
@@ -96,7 +96,7 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
                             remote = remote.name
                         )
                     }
-                    None => t!("git_ui.remote_output.synchronized_with_remotes"),
+                    None => t!("git_ui.remote_output.synchronized_with_remotes").to_string(),
                 };
                 SuccessMessage {
                     message,
@@ -123,7 +123,7 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
             };
             if output.stdout.ends_with("Already up to date.\n") {
                 SuccessMessage {
-                    message: t!("git_ui.remote_output.pull_up_to_date"),
+                    message: t!("git_ui.remote_output.pull_up_to_date").to_string(),
                     style: SuccessStyle::Toast,
                 }
             } else if output.stdout.starts_with("Updating") {
@@ -193,7 +193,7 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
         RemoteAction::Push(branch_name, remote_ref) => {
             if output.stderr.ends_with("Everything up-to-date\n") {
                 SuccessMessage {
-                    message: t!("git_ui.remote_output.push_up_to_date"),
+                    message: t!("git_ui.remote_output.push_up_to_date").to_string(),
                     style: SuccessStyle::Toast,
                 }
             } else if let Some((label, url)) = extract_pull_request_link(&output) {

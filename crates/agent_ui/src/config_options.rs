@@ -1,4 +1,4 @@
-use std::{cmp::Reverse, rc::Rc, sync::Arc};
+use std::{borrow::Cow, cmp::Reverse, rc::Rc, sync::Arc};
 
 use acp_thread::AgentSessionConfigOptions;
 use agent_client_protocol::schema::v1 as acp;
@@ -382,15 +382,15 @@ impl ConfigOptionSelector {
 
     fn current_value_name(&self) -> String {
         let Some(option) = self.current_option() else {
-            return t!("agent_ui.config_options.unknown");
+            return t!("agent_ui.config_options.unknown").to_string();
         };
 
         match &option.kind {
             acp::SessionConfigKind::Select(select) => {
                 find_option_name(&select.options, &select.current_value)
-                    .unwrap_or_else(|| t!("agent_ui.config_options.unknown"))
+                    .unwrap_or_else(|| t!("agent_ui.config_options.unknown").to_string())
             }
-            _ => t!("agent_ui.config_options.unknown"),
+            _ => t!("agent_ui.config_options.unknown").to_string(),
         }
     }
 
@@ -481,16 +481,17 @@ impl Render for ConfigOptionSelector {
                         );
                     }
 
-                    let action_tooltip_container = |label: String, keybinding: KeyBinding| {
-                        h_flex()
-                            .pt_1()
-                            .gap_2()
-                            .justify_between()
-                            .border_t_1()
-                            .border_color(cx.theme().colors().border_variant)
-                            .child(Label::new(label))
-                            .child(keybinding)
-                    };
+                    let action_tooltip_container =
+                        |label: Cow<'static, str>, keybinding: KeyBinding| {
+                            h_flex()
+                                .pt_1()
+                                .gap_2()
+                                .justify_between()
+                                .border_t_1()
+                                .border_color(cx.theme().colors().border_variant)
+                                .child(Label::new(label))
+                                .child(keybinding)
+                        };
 
                     if show_category_keybindings && let Some(category) = &option_category {
                         match category {

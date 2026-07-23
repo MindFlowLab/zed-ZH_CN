@@ -545,11 +545,9 @@ impl Item for AgentDiffPane {
 
             move |_, _| {
                 v_flex()
-                    .child(Label::new(
-                        title
-                            .clone()
-                            .unwrap_or_else(|| t!("agent_ui.agent_diff.review")),
-                    ))
+                    .child(Label::new(title.clone().unwrap_or_else(|| {
+                        t!("agent_ui.agent_diff.review").to_string()
+                    })))
                     .child(
                         Label::new(t!("agent_ui.agent_diff.agent_diff"))
                             .color(Color::Muted)

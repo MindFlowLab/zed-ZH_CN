@@ -925,13 +925,16 @@ impl ProjectPanel {
                                     match e.error_code() {
                                         ErrorCode::Disconnected => {
                                             if is_via_ssh {
-                                                Some(t!(
-                                                    "project_panel.prompt.disconnected_from_ssh"
-                                                ))
+                                                Some(
+                                                    t!(
+                                                        "project_panel.prompt.disconnected_from_ssh"
+                                                    )
+                                                    .to_string(),
+                                                )
                                             } else {
                                                 Some(t!(
                                                     "project_panel.prompt.disconnected_from_remote"
-                                                ))
+                                                ).to_string())
                                             }
                                         }
                                         ErrorCode::UnsharedItem => Some(t!(
@@ -1927,7 +1930,7 @@ impl ProjectPanel {
         if !filename.is_empty() {
             if filename.is_empty() {
                 edit_state.validation_state =
-                    ValidationState::Error(t!("project_panel.validation.empty_name"));
+                    ValidationState::Error(t!("project_panel.validation.empty_name").to_string());
                 cx.notify();
                 return;
             }
@@ -1935,7 +1938,7 @@ impl ProjectPanel {
             let trimmed_filename = filename.trim();
             if trimmed_filename != filename {
                 edit_state.validation_state =
-                    ValidationState::Warning(t!("project_panel.validation.whitespace"));
+                    ValidationState::Warning(t!("project_panel.validation.whitespace").to_string());
                 cx.notify();
                 return;
             }
@@ -1943,7 +1946,7 @@ impl ProjectPanel {
 
             let Ok(filename) = RelPath::from_unix_str(trimmed_filename) else {
                 edit_state.validation_state =
-                    ValidationState::Warning(t!("project_panel.validation.whitespace"));
+                    ValidationState::Warning(t!("project_panel.validation.whitespace").to_string());
                 cx.notify();
                 return;
             };

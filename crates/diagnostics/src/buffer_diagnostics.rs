@@ -937,7 +937,7 @@ impl Render for BufferDiagnosticsEditor {
                 )
                 .when(self.summary.warning_count > 0, |div| {
                     let label = match self.summary.warning_count {
-                        1 => t!("diagnostics.common.show_one_warning"),
+                        1 => t!("diagnostics.common.show_one_warning").to_string(),
                         warning_count => {
                             t!("diagnostics.common.show_warnings", count = warning_count)
                         }

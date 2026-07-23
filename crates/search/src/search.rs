@@ -5,6 +5,7 @@ use editor::SearchSettings;
 use gpui::{Action, App, ClickEvent, Entity, FocusHandle, IntoElement, actions};
 use project::search::SearchQuery;
 pub use project_search::ProjectSearchView;
+use std::borrow::Cow;
 use ui::{IconButtonShape, Tooltip, prelude::*};
 use util::paths::PathMatcher;
 use workspace::notifications::NotificationId;
@@ -120,7 +121,7 @@ impl SearchOption {
     /// 保持英文原值不变;显示文本一律走本方法。
     /// NOTE: `label()` still returns `&'static str` for positions that require
     /// a static string (e.g. element ids) and intentionally stays in English.
-    pub fn label_text(&self) -> String {
+    pub fn label_text(&self) -> Cow<'static, str> {
         match self {
             SearchOption::WholeWord => t!("search.option.whole_word"),
             SearchOption::CaseSensitive => t!("search.option.case_sensitive"),

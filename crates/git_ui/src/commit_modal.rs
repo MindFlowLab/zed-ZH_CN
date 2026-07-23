@@ -376,7 +376,7 @@ impl CommitModal {
             .as_ref()
             .and_then(|repo| repo.read(cx).branch.as_ref())
             .map(|b| b.name().to_owned())
-            .unwrap_or_else(|| t!("git_ui.commit_modal.no_branch"));
+            .unwrap_or_else(|| t!("git_ui.commit_modal.no_branch").to_string());
 
         let branch_picker_button = Button::new("branch_picker_button", branch)
             .label_size(LabelSize::Small)

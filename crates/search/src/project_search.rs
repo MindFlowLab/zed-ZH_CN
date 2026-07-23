@@ -1436,11 +1436,7 @@ impl ProjectSearchView {
                 let save_label = t!("search.project_search.save_prompt.save");
                 let dont_save_label = t!("search.project_search.save_prompt.dont_save");
                 let cancel_label = t!("search.project_search.save_prompt.cancel");
-                let options = [
-                    save_label.as_str(),
-                    dont_save_label.as_str(),
-                    cancel_label.as_str(),
-                ];
+                let options = [&*save_label, &*dont_save_label, &*cancel_label];
                 let result_channel = this.update_in(cx, |_, window, cx| {
                     window.prompt(gpui::PromptLevel::Warning, &message, None, &options, cx)
                 })?;

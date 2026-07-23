@@ -120,7 +120,7 @@ impl Render for ProjectDiagnosticsEditor {
                     .child(Label::new(label).color(Color::Muted))
                     .when(self.summary.warning_count > 0, |this| {
                         let label = if self.summary.warning_count == 1 {
-                            t!("diagnostics.common.show_one_warning")
+                            t!("diagnostics.common.show_one_warning").to_string()
                         } else {
                             t!(
                                 "diagnostics.common.show_warnings",

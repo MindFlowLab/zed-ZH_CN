@@ -37,6 +37,7 @@ pub mod threads_archive_view;
 mod ui;
 mod unicode_confusables;
 
+use std::borrow::Cow;
 use std::rc::Rc;
 use std::sync::Arc;
 
@@ -746,9 +747,10 @@ fn rerun_rules_to_skills_migration(
 
 fn show_rules_to_skills_migration_toast(
     workspace: &gpui::WeakEntity<Workspace>,
-    message: String,
+    message: impl Into<Cow<'static, str>>,
     cx: &mut App,
 ) {
+    let message = message.into();
     if let Some(workspace) = workspace.upgrade() {
         workspace.update(cx, |workspace, cx| {
             struct RulesToSkillsMigrationRerunToast;

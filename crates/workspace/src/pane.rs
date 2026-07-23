@@ -4937,7 +4937,7 @@ fn dirty_message_for(buffer_path: Option<ProjectPath>, path_style: PathStyle) ->
                 path = MarkdownInlineCode(path.as_str())
             )
         }
-        None => t!("workspace.pane.dirty_message_no_path"),
+        None => t!("workspace.pane.dirty_message_no_path").to_string(),
     }
 }
 

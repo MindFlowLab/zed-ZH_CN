@@ -1169,7 +1169,7 @@ impl NotebookEditor {
                             .kernel_specification
                             .as_ref()
                             .map(|spec| spec.name().to_string())
-                            .unwrap_or_else(|| t!("repl.notebook.select_kernel"));
+                            .unwrap_or_else(|| t!("repl.notebook.select_kernel").to_string());
                         IconButton::new("repl", icon)
                             .icon_color(icon_color)
                             .tooltip(move |window, cx| {
@@ -1196,7 +1196,7 @@ impl NotebookEditor {
             .kernel_specification
             .as_ref()
             .map(|spec| spec.name().to_string())
-            .unwrap_or_else(|| t!("repl.notebook.select_kernel"));
+            .unwrap_or_else(|| t!("repl.notebook.select_kernel").to_string());
 
         let (status_icon, status_color) = match &kernel_status {
             KernelStatus::Idle => (IconName::Circle, Color::Success),

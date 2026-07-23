@@ -1000,6 +1000,7 @@ mod remote_button {
             RemoteOperationKind::Pull => t!("git_ui.git_ui.pull_in_progress"),
             RemoteOperationKind::Push => t!("git_ui.git_ui.push_in_progress"),
         }
+        .to_string()
     }
 
     fn git_action_tooltip(

@@ -260,7 +260,7 @@ fn render_skill_row(
                                 PromptLevel::Info,
                                 &prompt_message,
                                 Some(&prompt_detail),
-                                &[delete_label.as_str(), cancel_label.as_str()],
+                                &[&*delete_label, &*cancel_label],
                                 cx,
                             );
 

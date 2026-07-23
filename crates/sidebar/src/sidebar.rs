@@ -840,7 +840,7 @@ impl Sidebar {
 
         let filter_editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text(t!("sidebar.filter.placeholder").as_str(), window, cx);
+            editor.set_placeholder_text(&t!("sidebar.filter.placeholder"), window, cx);
             editor
         });
         let thread_rename_editor = cx.new(|cx| Editor::single_line(window, cx));
@@ -2405,7 +2405,7 @@ impl Sidebar {
                         })
                         .when(waiting_thread_count > 0, |this| {
                             let tooltip_text = if waiting_thread_count == 1 {
-                                t!("sidebar.project_header.waiting_singular")
+                                t!("sidebar.project_header.waiting_singular").to_string()
                             } else {
                                 t!(
                                     "sidebar.project_header.waiting_plural",

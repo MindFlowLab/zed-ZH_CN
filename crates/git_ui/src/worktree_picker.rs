@@ -794,9 +794,9 @@ impl PickerDelegate for WorktreePickerDelegate {
             worktree.directory_name(main_worktree_path.as_deref()) == normalized_query
         });
         let create_named_disabled_reason: Option<String> = if self.has_multiple_repositories {
-            Some(t!("git_ui.worktree_picker.named_worktree_multiple_repos"))
+            Some(t!("git_ui.worktree_picker.named_worktree_multiple_repos").to_string())
         } else if has_named_worktree {
-            Some(t!("git_ui.worktree_picker.named_worktree_exists"))
+            Some(t!("git_ui.worktree_picker.named_worktree_exists").to_string())
         } else {
             None
         };

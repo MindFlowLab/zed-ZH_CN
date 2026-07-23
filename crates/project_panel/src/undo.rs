@@ -315,6 +315,7 @@ impl UndoMessage {
             UndoMessage::Undo => t!("project_panel.undo.undo_failed"),
             UndoMessage::Redo => t!("project_panel.undo.redo_failed"),
         }
+        .to_string()
     }
 }
 

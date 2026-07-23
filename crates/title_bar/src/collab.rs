@@ -1,3 +1,4 @@
+use std::borrow::Cow;
 use std::rc::Rc;
 use std::sync::Arc;
 
@@ -449,7 +450,7 @@ impl TitleBar {
                         let key_binding = KeyBinding::for_action(&ShowCallStats, cx);
                         let has_key_binding = key_binding.has_binding(window);
 
-                        let stat_row = |label: String, value: String| {
+                        let stat_row = |label: Cow<'static, str>, value: String| {
                             h_flex()
                                 .justify_between()
                                 .gap_4()

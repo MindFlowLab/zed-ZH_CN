@@ -8,6 +8,7 @@ title_bar.status.signing_in = "Signing in…"
 
 title_bar.remote.remote_project = "Remote Project"
 title_bar.remote.dev_container = "Dev Container"
+title_bar.remote.mock_remote_project = "Mock Remote Project"
 title_bar.remote.connecting_to = "Connecting to: %{host}"
 title_bar.remote.connected_to = "Connected to: %{host}"
 title_bar.remote.heartbeat_missed = "Connection attempt to %{host} missed. Retrying..."

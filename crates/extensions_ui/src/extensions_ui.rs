@@ -472,11 +472,7 @@ impl ExtensionsPage {
 
             let query_editor = cx.new(|cx| {
                 let mut input = Editor::single_line(window, cx);
-                input.set_placeholder_text(
-                    t!("extensions_ui.search.placeholder").as_str(),
-                    window,
-                    cx,
-                );
+                input.set_placeholder_text(&t!("extensions_ui.search.placeholder"), window, cx);
                 if let Some(id) = focus_extension_id {
                     input.set_text(format!("id:{id}"), window, cx);
                 }

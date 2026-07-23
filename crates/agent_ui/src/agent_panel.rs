@@ -1,4 +1,5 @@
 use std::{
+    borrow::Cow,
     cell::Cell,
     fmt,
     path::PathBuf,
@@ -3762,9 +3763,10 @@ impl AgentPanel {
 
     fn show_deferred_toast(
         workspace: &WeakEntity<workspace::Workspace>,
-        message: String,
+        message: impl Into<Cow<'static, str>>,
         cx: &mut App,
     ) {
+        let message = message.into();
         let workspace = workspace.clone();
         cx.defer(move |cx| {
             if let Some(workspace) = workspace.upgrade() {
@@ -3943,7 +3945,7 @@ impl AgentPanel {
         let text = serde_json::to_string_pretty(&json).unwrap_or_default();
 
         self.open_json_buffer(
-            t!("agent_ui.agent_panel.all_sidebar_thread_metadata"),
+            t!("agent_ui.agent_panel.all_sidebar_thread_metadata").to_string(),
             text,
             window,
             cx,

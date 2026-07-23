@@ -1329,7 +1329,7 @@ impl FileFinderDelegate {
                 } => (
                     channel_name.to_string(),
                     string_match.positions.clone(),
-                    t!("file_finder.channel_notes"),
+                    t!("file_finder.channel_notes").to_string(),
                     vec![],
                 ),
                 Match::CreateNew(project_path) => (

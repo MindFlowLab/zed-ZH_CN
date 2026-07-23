@@ -28,6 +28,7 @@ use language::{LanguageAwareStyling, language_settings::LanguageSettings};
 
 use menu::{Cancel, SelectFirst, SelectLast, SelectNext, SelectPrevious};
 use std::{
+    borrow::Cow,
     cmp,
     collections::BTreeMap,
     hash::Hash,
@@ -2435,9 +2436,9 @@ impl OutlinePanel {
                             .map(|icon| icon.color(color).into_any_element());
                             (icon, file_name(path.as_std_path()))
                         }
-                        None => (None, t!("outline_panel.entry.untitled")),
+                        None => (None, t!("outline_panel.entry.untitled").to_string()),
                     },
-                    None => (None, t!("outline_panel.entry.unknown_buffer")),
+                    None => (None, t!("outline_panel.entry.unknown_buffer").to_string()),
                 };
                 (
                     ElementId::from(external_file.buffer_id.to_proto() as usize),
@@ -4830,7 +4831,7 @@ impl OutlinePanel {
     }
 
     fn render_filter_footer(&mut self, pinned: bool, cx: &mut Context<Self>) -> Div {
-        let (pin_button_id, icon, icon_tooltip): (&str, IconName, String) = if pinned {
+        let (pin_button_id, icon, icon_tooltip): (&str, IconName, Cow<'static, str>) = if pinned {
             (
                 "unpin_button",
                 IconName::Unpin,

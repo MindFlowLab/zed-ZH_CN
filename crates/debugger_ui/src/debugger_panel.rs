@@ -510,12 +510,8 @@ impl DebugPanel {
                 let message = t!("debugger_ui.panel.confirm_terminate_message");
                 let yes = t!("debugger_ui.panel.confirm_yes");
                 let no = t!("debugger_ui.panel.confirm_no");
-                let response = cx.prompt(
-                    gpui::PromptLevel::Warning,
-                    &message,
-                    None,
-                    &[yes.as_str(), no.as_str()],
-                );
+                let response =
+                    cx.prompt(gpui::PromptLevel::Warning, &message, None, &[&*yes, &*no]);
                 if response.await == Ok(1) {
                     return;
                 }

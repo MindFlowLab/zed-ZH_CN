@@ -50,7 +50,7 @@ impl Render for ActiveBufferLanguage {
             let active_language_text = if let Some(active_language_text) = active_language {
                 active_language_text.to_string()
             } else {
-                t!("language_selector.unknown_language")
+                t!("language_selector.unknown_language").to_string()
             };
 
             el.child(

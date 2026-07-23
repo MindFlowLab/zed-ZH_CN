@@ -92,7 +92,7 @@ impl Render for DiagnosticIndicator {
         };
 
         let diagnostics_label = match (self.summary.error_count, self.summary.warning_count) {
-            (0, 0) => t!("diagnostics.indicator.no_problems"),
+            (0, 0) => t!("diagnostics.indicator.no_problems").to_string(),
             (errors, warnings) => {
                 // 复杂条件拼接(英文复数后缀 + 多段 join)暂不翻译,保持原样
                 // complex conditional concatenation (English plural suffix + multi-part

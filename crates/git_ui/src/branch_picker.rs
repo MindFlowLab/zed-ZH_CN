@@ -617,6 +617,7 @@ impl BranchFilter {
             Self::Local => t!("git_ui.branch_picker.local_branches"),
             Self::Remote => t!("git_ui.branch_picker.remote_branches"),
         }
+        .to_string()
     }
 }
 
@@ -1837,6 +1838,7 @@ impl PickerDelegate for BranchListDelegate {
                                             )
                                         } else {
                                             t!("git_ui.branch_picker.based_off_current_branch")
+                                                .to_string()
                                         }
                                     }
                                     Entry::Branch { .. } => String::new(),

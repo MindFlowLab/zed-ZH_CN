@@ -211,7 +211,7 @@ impl MultiDiffView {
 
     fn title(&self) -> SharedString {
         if self.file_count == 1 {
-            t!("git_ui.multi_diff_view.diff_title_singular")
+            t!("git_ui.multi_diff_view.diff_title_singular").to_string()
         } else {
             t!(
                 "git_ui.multi_diff_view.diff_title_plural",

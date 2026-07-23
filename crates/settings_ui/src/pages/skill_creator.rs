@@ -210,7 +210,7 @@ impl SkillCreatorPage {
             });
             let mut editor = Editor::for_buffer(buffer, None, window, cx);
             editor.set_placeholder_text(
-                t!("settings_ui.skill_creator.body_placeholder").as_str(),
+                &t!("settings_ui.skill_creator.body_placeholder"),
                 window,
                 cx,
             );

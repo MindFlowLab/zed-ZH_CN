@@ -99,6 +99,7 @@ impl TimeBucket {
             TimeBucket::PastWeek => t!("agent_ui.threads_archive_view.past_week"),
             TimeBucket::Older => t!("agent_ui.threads_archive_view.older"),
         }
+        .to_string()
     }
 }
 
@@ -960,7 +961,7 @@ impl ThreadsArchiveView {
         };
 
         let count_label = if entry_count == 1 {
-            t!("agent_ui.threads_archive_view.thread_count_single")
+            t!("agent_ui.threads_archive_view.thread_count_single").to_string()
         } else {
             t!(
                 "agent_ui.threads_archive_view.thread_count",

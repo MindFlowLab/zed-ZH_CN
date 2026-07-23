@@ -466,7 +466,7 @@ fn blame_entry_timestamp(blame_entry: &BlameEntry, format: time_format::Timestam
                 format,
             )
         }
-        Err(_) => t!("git_ui.common.error_parsing_date"),
+        Err(_) => t!("git_ui.common.error_parsing_date").to_string(),
     }
 }
 

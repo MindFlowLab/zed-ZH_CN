@@ -39,25 +39,40 @@ pub fn init() {
 
 /// 运行时查询指定 key 的翻译文本。
 /// 按 zh-CN -> en 回退链查找;若仍缺失,rust-i18n 返回 key 本身。
-/// 注意:运行时 key 查询返回的文本借用自 key 参数,故统一转为
-/// `String` 返回,避免生命周期泄漏到调用方。
+/// 返回 `Cow` 而非 `String`:命中时借用编译期内嵌的 `&'static str`(零分配),
+/// 仅在 key 未命中需回退为 key 本身时才借用入参 key。
+/// 调用方需要拥有所有权时再自行 `into_owned()`/`to_string()`。
 /// Runtime translation lookup with the fallback chain zh-CN -> en -> key.
-pub fn lookup(key: &str) -> String {
-    rust_i18n::t!(key).into_owned()
+/// Returns a `Cow`: borrowed (zero-allocation) when the key resolves, and only
+/// borrows from the `key` argument on the missing-key fallback.
+pub fn lookup<'a>(key: &'a str) -> std::borrow::Cow<'a, str> {
+    rust_i18n::t!(key)
 }
 
 /// 带变量插值的翻译查询;locale 模板中的占位符使用 `%{name}` 格式。
+/// 复用 rust-i18n 的 `replace_patterns` 做单次扫描替换,避免逐个
+/// `str::replace` 时插值值自身含 `%{other}` 文本被二次误伤。
+/// 插值必然产生新文本,故返回拥有所有权的 `String`。
 /// Translation lookup with interpolation; templates use `%{name}` placeholders.
+/// Delegates to rust-i18n's single-pass `replace_patterns`. Interpolation always
+/// produces new text, so this returns an owned `String`.
 pub fn lookup_with(key: &str, args: &[(&str, &str)]) -> String {
-    let mut text = lookup(key);
-    for (name, value) in args {
-        text = text.replace(&format!("%{{{name}}}"), value);
-    }
-    text
+    let template = lookup(key);
+    let (keys, values): (Vec<&str>, Vec<String>) = args
+        .iter()
+        .map(|(name, value)| (*name, (*value).to_string()))
+        .unzip();
+    rust_i18n::replace_patterns(&template, &keys, &values)
 }
 
-/// i18n 翻译宏,返回 `String`。
-/// The i18n translation macro; returns `String`.
+/// i18n 翻译宏。
+/// The i18n translation macro.
+///
+/// 简单查询返回 `Cow<'a, str>`:字面量 key 得到 `Cow<'static, str>`,
+/// 命中翻译时零分配,可直接传给接受 `Into<SharedString>` 的 UI 组件。
+/// 插值查询返回拥有所有权的 `String`。
+/// The simple form returns a `Cow` (zero-allocation for literal keys that
+/// resolve); the interpolation form returns an owned `String`.
 ///
 /// ```ignore
 /// use zed_i18n::t;

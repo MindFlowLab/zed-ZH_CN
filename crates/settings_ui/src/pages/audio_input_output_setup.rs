@@ -85,7 +85,9 @@ where
         dropdown_id,
         current_device
             .map(|info| info.desc.name().to_string())
-            .unwrap_or_else(|| t!("settings_ui.audio_input_output_setup.system_default")),
+            .unwrap_or_else(|| {
+                t!("settings_ui.audio_input_output_setup.system_default").to_string()
+            }),
         menu,
     )
     .style(DropdownStyle::Outlined)

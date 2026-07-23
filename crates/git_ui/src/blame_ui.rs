@@ -552,6 +552,6 @@ fn blame_entry_relative_timestamp(blame_entry: &BlameEntry) -> String {
                 time_format::TimestampFormat::Relative,
             )
         }
-        Err(_) => t!("git_ui.common.error_parsing_date"),
+        Err(_) => t!("git_ui.common.error_parsing_date").to_string(),
     }
 }
