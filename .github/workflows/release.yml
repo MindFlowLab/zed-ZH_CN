@@ -73,12 +73,28 @@ jobs:
 
   bundle_windows_x86_64:
     name: 构建 Windows x86_64
-    # windows-2022 自带 Inno Setup 6 与 VS 2022 BuildTools，脚本硬编码依赖这些路径
+    # windows-2022 自带 Inno Setup 6 与 VS 2022（脚本已改用 vswhere 动态定位）
     runs-on: windows-2022
     timeout-minutes: 360
+    env:
+      # 缩短 cargo 缓存路径，规避 Windows 260 字符路径上限：
+      # pet 依赖的测试夹具路径极长，默认 CARGO_HOME 下 checkout 会超限。
+      CARGO_HOME: 'C:\c'
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
+
+      - name: 配置 Windows 长路径与 cargo 目录
+        run: |
+          New-Item -ItemType Directory -Path C:\c -Force | Out-Null
+          try {
+            New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `
+              -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force | Out-Null
+            git config --system core.longpaths true
+          } catch {
+            Write-Warning "启用长路径支持失败（已用缩短 CARGO_HOME 规避）: $_"
+          }
+        shell: pwsh
 
       - name: 安装 Rust 工具链
         run: rustup show
