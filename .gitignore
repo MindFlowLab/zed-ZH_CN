@@ -62,7 +62,6 @@ crates/docs_preprocessor/actions.json
 
 .local*
 .codegraph
-~/
 AGS_SDK-6.3.0/
 conpty/
 inno/x86_64/
