@@ -182,11 +182,13 @@ fn fail_to_open_window(e: anyhow::Error, _cx: &mut App) {
                 "zed.startup.linux_launch_failed_body",
                 error = format!("{e:?}")
             );
+            // t! 返回 Cow<'static, str>，不能调用 .as_str()（str::as_str
+            // 仍是 unstable，E0658）；改用解引用强制转换取 &str。
             proxy
                 .add_notification(
                     notification_id,
-                    Notification::new(summary.as_str())
-                        .body(Some(body.as_str()))
+                    Notification::new(&summary)
+                        .body(Some(&*body))
                         .priority(Priority::High)
                         .icon(ashpd::desktop::Icon::with_names(&[
                             "dialog-question-symbolic",
