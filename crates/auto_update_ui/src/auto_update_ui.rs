@@ -233,8 +233,7 @@ fn announcement_for_version(version: &Version, cx: &App) -> Option<AnnouncementC
             )
             .into(),
         );
-        bullet_items
-            .push(t!("auto_update_ui.announcement.skills_bullet_invoke").into());
+        bullet_items.push(t!("auto_update_ui.announcement.skills_bullet_invoke").into());
         if migrated_anything {
             bullet_items.push(t!("auto_update_ui.announcement.skills_bullet_migration").into());
         }

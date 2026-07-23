@@ -43,13 +43,13 @@ use theme::ActiveTheme;
 use toolbar_controls::DiagnosticsToolbarEditor;
 pub use toolbar_controls::ToolbarControls;
 use ui::{Icon, IconName, Label, h_flex, prelude::*};
-use zed_i18n::t;
 use util::ResultExt;
 use workspace::{
     ItemNavHistory, Workspace,
     item::{Item, ItemEvent, ItemHandle, SaveOptions, TabContentParams},
     searchable::SearchableItemHandle,
 };
+use zed_i18n::t;
 
 actions!(
     diagnostics,
@@ -766,7 +766,10 @@ impl Item for ProjectDiagnosticsEditor {
                         h_flex()
                             .gap_1()
                             .child(Icon::new(IconName::Check).color(Color::Success))
-                            .child(Label::new(t!("diagnostics.diagnostics.no_problems")).color(params.text_color())),
+                            .child(
+                                Label::new(t!("diagnostics.diagnostics.no_problems"))
+                                    .color(params.text_color()),
+                            ),
                     )
                 },
             )

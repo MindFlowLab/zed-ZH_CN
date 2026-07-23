@@ -368,18 +368,23 @@ impl Render for Onboarding {
                                             ),
                                     )
                                     .child({
-                                        Button::new("finish_setup", t!("onboarding.onboarding.finish_setup"))
-                                            .style(ButtonStyle::Filled)
-                                            .size(ButtonSize::Medium)
-                                            .width(rems_from_px(200.))
-                                            .key_binding(KeyBinding::for_action_in(
-                                                &Finish,
-                                                &self.focus_handle,
-                                                cx,
-                                            ))
-                                            .on_click(|_, window, cx| {
+                                        Button::new(
+                                            "finish_setup",
+                                            t!("onboarding.onboarding.finish_setup"),
+                                        )
+                                        .style(ButtonStyle::Filled)
+                                        .size(ButtonSize::Medium)
+                                        .width(rems_from_px(200.))
+                                        .key_binding(KeyBinding::for_action_in(
+                                            &Finish,
+                                            &self.focus_handle,
+                                            cx,
+                                        ))
+                                        .on_click(
+                                            |_, window, cx| {
                                                 window.dispatch_action(Finish.boxed_clone(), cx);
-                                            })
+                                            },
+                                        )
                                     }),
                             )
                             .child(Divider::horizontal().color(ui::DividerColor::BorderVariant))
@@ -553,10 +558,8 @@ pub async fn handle_import_vscode_settings(
                 workspace.toggle_status_toast(confirmation_toast, cx);
             }
             Err(_) => {
-                let error_toast = StatusToast::new(
-                    t!("onboarding.onboarding.import_failed"),
-                    cx,
-                    |this, _| {
+                let error_toast =
+                    StatusToast::new(t!("onboarding.onboarding.import_failed"), cx, |this, _| {
                         this.icon(
                             Icon::new(IconName::Close)
                                 .size(IconSize::Small)
@@ -566,8 +569,7 @@ pub async fn handle_import_vscode_settings(
                             window.dispatch_action(workspace::OpenLog.boxed_clone(), cx)
                         })
                         .dismiss_button(true)
-                    },
-                );
+                    });
                 workspace.toggle_status_toast(error_toast, cx);
             }
         })

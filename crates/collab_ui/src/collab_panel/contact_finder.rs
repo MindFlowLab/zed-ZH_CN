@@ -46,7 +46,9 @@ impl Render for ContactFinder {
                     // HACK: Prevent the background color from overflowing the parent container.
                     .rounded_t(px(8.))
                     .child(Label::new(t!("collab_ui.contact_finder.contacts")))
-                    .child(h_flex().child(Label::new(t!("collab_ui.contact_finder.invite_new_contacts")))),
+                    .child(h_flex().child(Label::new(t!(
+                        "collab_ui.contact_finder.invite_new_contacts"
+                    )))),
             )
             .child(self.picker.clone())
     }

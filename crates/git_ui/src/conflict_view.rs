@@ -339,46 +339,52 @@ fn render_conflict_buttons(
         .child(
             Button::new(
                 "head",
-                t!("git_ui.conflict_view.use_branch", branch = conflict.ours_branch_name),
+                t!(
+                    "git_ui.conflict_view.use_branch",
+                    branch = conflict.ours_branch_name
+                ),
             )
-                .label_size(LabelSize::Small)
-                .on_click({
-                    let editor = editor.clone();
-                    let conflict = conflict.clone();
-                    let ours = conflict.ours.clone();
-                    move |_, window, cx| {
-                        resolve_conflict(
-                            editor.clone(),
-                            conflict.clone(),
-                            vec![ours.clone()],
-                            window,
-                            cx,
-                        )
-                        .detach()
-                    }
-                }),
+            .label_size(LabelSize::Small)
+            .on_click({
+                let editor = editor.clone();
+                let conflict = conflict.clone();
+                let ours = conflict.ours.clone();
+                move |_, window, cx| {
+                    resolve_conflict(
+                        editor.clone(),
+                        conflict.clone(),
+                        vec![ours.clone()],
+                        window,
+                        cx,
+                    )
+                    .detach()
+                }
+            }),
         )
         .child(
             Button::new(
                 "origin",
-                t!("git_ui.conflict_view.use_branch", branch = conflict.theirs_branch_name),
+                t!(
+                    "git_ui.conflict_view.use_branch",
+                    branch = conflict.theirs_branch_name
+                ),
             )
-                .label_size(LabelSize::Small)
-                .on_click({
-                    let editor = editor.clone();
-                    let conflict = conflict.clone();
-                    let theirs = conflict.theirs.clone();
-                    move |_, window, cx| {
-                        resolve_conflict(
-                            editor.clone(),
-                            conflict.clone(),
-                            vec![theirs.clone()],
-                            window,
-                            cx,
-                        )
-                        .detach()
-                    }
-                }),
+            .label_size(LabelSize::Small)
+            .on_click({
+                let editor = editor.clone();
+                let conflict = conflict.clone();
+                let theirs = conflict.theirs.clone();
+                move |_, window, cx| {
+                    resolve_conflict(
+                        editor.clone(),
+                        conflict.clone(),
+                        vec![theirs.clone()],
+                        window,
+                        cx,
+                    )
+                    .detach()
+                }
+            }),
         )
         .child(
             Button::new("both", t!("git_ui.conflict_view.use_both"))
@@ -406,49 +412,49 @@ fn render_conflict_buttons(
                     "resolve-with-agent",
                     t!("git_ui.conflict_view.resolve_with_agent"),
                 )
-                    .label_size(LabelSize::Small)
-                    .start_icon(
-                        Icon::new(IconName::ZedAssistant)
-                            .size(IconSize::Small)
-                            .color(Color::Muted),
-                    )
-                    .on_click({
-                        let conflict = conflict.clone();
-                        move |_, window, cx| {
-                            let content = editor
-                                .update(cx, |editor, cx| {
-                                    let multibuffer = editor.buffer().read(cx);
-                                    let buffer_id = conflict.ours.end.buffer_id;
-                                    let buffer = multibuffer.buffer(buffer_id)?;
-                                    let buffer_read = buffer.read(cx);
-                                    let snapshot = buffer_read.snapshot();
-                                    let conflict_text = snapshot
-                                        .text_for_range(conflict.range.clone())
-                                        .collect::<String>();
-                                    let file_path = buffer_read
-                                        .file()
-                                        .and_then(|file| file.as_local())
-                                        .map(|f| f.abs_path(cx).to_string_lossy().to_string())
-                                        .unwrap_or_default();
-                                    Some(ConflictContent {
-                                        file_path,
-                                        conflict_text,
-                                        ours_branch_name: conflict.ours_branch_name.to_string(),
-                                        theirs_branch_name: conflict.theirs_branch_name.to_string(),
-                                    })
+                .label_size(LabelSize::Small)
+                .start_icon(
+                    Icon::new(IconName::ZedAssistant)
+                        .size(IconSize::Small)
+                        .color(Color::Muted),
+                )
+                .on_click({
+                    let conflict = conflict.clone();
+                    move |_, window, cx| {
+                        let content = editor
+                            .update(cx, |editor, cx| {
+                                let multibuffer = editor.buffer().read(cx);
+                                let buffer_id = conflict.ours.end.buffer_id;
+                                let buffer = multibuffer.buffer(buffer_id)?;
+                                let buffer_read = buffer.read(cx);
+                                let snapshot = buffer_read.snapshot();
+                                let conflict_text = snapshot
+                                    .text_for_range(conflict.range.clone())
+                                    .collect::<String>();
+                                let file_path = buffer_read
+                                    .file()
+                                    .and_then(|file| file.as_local())
+                                    .map(|f| f.abs_path(cx).to_string_lossy().to_string())
+                                    .unwrap_or_default();
+                                Some(ConflictContent {
+                                    file_path,
+                                    conflict_text,
+                                    ours_branch_name: conflict.ours_branch_name.to_string(),
+                                    theirs_branch_name: conflict.theirs_branch_name.to_string(),
                                 })
-                                .ok()
-                                .flatten();
-                            if let Some(content) = content {
-                                window.dispatch_action(
-                                    Box::new(ResolveConflictsWithAgent {
-                                        conflicts: vec![content],
-                                    }),
-                                    cx,
-                                );
-                            }
+                            })
+                            .ok()
+                            .flatten();
+                        if let Some(content) = content {
+                            window.dispatch_action(
+                                Box::new(ResolveConflictsWithAgent {
+                                    conflicts: vec![content],
+                                }),
+                                cx,
+                            );
                         }
-                    }),
+                    }
+                }),
             )
         })
         .into_any()
@@ -634,9 +640,15 @@ impl Render for MergeConflictIndicator {
         .into();
 
         let tooltip_label: SharedString = if file_count == 1 {
-            t!("git_ui.conflict_view.found_conflicts_singular", count = file_count)
+            t!(
+                "git_ui.conflict_view.found_conflicts_singular",
+                count = file_count
+            )
         } else {
-            t!("git_ui.conflict_view.found_conflicts_plural", count = file_count)
+            t!(
+                "git_ui.conflict_view.found_conflicts_plural",
+                count = file_count
+            )
         }
         .into();
 

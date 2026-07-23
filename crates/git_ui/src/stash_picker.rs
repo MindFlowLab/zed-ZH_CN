@@ -310,9 +310,12 @@ impl StashListDelegate {
                 .await??;
             Ok(())
         })
-        .detach_and_prompt_err(&t!("git_ui.stash_picker.drop_stash_failed"), window, cx, |e, _, _| {
-            Some(e.to_string())
-        });
+        .detach_and_prompt_err(
+            &t!("git_ui.stash_picker.drop_stash_failed"),
+            window,
+            cx,
+            |e, _, _| Some(e.to_string()),
+        );
     }
 
     fn show_stash_at(&self, ix: usize, window: &mut Window, cx: &mut Context<Picker<Self>>) {
@@ -345,9 +348,12 @@ impl StashListDelegate {
                 .await?;
             Ok(())
         })
-        .detach_and_prompt_err(&t!("git_ui.stash_picker.pop_stash_failed"), window, cx, |e, _, _| {
-            Some(e.to_string())
-        });
+        .detach_and_prompt_err(
+            &t!("git_ui.stash_picker.pop_stash_failed"),
+            window,
+            cx,
+            |e, _, _| Some(e.to_string()),
+        );
         cx.emit(DismissEvent);
     }
 
@@ -361,9 +367,12 @@ impl StashListDelegate {
                 .await?;
             Ok(())
         })
-        .detach_and_prompt_err(&t!("git_ui.stash_picker.apply_stash_failed"), window, cx, |e, _, _| {
-            Some(e.to_string())
-        });
+        .detach_and_prompt_err(
+            &t!("git_ui.stash_picker.apply_stash_failed"),
+            window,
+            cx,
+            |e, _, _| Some(e.to_string()),
+        );
         cx.emit(DismissEvent);
     }
 }

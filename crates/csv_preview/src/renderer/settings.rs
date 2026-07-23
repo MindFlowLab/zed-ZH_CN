@@ -24,8 +24,12 @@ impl CsvPreviewView {
         };
 
         let current_filter_sort_text = match self.settings.filter_sort_order {
-            FilterSortOrder::AlphaThenCount => t!("csv_preview.settings.filter_sort_alpha_then_count"),
-            FilterSortOrder::CountThenAlpha => t!("csv_preview.settings.filter_sort_count_then_alpha"),
+            FilterSortOrder::AlphaThenCount => {
+                t!("csv_preview.settings.filter_sort_alpha_then_count")
+            }
+            FilterSortOrder::CountThenAlpha => {
+                t!("csv_preview.settings.filter_sort_count_then_alpha")
+            }
         };
 
         let view = cx.entity();
@@ -51,24 +55,32 @@ impl CsvPreviewView {
         });
 
         let filter_sort_dropdown_menu = ContextMenu::build(window, cx, |menu, _window, _cx| {
-            menu.entry(t!("csv_preview.settings.filter_sort_alpha_then_count"), None, {
-                let view = view.clone();
-                move |_window, cx| {
-                    view.update(cx, |this, cx| {
-                        this.settings.filter_sort_order = FilterSortOrder::AlphaThenCount;
-                        cx.notify();
-                    });
-                }
-            })
-            .entry(t!("csv_preview.settings.filter_sort_count_then_alpha"), None, {
-                let view = view.clone();
-                move |_window, cx| {
-                    view.update(cx, |this, cx| {
-                        this.settings.filter_sort_order = FilterSortOrder::CountThenAlpha;
-                        cx.notify();
-                    });
-                }
-            })
+            menu.entry(
+                t!("csv_preview.settings.filter_sort_alpha_then_count"),
+                None,
+                {
+                    let view = view.clone();
+                    move |_window, cx| {
+                        view.update(cx, |this, cx| {
+                            this.settings.filter_sort_order = FilterSortOrder::AlphaThenCount;
+                            cx.notify();
+                        });
+                    }
+                },
+            )
+            .entry(
+                t!("csv_preview.settings.filter_sort_count_then_alpha"),
+                None,
+                {
+                    let view = view.clone();
+                    move |_window, cx| {
+                        view.update(cx, |this, cx| {
+                            this.settings.filter_sort_order = FilterSortOrder::CountThenAlpha;
+                            cx.notify();
+                        });
+                    }
+                },
+            )
         });
 
         let panel = h_flex()

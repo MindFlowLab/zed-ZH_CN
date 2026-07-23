@@ -4831,13 +4831,13 @@ impl OutlinePanel {
 
     fn render_filter_footer(&mut self, pinned: bool, cx: &mut Context<Self>) -> Div {
         let (pin_button_id, icon, icon_tooltip): (&str, IconName, String) = if pinned {
-            ("unpin_button", IconName::Unpin, t!("outline_panel.footer.unpin"))
-        } else {
             (
-                "pin_button",
-                IconName::Pin,
-                t!("outline_panel.footer.pin"),
+                "unpin_button",
+                IconName::Unpin,
+                t!("outline_panel.footer.unpin"),
             )
+        } else {
+            ("pin_button", IconName::Pin, t!("outline_panel.footer.pin"))
         };
 
         let has_query = self.query(cx).is_some();

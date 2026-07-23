@@ -555,17 +555,19 @@ impl PickerDelegate for ThemeSelectorDelegate {
                         })),
                 )
                 .child(
-                    Button::new("more-themes", t!("theme_selector.install_themes")).on_click(cx.listener({
-                        move |_, _, window, cx| {
-                            window.dispatch_action(
-                                Box::new(Extensions {
-                                    category_filter: Some(ExtensionCategoryFilter::Themes),
-                                    id: None,
-                                }),
-                                cx,
-                            );
-                        }
-                    })),
+                    Button::new("more-themes", t!("theme_selector.install_themes")).on_click(
+                        cx.listener({
+                            move |_, _, window, cx| {
+                                window.dispatch_action(
+                                    Box::new(Extensions {
+                                        category_filter: Some(ExtensionCategoryFilter::Themes),
+                                        id: None,
+                                    }),
+                                    cx,
+                                );
+                            }
+                        }),
+                    ),
                 )
                 .into_any_element(),
         )

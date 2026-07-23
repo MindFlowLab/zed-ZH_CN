@@ -43,7 +43,6 @@ use project::{SearchResults, search::SearchQuery, search::SearchResult};
 use settings::Settings;
 use smol::future::yield_now;
 use text::Anchor;
-use zed_i18n::t;
 use theme_settings::ThemeSettings;
 use ui::{
     Disclosure, Divider, FluentBuilder, ListItem, ListItemSpacing, Toggleable, Tooltip, prelude::*,
@@ -54,6 +53,7 @@ use workspace::SplitDirection;
 use workspace::Workspace;
 use workspace::item::ItemSettings;
 use workspace::pane::Pane;
+use zed_i18n::t;
 
 use super::{Fold, SearchMatch, Unfold};
 use crate::project_search::{ActiveSettings, ProjectSearch};

@@ -1,8 +1,7 @@
 use crate::{
-    BufferSearchBar, FocusSearch, HighlightKey, NextHistoryQuery, PreviousHistoryQuery,
-    ReplaceAll, ReplaceNext, SearchOption, SearchOptions, SearchSource, SelectNextMatch,
-    SelectPreviousMatch, ToggleCaseSensitive, ToggleIncludeIgnored, ToggleRegex, ToggleReplace,
-    ToggleWholeWord,
+    BufferSearchBar, FocusSearch, HighlightKey, NextHistoryQuery, PreviousHistoryQuery, ReplaceAll,
+    ReplaceNext, SearchOption, SearchOptions, SearchSource, SelectNextMatch, SelectPreviousMatch,
+    ToggleCaseSensitive, ToggleIncludeIgnored, ToggleRegex, ToggleReplace, ToggleWholeWord,
     buffer_search::Deploy,
     search_bar::{
         ActionButtonState, HistoryNavigationDirection, alignment_element, input_base_styles,
@@ -52,13 +51,13 @@ use ui::{
     utils::SearchInputWidth,
 };
 use util::{ResultExt as _, paths::PathMatcher, rel_path::RelPath};
-use zed_i18n::t;
 use workspace::{
     DeploySearch, ItemNavHistory, NewSearch, ToolbarItemEvent, ToolbarItemLocation,
     ToolbarItemView, Workspace, WorkspaceId,
     item::{Item, ItemEvent, ItemHandle, SaveOptions},
     searchable::{Direction, SearchEvent, SearchToken, SearchableItem, SearchableItemHandle},
 };
+use zed_i18n::t;
 
 actions!(
     project_search,
@@ -1443,13 +1442,7 @@ impl ProjectSearchView {
                     cancel_label.as_str(),
                 ];
                 let result_channel = this.update_in(cx, |_, window, cx| {
-                    window.prompt(
-                        gpui::PromptLevel::Warning,
-                        &message,
-                        None,
-                        &options,
-                        cx,
-                    )
+                    window.prompt(gpui::PromptLevel::Warning, &message, None, &options, cx)
                 })?;
                 let result = result_channel.await?;
                 let should_save = result == 0;
@@ -1860,28 +1853,37 @@ impl ProjectSearchView {
                     .mb_2(),
             )
             .child(
-                Button::new("filter-paths", t!("search.project_search.landing.include_exclude_paths"))
-                    .start_icon(Icon::new(IconName::Filter).size(IconSize::Small))
-                    .key_binding(KeyBinding::for_action_in(&ToggleFilters, &focus_handle, cx))
-                    .on_click(|_event, window, cx| {
-                        window.dispatch_action(ToggleFilters.boxed_clone(), cx)
-                    }),
+                Button::new(
+                    "filter-paths",
+                    t!("search.project_search.landing.include_exclude_paths"),
+                )
+                .start_icon(Icon::new(IconName::Filter).size(IconSize::Small))
+                .key_binding(KeyBinding::for_action_in(&ToggleFilters, &focus_handle, cx))
+                .on_click(|_event, window, cx| {
+                    window.dispatch_action(ToggleFilters.boxed_clone(), cx)
+                }),
             )
             .child(
-                Button::new("find-replace", t!("search.project_search.landing.find_and_replace"))
-                    .start_icon(Icon::new(IconName::Replace).size(IconSize::Small))
-                    .key_binding(KeyBinding::for_action_in(&ToggleReplace, &focus_handle, cx))
-                    .on_click(|_event, window, cx| {
-                        window.dispatch_action(ToggleReplace.boxed_clone(), cx)
-                    }),
+                Button::new(
+                    "find-replace",
+                    t!("search.project_search.landing.find_and_replace"),
+                )
+                .start_icon(Icon::new(IconName::Replace).size(IconSize::Small))
+                .key_binding(KeyBinding::for_action_in(&ToggleReplace, &focus_handle, cx))
+                .on_click(|_event, window, cx| {
+                    window.dispatch_action(ToggleReplace.boxed_clone(), cx)
+                }),
             )
             .child(
-                Button::new("regex", t!("search.project_search.landing.match_with_regex"))
-                    .start_icon(Icon::new(IconName::Regex).size(IconSize::Small))
-                    .key_binding(KeyBinding::for_action_in(&ToggleRegex, &focus_handle, cx))
-                    .on_click(|_event, window, cx| {
-                        window.dispatch_action(ToggleRegex.boxed_clone(), cx)
-                    }),
+                Button::new(
+                    "regex",
+                    t!("search.project_search.landing.match_with_regex"),
+                )
+                .start_icon(Icon::new(IconName::Regex).size(IconSize::Small))
+                .key_binding(KeyBinding::for_action_in(&ToggleRegex, &focus_handle, cx))
+                .on_click(|_event, window, cx| {
+                    window.dispatch_action(ToggleRegex.boxed_clone(), cx)
+                }),
             )
             .child(
                 Button::new("match-case", t!("search.project_search.landing.match_case"))
@@ -2468,7 +2470,9 @@ impl Render for ProjectSearchBar {
                             }),
                     )
                     .when(limit_reached, |this| {
-                        this.tooltip(Tooltip::text(t!("search.project_search.search_limits_reached")))
+                        this.tooltip(Tooltip::text(t!(
+                            "search.project_search.search_limits_reached"
+                        )))
                     }),
             );
 
@@ -2617,7 +2621,9 @@ impl Render for ProjectSearchBar {
                     IconButton::new("project-search-opened-only", IconName::FolderSearch)
                         .shape(IconButtonShape::Square)
                         .toggle_state(self.is_opened_only_enabled(cx))
-                        .tooltip(Tooltip::text(t!("search.project_search.only_search_open_files")))
+                        .tooltip(Tooltip::text(t!(
+                            "search.project_search.only_search_open_files"
+                        )))
                         .on_click(cx.listener(|this, _, window, cx| {
                             this.toggle_opened_only(window, cx);
                         })),

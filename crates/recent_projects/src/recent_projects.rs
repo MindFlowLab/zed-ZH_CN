@@ -319,9 +319,7 @@ pub fn init(cx: &mut App) {
                     return;
                 };
 
-                let wsl_path = paths
-                    .iter()
-                    .find_map(util::paths::WslPath::from_path);
+                let wsl_path = paths.iter().find_map(util::paths::WslPath::from_path);
 
                 if let Some(util::paths::WslPath { distro, path }) = wsl_path {
                     use remote::WslConnectionOptions;
@@ -341,7 +339,15 @@ pub fn init(cx: &mut App) {
                         ..Default::default()
                     };
 
-                    open_remote_project(connection_options, vec![path.into()], app_state, open_options, cx).await.log_err();
+                    open_remote_project(
+                        connection_options,
+                        vec![path.into()],
+                        app_state,
+                        open_options,
+                        cx,
+                    )
+                    .await
+                    .log_err();
                     return;
                 }
 
@@ -355,21 +361,23 @@ pub fn init(cx: &mut App) {
                     let message = t!("recent_projects.invalid_path_message");
 
                     let _ = cx
-                        .prompt(
-                            gpui::PromptLevel::Critical,
-                            &title,
-                            Some(&message),
-                            &["OK"],
-                        )
+                        .prompt(gpui::PromptLevel::Critical, &title, Some(&message), &["OK"])
                         .await;
                     return;
                 }
 
-                workspace.update_in(cx, |workspace, window, cx| {
-                    workspace.toggle_modal(window, cx, |window, cx| {
-                        crate::wsl_picker::WslOpenModal::new(paths, create_new_window, window, cx)
-                    });
-                }).log_err();
+                workspace
+                    .update_in(cx, |workspace, window, cx| {
+                        workspace.toggle_modal(window, cx, |window, cx| {
+                            crate::wsl_picker::WslOpenModal::new(
+                                paths,
+                                create_new_window,
+                                window,
+                                cx,
+                            )
+                        });
+                    })
+                    .log_err();
             })
             .detach();
         });

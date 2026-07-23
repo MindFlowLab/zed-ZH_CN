@@ -490,16 +490,16 @@ impl ActivityIndicator {
             return Some(Content {
                 icon: ActivityIcon::Icon(IconName::Download),
                 message: {
-                    let names = downloading
-                        .iter()
-                        .map(|name| name.as_ref())
-                        .fold(String::new(), |mut acc, s| {
+                    let names = downloading.iter().map(|name| name.as_ref()).fold(
+                        String::new(),
+                        |mut acc, s| {
                             if !acc.is_empty() {
                                 acc.push_str(", ");
                             }
                             acc.push_str(s);
                             acc
-                        });
+                        },
+                    );
                     t!("activity_indicator.status.downloading", names = names)
                 },
                 on_click: Some(Arc::new(move |this, window, cx| {
@@ -515,17 +515,20 @@ impl ActivityIndicator {
             return Some(Content {
                 icon: ActivityIcon::Icon(IconName::Download),
                 message: {
-                    let names = checking_for_update
-                        .iter()
-                        .map(|name| name.as_ref())
-                        .fold(String::new(), |mut acc, s| {
+                    let names = checking_for_update.iter().map(|name| name.as_ref()).fold(
+                        String::new(),
+                        |mut acc, s| {
                             if !acc.is_empty() {
                                 acc.push_str(", ");
                             }
                             acc.push_str(s);
                             acc
-                        });
-                    t!("activity_indicator.status.checking_for_updates", names = names)
+                        },
+                    );
+                    t!(
+                        "activity_indicator.status.checking_for_updates",
+                        names = names
+                    )
                 },
                 on_click: Some(Arc::new(move |this, window, cx| {
                     this.statuses
@@ -540,16 +543,16 @@ impl ActivityIndicator {
             return Some(Content {
                 icon: ActivityIcon::Icon(IconName::Warning),
                 message: {
-                    let names = failed
-                        .iter()
-                        .map(|name| name.as_ref())
-                        .fold(String::new(), |mut acc, s| {
+                    let names = failed.iter().map(|name| name.as_ref()).fold(
+                        String::new(),
+                        |mut acc, s| {
                             if !acc.is_empty() {
                                 acc.push_str(", ");
                             }
                             acc.push_str(s);
                             acc
-                        });
+                        },
+                    );
                     t!("activity_indicator.status.failed_to_run", names = names)
                 },
                 on_click: Some(Arc::new(|this, window, cx| {
@@ -563,7 +566,10 @@ impl ActivityIndicator {
         if let Some(failure) = self.project.read(cx).last_formatting_failure(cx) {
             return Some(Content {
                 icon: ActivityIcon::Icon(IconName::Warning),
-                message: t!("activity_indicator.status.formatting_failed", failure = failure),
+                message: t!(
+                    "activity_indicator.status.formatting_failed",
+                    failure = failure
+                ),
                 on_click: Some(Arc::new(|indicator, window, cx| {
                     indicator.project.update(cx, |project, cx| {
                         project.reset_last_formatting_failure(cx);
@@ -579,7 +585,10 @@ impl ActivityIndicator {
             let health_str = match health {
                 ServerHealth::Ok => t!("activity_indicator.health.ok", server_name = server_name),
                 ServerHealth::Warning => {
-                    t!("activity_indicator.health.warning", server_name = server_name)
+                    t!(
+                        "activity_indicator.health.warning",
+                        server_name = server_name
+                    )
                 }
                 ServerHealth::Error => {
                     t!("activity_indicator.health.error", server_name = server_name)
@@ -632,15 +641,24 @@ impl ActivityIndicator {
         {
             let (message, icon) = match operation {
                 ExtensionOperation::Install => (
-                    t!("activity_indicator.extension.installing", extension_id = extension_id),
+                    t!(
+                        "activity_indicator.extension.installing",
+                        extension_id = extension_id
+                    ),
                     ActivityIcon::LoadingSpinner,
                 ),
                 ExtensionOperation::Upgrade => (
-                    t!("activity_indicator.extension.upgrading", extension_id = extension_id),
+                    t!(
+                        "activity_indicator.extension.upgrading",
+                        extension_id = extension_id
+                    ),
                     ActivityIcon::Icon(IconName::Download),
                 ),
                 ExtensionOperation::Remove => (
-                    t!("activity_indicator.extension.removing", extension_id = extension_id),
+                    t!(
+                        "activity_indicator.extension.removing",
+                        extension_id = extension_id
+                    ),
                     ActivityIcon::LoadingSpinner,
                 ),
             };

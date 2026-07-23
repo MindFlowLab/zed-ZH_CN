@@ -957,7 +957,10 @@ pub(crate) fn render_send_review_to_agent_button(
 ) -> Button {
     Button::new(
         "send-review",
-        t!("git_ui.project_diff.send_review_to_agent", count = review_count),
+        t!(
+            "git_ui.project_diff.send_review_to_agent",
+            count = review_count
+        ),
     )
     .start_icon(
         Icon::new(IconName::ZedAssistant)

@@ -174,10 +174,9 @@ impl Render for CallStatsModal {
             )
             .when(!is_connected, |this| {
                 this.child(
-                    h_flex()
-                        .justify_center()
-                        .py_4()
-                        .child(Label::new(t!("collab_ui.call_stats.not_in_call")).color(Color::Muted)),
+                    h_flex().justify_center().py_4().child(
+                        Label::new(t!("collab_ui.call_stats.not_in_call")).color(Color::Muted),
+                    ),
                 )
             })
             .when(is_connected, |this| {

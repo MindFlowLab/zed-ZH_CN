@@ -51,11 +51,11 @@ use ui::{
 };
 use update_version::UpdateVersion;
 use util::ResultExt;
-use zed_i18n::t;
 use workspace::{
     AccessibleMode, MultiWorkspace, ToggleWorktreeSecurity, Workspace,
     notifications::{NotifyResultExt, NotifyTaskExt as _},
 };
+use zed_i18n::t;
 
 use zed_actions::OpenRemote;
 
@@ -605,22 +605,16 @@ impl TitleBar {
                 t!("title_bar.remote.remote_project"),
                 IconName::Server,
             ),
-            RemoteConnectionOptions::Wsl(_) => (
-                None,
-                t!("title_bar.remote.remote_project"),
-                IconName::Linux,
-            ),
-            RemoteConnectionOptions::Docker(_dev_container_connection) => (
-                None,
-                t!("title_bar.remote.dev_container"),
-                IconName::Box,
-            ),
+            RemoteConnectionOptions::Wsl(_) => {
+                (None, t!("title_bar.remote.remote_project"), IconName::Linux)
+            }
+            RemoteConnectionOptions::Docker(_dev_container_connection) => {
+                (None, t!("title_bar.remote.dev_container"), IconName::Box)
+            }
             #[cfg(any(test, feature = "test-support"))]
-            RemoteConnectionOptions::Mock(_) => (
-                None,
-                "Mock Remote Project".to_string(),
-                IconName::Server,
-            ),
+            RemoteConnectionOptions::Mock(_) => {
+                (None, "Mock Remote Project".to_string(), IconName::Server)
+            }
         };
 
         let nickname = nickname.unwrap_or_else(|| host.clone());
@@ -716,32 +710,35 @@ impl TitleBar {
             return None;
         }
 
-        let button = Button::new("restricted_mode_trigger", t!("title_bar.restricted_mode.label"))
-            .style(ButtonStyle::Tinted(TintColor::Warning))
-            .label_size(LabelSize::Small)
-            .color(Color::Warning)
-            .start_icon(
-                Icon::new(IconName::Warning)
-                    .size(IconSize::Small)
-                    .color(Color::Warning),
+        let button = Button::new(
+            "restricted_mode_trigger",
+            t!("title_bar.restricted_mode.label"),
+        )
+        .style(ButtonStyle::Tinted(TintColor::Warning))
+        .label_size(LabelSize::Small)
+        .color(Color::Warning)
+        .start_icon(
+            Icon::new(IconName::Warning)
+                .size(IconSize::Small)
+                .color(Color::Warning),
+        )
+        .tooltip(|_, cx| {
+            Tooltip::with_meta(
+                t!("title_bar.restricted_mode.tooltip"),
+                Some(&ToggleWorktreeSecurity),
+                t!("title_bar.restricted_mode.meta"),
+                cx,
             )
-            .tooltip(|_, cx| {
-                Tooltip::with_meta(
-                    t!("title_bar.restricted_mode.tooltip"),
-                    Some(&ToggleWorktreeSecurity),
-                    t!("title_bar.restricted_mode.meta"),
-                    cx,
-                )
+        })
+        .on_click({
+            cx.listener(move |this, _, window, cx| {
+                this.workspace
+                    .update(cx, |workspace, cx| {
+                        workspace.show_worktree_trust_security_modal(true, window, cx)
+                    })
+                    .log_err();
             })
-            .on_click({
-                cx.listener(move |this, _, window, cx| {
-                    this.workspace
-                        .update(cx, |workspace, cx| {
-                            workspace.show_worktree_trust_security_modal(true, window, cx)
-                        })
-                        .log_err();
-                })
-            });
+        });
 
         if ui::utils::MACOS_SDK_26_OR_LATER {
             // Make up for Tahoe's traffic light buttons having less spacing around them
@@ -1065,15 +1062,18 @@ impl TitleBar {
                 };
 
                 let trigger = if is_detached_head {
-                    Button::new("project_branch_trigger", t!("title_bar.branch.create_branch"))
-                        .selected_style(ButtonStyle::Tinted(TintColor::Accent))
-                        .label_size(LabelSize::Small)
-                        .tab_index(0isize)
-                        .start_icon(
-                            Icon::new(IconName::GitBranchPlus)
-                                .size(IconSize::XSmall)
-                                .color(Color::Muted),
-                        )
+                    Button::new(
+                        "project_branch_trigger",
+                        t!("title_bar.branch.create_branch"),
+                    )
+                    .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+                    .label_size(LabelSize::Small)
+                    .tab_index(0isize)
+                    .start_icon(
+                        Icon::new(IconName::GitBranchPlus)
+                            .size(IconSize::XSmall)
+                            .color(Color::Muted),
+                    )
                 } else {
                     Button::new("project_branch_trigger", branch_name)
                         .selected_style(ButtonStyle::Tinted(TintColor::Accent))
@@ -1100,7 +1100,10 @@ impl TitleBar {
                     })
                     .trigger_with_tooltip(trigger, move |_window, cx| {
                         let meta = if is_detached_head {
-                            t!("title_bar.branch.detached_head", branch = branch_tooltip_label)
+                            t!(
+                                "title_bar.branch.detached_head",
+                                branch = branch_tooltip_label
+                            )
                         } else {
                             t!(
                                 "title_bar.branch.currently_checked_out",

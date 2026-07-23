@@ -917,7 +917,9 @@ impl ThreadsArchiveView {
                 this.child(
                     IconButton::new("clear-filter", IconName::Close)
                         .icon_size(IconSize::Small)
-                        .tooltip(Tooltip::text(t!("agent_ui.threads_archive_view.clear_search")))
+                        .tooltip(Tooltip::text(t!(
+                            "agent_ui.threads_archive_view.clear_search"
+                        )))
                         .on_click(cx.listener(|this, _, window, cx| {
                             this.reset_filter_editor_text(window, cx);
                             this.update_items(cx);
@@ -960,7 +962,10 @@ impl ThreadsArchiveView {
         let count_label = if entry_count == 1 {
             t!("agent_ui.threads_archive_view.thread_count_single")
         } else {
-            t!("agent_ui.threads_archive_view.thread_count", count = entry_count)
+            t!(
+                "agent_ui.threads_archive_view.thread_count",
+                count = entry_count
+            )
         };
 
         h_flex()

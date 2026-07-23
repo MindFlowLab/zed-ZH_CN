@@ -54,7 +54,9 @@ impl RenderOnce for ExtensionCard {
                             .size_full()
                             .justify_center()
                             .bg(cx.theme().colors().elevated_surface_background.alpha(0.8))
-                            .child(Label::new(t!("extensions_ui.card.overridden_by_dev_extension"))),
+                            .child(Label::new(t!(
+                                "extensions_ui.card.overridden_by_dev_extension"
+                            ))),
                     )
                 }),
         )

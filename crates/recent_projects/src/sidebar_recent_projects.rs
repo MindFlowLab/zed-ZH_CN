@@ -369,9 +369,7 @@ impl PickerDelegate for SidebarRecentProjectsDelegate {
                 )
                 .tooltip({
                     let title = t!("recent_projects.open_project_this_window");
-                    move |_, cx| {
-                        Tooltip::with_meta(title.clone(), None, tooltip_path.clone(), cx)
-                    }
+                    move |_, cx| Tooltip::with_meta(title.clone(), None, tooltip_path.clone(), cx)
                 })
                 .into_any_element(),
         )

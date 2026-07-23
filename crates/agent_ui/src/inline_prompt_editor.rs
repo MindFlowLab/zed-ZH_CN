@@ -363,7 +363,11 @@ impl<T: 'static> PromptEditor<T> {
         self.editor = cx.new(|cx| {
             let mut editor = Editor::auto_height(1, Self::MAX_LINES as usize, window, cx);
             editor.set_soft_wrap_mode(language::language_settings::SoftWrap::EditorWidth, cx);
-            editor.set_placeholder_text(&t!("agent_ui.inline_prompt_editor.add_a_prompt"), window, cx);
+            editor.set_placeholder_text(
+                &t!("agent_ui.inline_prompt_editor.add_a_prompt"),
+                window,
+                cx,
+            );
             editor.set_text(prompt, window, cx);
             creases = insert_message_creases(&mut editor, &existing_creases, window, cx);
 
@@ -407,7 +411,10 @@ impl<T: 'static> PromptEditor<T> {
         let agent_panel_keybinding =
             ui::text_for_action(&zed_actions::assistant::ToggleFocus, window, cx)
                 .map(|keybinding| {
-                    t!("agent_ui.inline_prompt_editor.to_chat", keybinding = keybinding)
+                    t!(
+                        "agent_ui.inline_prompt_editor.to_chat",
+                        keybinding = keybinding
+                    )
                 })
                 .unwrap_or_default();
 
@@ -608,7 +615,11 @@ impl<T: 'static> PromptEditor<T> {
     fn thumbs_up(&mut self, _: &ThumbsUpResult, _window: &mut Window, cx: &mut Context<Self>) {
         match &self.session_state.completion {
             CompletionState::Pending => {
-                self.toast(&t!("agent_ui.inline_prompt_editor.cant_rate_generating"), None, cx);
+                self.toast(
+                    &t!("agent_ui.inline_prompt_editor.cant_rate_generating"),
+                    None,
+                    cx,
+                );
                 return;
             }
             CompletionState::Rated => {
@@ -623,7 +634,11 @@ impl<T: 'static> PromptEditor<T> {
                 let model_info = self.model_selector.read(cx).active_model(cx);
                 let (model_id, use_streaming_tools) = {
                     let Some(configured_model) = model_info else {
-                        self.toast(&t!("agent_ui.inline_prompt_editor.no_configured_model"), None, cx);
+                        self.toast(
+                            &t!("agent_ui.inline_prompt_editor.no_configured_model"),
+                            None,
+                            cx,
+                        );
                         return;
                     };
                     (
@@ -671,7 +686,11 @@ impl<T: 'static> PromptEditor<T> {
     fn thumbs_down(&mut self, _: &ThumbsDownResult, _window: &mut Window, cx: &mut Context<Self>) {
         match &self.session_state.completion {
             CompletionState::Pending => {
-                self.toast(&t!("agent_ui.inline_prompt_editor.cant_rate_generating"), None, cx);
+                self.toast(
+                    &t!("agent_ui.inline_prompt_editor.cant_rate_generating"),
+                    None,
+                    cx,
+                );
                 return;
             }
             CompletionState::Rated => {
@@ -686,7 +705,11 @@ impl<T: 'static> PromptEditor<T> {
                 let model_info = self.model_selector.read(cx).active_model(cx);
                 let (model_telemetry_id, use_streaming_tools) = {
                     let Some(configured_model) = model_info else {
-                        self.toast(&t!("agent_ui.inline_prompt_editor.no_configured_model"), None, cx);
+                        self.toast(
+                            &t!("agent_ui.inline_prompt_editor.no_configured_model"),
+                            None,
+                            cx,
+                        );
                         return;
                     };
                     (
@@ -747,7 +770,9 @@ impl<T: 'static> PromptEditor<T> {
                             toast = toast.on_click(
                                 t!("agent_ui.inline_prompt_editor.click_to_copy_rating_id"),
                                 move |_, cx| {
-                                    cx.write_to_clipboard(ClipboardItem::new_string(uuid.to_string()));
+                                    cx.write_to_clipboard(ClipboardItem::new_string(
+                                        uuid.to_string(),
+                                    ));
                                 },
                             );
                         };

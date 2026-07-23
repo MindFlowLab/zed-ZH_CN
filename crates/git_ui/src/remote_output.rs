@@ -91,7 +91,10 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
             } else {
                 let message = match remote {
                     Some(remote) => {
-                        t!("git_ui.remote_output.synchronized_with", remote = remote.name)
+                        t!(
+                            "git_ui.remote_output.synchronized_with",
+                            remote = remote.name
+                        )
                     }
                     None => t!("git_ui.remote_output.synchronized_with_remotes"),
                 };
@@ -140,7 +143,10 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
                         )
                     }
                 } else {
-                    t!("git_ui.remote_output.fast_forwarded_from", remote = remote_ref.name)
+                    t!(
+                        "git_ui.remote_output.fast_forwarded_from",
+                        remote = remote_ref.name
+                    )
                 };
                 SuccessMessage {
                     message,
@@ -179,10 +185,7 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
                 }
             } else {
                 SuccessMessage {
-                    message: t!(
-                        "git_ui.remote_output.pulled_from",
-                        remote = remote_ref.name
-                    ),
+                    message: t!("git_ui.remote_output.pulled_from", remote = remote_ref.name),
                     style: SuccessStyle::ToastWithLog { output },
                 }
             }

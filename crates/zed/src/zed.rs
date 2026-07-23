@@ -668,9 +668,7 @@ fn initialize_file_watcher(window: &mut Window, cx: &mut Context<Workspace>) {
             PromptLevel::Critical,
             &t!("zed.startup.inotify_title"),
             Some(&message),
-            &[PromptButton::new(t!(
-                "zed.startup.troubleshoot_and_quit"
-            ))],
+            &[PromptButton::new(t!("zed.startup.troubleshoot_and_quit"))],
             cx,
         );
         cx.spawn(async move |_, cx| {
@@ -694,9 +692,7 @@ fn initialize_file_watcher(window: &mut Window, cx: &mut Context<Workspace>) {
             PromptLevel::Critical,
             &t!("zed.startup.rdcw_title"),
             Some(&message),
-            &[PromptButton::new(t!(
-                "zed.startup.troubleshoot_and_quit"
-            ))],
+            &[PromptButton::new(t!("zed.startup.troubleshoot_and_quit"))],
             cx,
         );
         cx.spawn(async move |_, cx| {
@@ -906,14 +902,12 @@ fn register_actions(
              _: &input_latency_ui::DumpInputLatencyHistogram,
              window: &mut Window,
              cx: &mut Context<Workspace>| {
-                let report =
-                    input_latency_ui::format_input_latency_report(window, cx);
+                let report = input_latency_ui::format_input_latency_report(window, cx);
                 let project = workspace.project().clone();
                 let buffer = project.update(cx, |project, cx| {
                     project.create_local_buffer(&report, None, true, cx)
                 });
-                let editor =
-                    cx.new(|cx| Editor::for_buffer(buffer, Some(project), window, cx));
+                let editor = cx.new(|cx| Editor::for_buffer(buffer, Some(project), window, cx));
                 workspace.add_item_to_active_pane(Box::new(editor), None, true, window, cx);
             },
         )
@@ -937,12 +931,8 @@ fn register_actions(
                                 MultiBuffer::singleton(buffer, cx).with_title(title.clone())
                             });
                             let editor = cx.new(|cx| {
-                                let mut editor = Editor::for_multibuffer(
-                                    buffer,
-                                    Some(project),
-                                    window,
-                                    cx,
-                                );
+                                let mut editor =
+                                    Editor::for_multibuffer(buffer, Some(project), window, cx);
                                 editor.set_breadcrumb_header(title);
                                 editor
                             });
@@ -997,11 +987,7 @@ fn register_actions(
                 }
                 Err(e) => {
                     workspace.show_error(
-                        t!(
-                            "zed.browser.invalid_url",
-                            url = action.url,
-                            error = e
-                        ),
+                        t!("zed.browser.invalid_url", url = action.url, error = e),
                         cx,
                     );
                 }
@@ -1086,10 +1072,9 @@ fn register_actions(
                 if action.persist {
                     update_settings_file(fs.clone(), cx, move |settings, cx| {
                         let ui_font_size = ThemeSettings::get_global(cx).ui_font_size(cx) + px(1.0);
-                        let _ = settings
-                            .theme
-                            .ui_font_size
-                            .insert(f32::from(theme_settings::clamp_font_size(ui_font_size)).into());
+                        let _ = settings.theme.ui_font_size.insert(
+                            f32::from(theme_settings::clamp_font_size(ui_font_size)).into(),
+                        );
                     });
                 } else {
                     theme_settings::adjust_ui_font_size(cx, |size| size + px(1.0));
@@ -1102,10 +1087,9 @@ fn register_actions(
                 if action.persist {
                     update_settings_file(fs.clone(), cx, move |settings, cx| {
                         let ui_font_size = ThemeSettings::get_global(cx).ui_font_size(cx) - px(1.0);
-                        let _ = settings
-                            .theme
-                            .ui_font_size
-                            .insert(f32::from(theme_settings::clamp_font_size(ui_font_size)).into());
+                        let _ = settings.theme.ui_font_size.insert(
+                            f32::from(theme_settings::clamp_font_size(ui_font_size)).into(),
+                        );
                     });
                 } else {
                     theme_settings::adjust_ui_font_size(cx, |size| size - px(1.0));
@@ -1131,10 +1115,9 @@ fn register_actions(
                     update_settings_file(fs.clone(), cx, move |settings, cx| {
                         let buffer_font_size =
                             ThemeSettings::get_global(cx).buffer_font_size(cx) + px(1.0);
-                        let _ = settings
-                            .theme
-                            .buffer_font_size
-                            .insert(f32::from(theme_settings::clamp_font_size(buffer_font_size)).into());
+                        let _ = settings.theme.buffer_font_size.insert(
+                            f32::from(theme_settings::clamp_font_size(buffer_font_size)).into(),
+                        );
                     });
                 } else {
                     theme_settings::increase_buffer_font_size(cx);
@@ -1148,10 +1131,9 @@ fn register_actions(
                     update_settings_file(fs.clone(), cx, move |settings, cx| {
                         let buffer_font_size =
                             ThemeSettings::get_global(cx).buffer_font_size(cx) - px(1.0);
-                        let _ = settings
-                            .theme
-                            .buffer_font_size
-                            .insert(f32::from(theme_settings::clamp_font_size(buffer_font_size)).into());
+                        let _ = settings.theme.buffer_font_size.insert(
+                            f32::from(theme_settings::clamp_font_size(buffer_font_size)).into(),
+                        );
                     });
                 } else {
                     theme_settings::decrease_buffer_font_size(cx);
@@ -1264,16 +1246,9 @@ fn register_actions(
                         let buffer = project.update(cx, |project, cx| {
                             project.create_local_buffer("", None, true, cx)
                         });
-                        let editor = cx.new(|cx| {
-                            Editor::for_buffer(buffer, Some(project), window, cx)
-                        });
-                        workspace.add_item_to_active_pane(
-                            Box::new(editor),
-                            None,
-                            true,
-                            window,
-                            cx,
-                        );
+                        let editor =
+                            cx.new(|cx| Editor::for_buffer(buffer, Some(project), window, cx));
+                        workspace.add_item_to_active_pane(Box::new(editor), None, true, window, cx);
                     },
                 )
                 .detach();
@@ -1281,7 +1256,8 @@ fn register_actions(
         })
         .register_action({
             move |workspace, _: &CloseProject, window, cx| {
-                let Some(window_handle) = window.window_handle().downcast::<MultiWorkspace>() else {
+                let Some(window_handle) = window.window_handle().downcast::<MultiWorkspace>()
+                else {
                     return;
                 };
                 let old_group_key = workspace.project_group_key(cx);
@@ -1889,7 +1865,7 @@ fn open_log_file(workspace: &mut Workspace, window: &mut Window, cx: &mut Contex
             });
 
             let buffer = cx.new(|cx| {
-                MultiBuffer::singleton(buffer, cx).with_title(t!("zed.open_log.title").into())
+                MultiBuffer::singleton(buffer, cx).with_title(t!("zed.open_log.title"))
             });
 
             let editor = cx
@@ -1944,16 +1920,16 @@ fn notify_settings_errors(result: settings::SettingsParseResult, is_user: bool, 
                 show_app_notification(id, cx, move |cx| {
                     cx.new(|cx| {
                         MessageNotification::new(
-                            t!("zed.notification.invalid_user_settings", error = format!("{error}")),
+                            t!(
+                                "zed.notification.invalid_user_settings",
+                                error = format!("{error}")
+                            ),
                             cx,
                         )
                         .primary_message(t!("zed.notification.open_settings_file"))
                         .primary_icon(IconName::Settings)
                         .primary_on_click(|window, cx| {
-                            window.dispatch_action(
-                                zed_actions::OpenSettingsFile.boxed_clone(),
-                                cx,
-                            );
+                            window.dispatch_action(zed_actions::OpenSettingsFile.boxed_clone(), cx);
                             cx.emit(DismissEvent);
                         })
                     })
@@ -1977,7 +1953,10 @@ fn notify_settings_errors(result: settings::SettingsParseResult, is_user: bool, 
                 show_app_notification(id, cx, move |cx| {
                     cx.new(|cx| {
                         MessageNotification::new(
-                            t!("zed.notification.migrate_settings_failed", error = format!("{err}")),
+                            t!(
+                                "zed.notification.migrate_settings_failed",
+                                error = format!("{err}")
+                            ),
                             cx,
                         )
                         .primary_message(t!("zed.notification.open_settings_file"))
@@ -2229,8 +2208,11 @@ fn show_keymap_file_json_error(
     error: &anyhow::Error,
     cx: &mut App,
 ) {
-    let message: SharedString =
-        t!("zed.notification.keymap_json_error", error = format!("{error}")).into();
+    let message: SharedString = t!(
+        "zed.notification.keymap_json_error",
+        error = format!("{error}")
+    )
+    .into();
     show_app_notification(notification_id, cx, move |cx| {
         cx.new(|cx| {
             MessageNotification::new(message.clone(), cx)

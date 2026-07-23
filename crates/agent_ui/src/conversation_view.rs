@@ -1536,25 +1536,26 @@ impl ConversationView {
                 .clone()
                 .unwrap_or_else(|| t!("agent_ui.conversation_view.loading").into()),
             ServerState::LoadError { error, .. } => match error {
-                LoadError::Unsupported { .. } => {
-                    t!("agent_ui.conversation_view.upgrade_agent", agent = self.agent.agent_id())
-                        .into()
-                }
-                LoadError::FailedToInstall(_) => {
-                    t!(
-                        "agent_ui.conversation_view.failed_to_install_agent",
-                        agent = self.agent.agent_id()
-                    )
-                    .into()
-                }
-                LoadError::Exited { .. } => {
-                    t!("agent_ui.conversation_view.agent_exited", agent = self.agent.agent_id())
-                        .into()
-                }
-                LoadError::Other(_) => {
-                    t!("agent_ui.conversation_view.error_loading_agent", agent = self.agent.agent_id())
-                        .into()
-                }
+                LoadError::Unsupported { .. } => t!(
+                    "agent_ui.conversation_view.upgrade_agent",
+                    agent = self.agent.agent_id()
+                )
+                .into(),
+                LoadError::FailedToInstall(_) => t!(
+                    "agent_ui.conversation_view.failed_to_install_agent",
+                    agent = self.agent.agent_id()
+                )
+                .into(),
+                LoadError::Exited { .. } => t!(
+                    "agent_ui.conversation_view.agent_exited",
+                    agent = self.agent.agent_id()
+                )
+                .into(),
+                LoadError::Other(_) => t!(
+                    "agent_ui.conversation_view.error_loading_agent",
+                    agent = self.agent.agent_id()
+                )
+                .into(),
             },
         }
     }
@@ -2341,11 +2342,9 @@ impl ConversationView {
                     .map(|this| {
                         if show_fallback_description {
                             this.child(
-                                Label::new(t!(
-                                    "agent_ui.conversation_view.choose_auth_option"
-                                ))
-                                .size(LabelSize::Small)
-                                .color(Color::Muted),
+                                Label::new(t!("agent_ui.conversation_view.choose_auth_option"))
+                                    .size(LabelSize::Small)
+                                    .color(Color::Muted),
                             )
                         } else {
                             this.children(description.map(|desc| {
@@ -2686,8 +2685,10 @@ impl ConversationView {
                 Some(self.create_copy_button(msg.to_string()).into_any_element()),
             ),
             LoadError::Exited { status, stderr } => {
-                let mut message =
-                    t!("agent_ui.conversation_view.server_exited_with_status", status = status);
+                let mut message = t!(
+                    "agent_ui.conversation_view.server_exited_with_status",
+                    status = status
+                );
                 if let Some(stderr) = stderr {
                     message.push_str("\n");
                     message.push_str(stderr);
@@ -3177,7 +3178,9 @@ impl ConversationView {
                 .and_then(|active| active.read(cx).model_selector.clone())
                 .and_then(|selector| selector.read(cx).active_model(cx))
                 .map(|model| model.name.clone())
-                .unwrap_or_else(|| SharedString::from(t!("agent_ui.conversation_view.the_model_name")))
+                .unwrap_or_else(|| {
+                    SharedString::from(t!("agent_ui.conversation_view.the_model_name"))
+                })
         } else {
             // ACP agent - use the agent name (e.g., "Claude Agent", "Gemini CLI")
             self.agent.agent_id().0
@@ -3285,7 +3288,10 @@ fn native_available_skills(
 
 fn placeholder_text(agent_name: &str, has_commands: bool) -> String {
     if agent_name == agent::ZED_AGENT_ID.as_ref() {
-        t!("agent_ui.conversation_view.placeholder_zed", agent = agent_name)
+        t!(
+            "agent_ui.conversation_view.placeholder_zed",
+            agent = agent_name
+        )
     } else if has_commands {
         t!(
             "agent_ui.conversation_view.placeholder_with_commands",

@@ -209,12 +209,16 @@ impl ChannelView {
             editor.set_custom_context_menu(move |_, position, window, cx| {
                 let this = this.clone();
                 Some(ui::ContextMenu::build(window, cx, move |menu, _, _| {
-                    menu.entry(t!("collab_ui.channel_view.copy_link_to_section"), None, move |window, cx| {
-                        this.update(cx, |this, cx| {
-                            this.copy_link_for_position(position, window, cx)
-                        })
-                        .ok();
-                    })
+                    menu.entry(
+                        t!("collab_ui.channel_view.copy_link_to_section"),
+                        None,
+                        move |window, cx| {
+                            this.update(cx, |this, cx| {
+                                this.copy_link_for_position(position, window, cx)
+                            })
+                            .ok();
+                        },
+                    )
                 }))
             });
             editor.set_show_bookmarks(false, cx);

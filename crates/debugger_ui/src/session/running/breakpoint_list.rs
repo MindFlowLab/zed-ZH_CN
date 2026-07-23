@@ -1423,34 +1423,36 @@ impl RenderOnce for BreakpointOptionsStrip {
             .when(has_logs || self.is_selected, |this| {
                 this.child(
                     div()
-                    .map(self.add_focus_styles(
-                        ActiveBreakpointStripMode::Log,
-                        supports_logs,
-                        window,
-                        cx,
-                    ))
-                    .child(
-                        IconButton::new(
-                            SharedString::from(format!("{id}-log-toggle")),
-                            IconName::Notepad,
-                        )
-                        .shape(ui::IconButtonShape::Square)
-                        .style(style_for_toggle(ActiveBreakpointStripMode::Log, has_logs))
-                        .icon_size(IconSize::Small)
-                        .icon_color(color_for_toggle(has_logs))
-                        .when(has_logs, |this| this.indicator(Indicator::dot().color(Color::Info)))
-                        .disabled(!supports_logs)
-                        .toggle_state(self.is_toggled(ActiveBreakpointStripMode::Log))
-                        .on_click(self.on_click_callback(ActiveBreakpointStripMode::Log))
-                        .tooltip(|_window, cx|  {
-                            Tooltip::with_meta(
-                                t!("debugger_ui.breakpoints.set_log_message"),
-                                None,
-                                t!("debugger_ui.breakpoints.log_message_tooltip"),
-                                cx,
+                        .map(self.add_focus_styles(
+                            ActiveBreakpointStripMode::Log,
+                            supports_logs,
+                            window,
+                            cx,
+                        ))
+                        .child(
+                            IconButton::new(
+                                SharedString::from(format!("{id}-log-toggle")),
+                                IconName::Notepad,
                             )
-                        }),
-                    )
+                            .shape(ui::IconButtonShape::Square)
+                            .style(style_for_toggle(ActiveBreakpointStripMode::Log, has_logs))
+                            .icon_size(IconSize::Small)
+                            .icon_color(color_for_toggle(has_logs))
+                            .when(has_logs, |this| {
+                                this.indicator(Indicator::dot().color(Color::Info))
+                            })
+                            .disabled(!supports_logs)
+                            .toggle_state(self.is_toggled(ActiveBreakpointStripMode::Log))
+                            .on_click(self.on_click_callback(ActiveBreakpointStripMode::Log))
+                            .tooltip(|_window, cx| {
+                                Tooltip::with_meta(
+                                    t!("debugger_ui.breakpoints.set_log_message"),
+                                    None,
+                                    t!("debugger_ui.breakpoints.log_message_tooltip"),
+                                    cx,
+                                )
+                            }),
+                        ),
                 )
             })
             .when(has_condition || self.is_selected, |this| {
@@ -1474,11 +1476,13 @@ impl RenderOnce for BreakpointOptionsStrip {
                             ))
                             .icon_size(IconSize::Small)
                             .icon_color(color_for_toggle(has_condition))
-                            .when(has_condition, |this| this.indicator(Indicator::dot().color(Color::Info)))
+                            .when(has_condition, |this| {
+                                this.indicator(Indicator::dot().color(Color::Info))
+                            })
                             .disabled(!supports_condition)
                             .toggle_state(self.is_toggled(ActiveBreakpointStripMode::Condition))
                             .on_click(self.on_click_callback(ActiveBreakpointStripMode::Condition))
-                            .tooltip(|_window, cx|  {
+                            .tooltip(|_window, cx| {
                                 Tooltip::with_meta(
                                     t!("debugger_ui.breakpoints.set_condition"),
                                     None,
@@ -1486,43 +1490,48 @@ impl RenderOnce for BreakpointOptionsStrip {
                                     cx,
                                 )
                             }),
-                        )
+                        ),
                 )
             })
             .when(has_hit_condition || self.is_selected, |this| {
-                this.child(div()
-                    .map(self.add_focus_styles(
-                        ActiveBreakpointStripMode::HitCondition,
-                        supports_hit_condition,
-                        window,
-                        cx,
-                    ))
-                    .child(
-                        IconButton::new(
-                            SharedString::from(format!("{id}-hit-condition-toggle")),
-                            IconName::ArrowDown10,
-                        )
-                        .style(style_for_toggle(
+                this.child(
+                    div()
+                        .map(self.add_focus_styles(
                             ActiveBreakpointStripMode::HitCondition,
-                            has_hit_condition,
+                            supports_hit_condition,
+                            window,
+                            cx,
                         ))
-                        .shape(ui::IconButtonShape::Square)
-                        .icon_size(IconSize::Small)
-                        .icon_color(color_for_toggle(has_hit_condition))
-                        .when(has_hit_condition, |this| this.indicator(Indicator::dot().color(Color::Info)))
-                        .disabled(!supports_hit_condition)
-                        .toggle_state(self.is_toggled(ActiveBreakpointStripMode::HitCondition))
-                        .on_click(self.on_click_callback(ActiveBreakpointStripMode::HitCondition))
-                        .tooltip(|_window, cx|  {
-                            Tooltip::with_meta(
-                                t!("debugger_ui.breakpoints.set_hit_condition"),
-                                None,
-                                t!("debugger_ui.breakpoints.hit_condition_tooltip"),
-                                cx,
+                        .child(
+                            IconButton::new(
+                                SharedString::from(format!("{id}-hit-condition-toggle")),
+                                IconName::ArrowDown10,
                             )
-                        }),
-                    ))
-
+                            .style(style_for_toggle(
+                                ActiveBreakpointStripMode::HitCondition,
+                                has_hit_condition,
+                            ))
+                            .shape(ui::IconButtonShape::Square)
+                            .icon_size(IconSize::Small)
+                            .icon_color(color_for_toggle(has_hit_condition))
+                            .when(has_hit_condition, |this| {
+                                this.indicator(Indicator::dot().color(Color::Info))
+                            })
+                            .disabled(!supports_hit_condition)
+                            .toggle_state(self.is_toggled(ActiveBreakpointStripMode::HitCondition))
+                            .on_click(
+                                self.on_click_callback(ActiveBreakpointStripMode::HitCondition),
+                            )
+                            .tooltip(|_window, cx| {
+                                Tooltip::with_meta(
+                                    t!("debugger_ui.breakpoints.set_hit_condition"),
+                                    None,
+                                    t!("debugger_ui.breakpoints.hit_condition_tooltip"),
+                                    cx,
+                                )
+                            }),
+                        ),
+                )
             })
     }
 }

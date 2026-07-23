@@ -145,7 +145,9 @@ impl ZedAiOnboarding {
                 .child(
                     IconButton::new("dismiss_onboarding", IconName::Close)
                         .icon_size(IconSize::Small)
-                        .tooltip(Tooltip::text(t!("ai_onboarding.onboarding.dismiss_tooltip")))
+                        .tooltip(Tooltip::text(t!(
+                            "ai_onboarding.onboarding.dismiss_tooltip"
+                        )))
                         .on_click(move |_, window, cx| {
                             telemetry::event!("Banner Dismissed", source = "AI Onboarding",);
                             callback(window, cx)
@@ -295,7 +297,9 @@ impl ZedAiOnboarding {
             .relative()
             .gap_1()
             .child(Self::pro_trial_stamp(cx))
-            .child(Headline::new(t!("ai_onboarding.onboarding.welcome_pro_trial")))
+            .child(Headline::new(t!(
+                "ai_onboarding.onboarding.welcome_pro_trial"
+            )))
             .child(
                 Label::new(t!("ai_onboarding.onboarding.trial_what_you_get"))
                     .color(Color::Muted)
@@ -312,7 +316,9 @@ impl ZedAiOnboarding {
             .relative()
             .gap_1()
             .child(Self::certified_user_stamp(cx))
-            .child(Headline::new(t!("ai_onboarding.onboarding.welcome_zed_pro")))
+            .child(Headline::new(t!(
+                "ai_onboarding.onboarding.welcome_zed_pro"
+            )))
             .child(
                 Label::new(t!("ai_onboarding.onboarding.what_you_get"))
                     .color(Color::Muted)
@@ -329,7 +335,9 @@ impl ZedAiOnboarding {
             .relative()
             .gap_1()
             .child(Self::business_stamp(cx))
-            .child(Headline::new(t!("ai_onboarding.onboarding.welcome_zed_business")))
+            .child(Headline::new(t!(
+                "ai_onboarding.onboarding.welcome_zed_business"
+            )))
             .child(
                 Label::new(t!("ai_onboarding.onboarding.what_you_get"))
                     .color(Color::Muted)
@@ -346,7 +354,9 @@ impl ZedAiOnboarding {
             .relative()
             .gap_1()
             .child(Self::vip_stamp(cx))
-            .child(Headline::new(t!("ai_onboarding.onboarding.welcome_zed_vip")))
+            .child(Headline::new(t!(
+                "ai_onboarding.onboarding.welcome_zed_vip"
+            )))
             .child(
                 Label::new(t!("ai_onboarding.onboarding.what_you_get"))
                     .color(Color::Muted)
@@ -363,7 +373,9 @@ impl ZedAiOnboarding {
             .relative()
             .gap_1()
             .child(Self::student_stamp(cx))
-            .child(Headline::new(t!("ai_onboarding.onboarding.welcome_zed_student")))
+            .child(Headline::new(t!(
+                "ai_onboarding.onboarding.welcome_zed_student"
+            )))
             .child(
                 Label::new(t!("ai_onboarding.onboarding.what_you_get"))
                     .color(Color::Muted)

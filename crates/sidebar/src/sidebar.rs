@@ -2681,60 +2681,64 @@ impl Sidebar {
                     });
 
                     if let Some(base_workspace) = base_workspace.filter(|_| !creation_blocked) {
-                        menu = menu.separator().submenu(t!("sidebar.new_thread.create_worktree_submenu"), {
-                            let this = this.clone();
-                            move |mut submenu, _window, submenu_cx| {
-                                let project = base_workspace.read(submenu_cx).project().clone();
-                                let project_ref = project.read(submenu_cx);
-                                let has_multiple_repositories =
-                                    project_ref.repositories(submenu_cx).len() > 1;
-                                let current_branch =
-                                    project_ref.active_repository(submenu_cx).and_then(|repo| {
-                                        repo.read(submenu_cx)
-                                            .branch
-                                            .as_ref()
-                                            .map(|branch| branch.name().to_string())
-                                    });
-                                let default_branch = this
-                                    .read_with(submenu_cx, |sidebar, _| {
-                                        match sidebar.worktree_default_branches.get(&key) {
-                                            Some(DefaultBranchCache::Resolved(branch)) => {
-                                                branch.clone()
+                        menu = menu.separator().submenu(
+                            t!("sidebar.new_thread.create_worktree_submenu"),
+                            {
+                                let this = this.clone();
+                                move |mut submenu, _window, submenu_cx| {
+                                    let project = base_workspace.read(submenu_cx).project().clone();
+                                    let project_ref = project.read(submenu_cx);
+                                    let has_multiple_repositories =
+                                        project_ref.repositories(submenu_cx).len() > 1;
+                                    let current_branch = project_ref
+                                        .active_repository(submenu_cx)
+                                        .and_then(|repo| {
+                                            repo.read(submenu_cx)
+                                                .branch
+                                                .as_ref()
+                                                .map(|branch| branch.name().to_string())
+                                        });
+                                    let default_branch = this
+                                        .read_with(submenu_cx, |sidebar, _| {
+                                            match sidebar.worktree_default_branches.get(&key) {
+                                                Some(DefaultBranchCache::Resolved(branch)) => {
+                                                    branch.clone()
+                                                }
+                                                _ => None,
                                             }
-                                            _ => None,
-                                        }
-                                    })
-                                    .ok()
-                                    .flatten();
+                                        })
+                                        .ok()
+                                        .flatten();
 
-                                let targets = worktree_create_targets(
-                                    has_multiple_repositories,
-                                    default_branch,
-                                    current_branch.as_deref(),
-                                );
-                                for target in targets {
-                                    let label = t!(
-                                        "sidebar.new_thread.based_on",
-                                        branch = target.branch_label(
-                                            has_multiple_repositories,
-                                            current_branch.as_deref(),
-                                        )
+                                    let targets = worktree_create_targets(
+                                        has_multiple_repositories,
+                                        default_branch,
+                                        current_branch.as_deref(),
                                     );
-                                    let branch_target = target.branch_target();
-                                    let workspace = base_workspace.clone();
-                                    submenu = submenu.entry(label, None, move |window, cx| {
-                                        create_worktree_in_workspace(
-                                            &workspace,
-                                            branch_target.clone(),
-                                            window,
-                                            cx,
+                                    for target in targets {
+                                        let label = t!(
+                                            "sidebar.new_thread.based_on",
+                                            branch = target.branch_label(
+                                                has_multiple_repositories,
+                                                current_branch.as_deref(),
+                                            )
                                         );
-                                    });
-                                }
+                                        let branch_target = target.branch_target();
+                                        let workspace = base_workspace.clone();
+                                        submenu = submenu.entry(label, None, move |window, cx| {
+                                            create_worktree_in_workspace(
+                                                &workspace,
+                                                branch_target.clone(),
+                                                window,
+                                                cx,
+                                            );
+                                        });
+                                    }
 
-                                submenu
-                            }
-                        });
+                                    submenu
+                                }
+                            },
+                        );
                     }
 
                     menu
@@ -2944,8 +2948,10 @@ impl Sidebar {
                                                 false,
                                             ))
                                             .child(
-                                                Label::new(t!("sidebar.project_menu.modifier_click"))
-                                                    .color(Color::Muted),
+                                                Label::new(t!(
+                                                    "sidebar.project_menu.modifier_click"
+                                                ))
+                                                .color(Color::Muted),
                                             );
 
                                         let label = if has_threads {
@@ -2997,8 +3003,9 @@ impl Sidebar {
                         let menu = if open_workspaces.is_empty() {
                             menu
                         } else {
-                            let mut menu =
-                                menu.separator().header(t!("sidebar.project_menu.open_worktrees"));
+                            let mut menu = menu
+                                .separator()
+                                .header(t!("sidebar.project_menu.open_worktrees"));
 
                             for (
                                 workspace_index,
@@ -6636,17 +6643,16 @@ impl Sidebar {
                             });
                         }
 
-                        menu.separator()
-                            .entry(t!("sidebar.thread.archive"), None, {
-                                let session_id = session_id.clone();
-                                move |window, cx| {
-                                    sidebar
-                                        .update(cx, |sidebar, cx| {
-                                            sidebar.archive_thread(&session_id, window, cx);
-                                        })
-                                        .ok();
-                                }
-                            })
+                        menu.separator().entry(t!("sidebar.thread.archive"), None, {
+                            let session_id = session_id.clone();
+                            move |window, cx| {
+                                sidebar
+                                    .update(cx, |sidebar, cx| {
+                                        sidebar.archive_thread(&session_id, window, cx);
+                                    })
+                                    .ok();
+                            }
+                        })
                     })
                 }
             })

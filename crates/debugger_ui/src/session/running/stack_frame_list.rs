@@ -737,7 +737,10 @@ impl StackFrameList {
                                 origin = origin
                             ),
                             None => {
-                                t!("debugger_ui.stack_frames.show_more", count = stack_frames.len())
+                                t!(
+                                    "debugger_ui.stack_frames.show_more",
+                                    count = stack_frames.len()
+                                )
                             }
                         },
                     ),

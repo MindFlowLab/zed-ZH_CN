@@ -732,22 +732,24 @@ impl VariableList {
                             t!("debugger_ui.variables.watch_variable"),
                             AddWatch.boxed_clone(),
                         )
-                        .when_some(can_toggle_data_breakpoint, |mut menu, data_info| {
-                            menu = menu.separator();
-                            if let Some(access_types) = data_info.access_types {
-                                for access in access_types {
-                                    let access_label = match access {
-                                        dap::DataBreakpointAccessType::Read => {
-                                            t!("debugger_ui.variables.access_read")
-                                        }
-                                        dap::DataBreakpointAccessType::Write => {
-                                            t!("debugger_ui.variables.access_write")
-                                        }
-                                        dap::DataBreakpointAccessType::ReadWrite => {
-                                            t!("debugger_ui.variables.access_read_write")
-                                        }
-                                    };
-                                    menu = menu.action(
+                        .when_some(
+                            can_toggle_data_breakpoint,
+                            |mut menu, data_info| {
+                                menu = menu.separator();
+                                if let Some(access_types) = data_info.access_types {
+                                    for access in access_types {
+                                        let access_label = match access {
+                                            dap::DataBreakpointAccessType::Read => {
+                                                t!("debugger_ui.variables.access_read")
+                                            }
+                                            dap::DataBreakpointAccessType::Write => {
+                                                t!("debugger_ui.variables.access_write")
+                                            }
+                                            dap::DataBreakpointAccessType::ReadWrite => {
+                                                t!("debugger_ui.variables.access_read_write")
+                                            }
+                                        };
+                                        menu = menu.action(
                                         t!(
                                             "debugger_ui.variables.toggle_typed_data_breakpoint",
                                             access = access_label
@@ -757,17 +759,18 @@ impl VariableList {
                                         }
                                         .boxed_clone(),
                                     );
-                                }
+                                    }
 
-                                menu
-                            } else {
-                                menu.action(
-                                    t!("debugger_ui.variables.toggle_data_breakpoint"),
-                                    crate::ToggleDataBreakpoint { access_type: None }
-                                        .boxed_clone(),
-                                )
-                            }
-                        })
+                                    menu
+                                } else {
+                                    menu.action(
+                                        t!("debugger_ui.variables.toggle_data_breakpoint"),
+                                        crate::ToggleDataBreakpoint { access_type: None }
+                                            .boxed_clone(),
+                                    )
+                                }
+                            },
+                        )
                     })
                     .when(entry.as_watcher().is_some(), |menu| {
                         menu.action(

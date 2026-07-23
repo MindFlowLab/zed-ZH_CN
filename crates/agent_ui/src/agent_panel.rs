@@ -3881,7 +3881,11 @@ impl AgentPanel {
         cx: &mut Context<Self>,
     ) {
         let Some(thread_id) = self.active_thread_id(cx) else {
-            Self::show_deferred_toast(&self.workspace, t!("agent_ui.agent_panel.no_active_thread"), cx);
+            Self::show_deferred_toast(
+                &self.workspace,
+                t!("agent_ui.agent_panel.no_active_thread"),
+                cx,
+            );
             return;
         };
 
@@ -5717,10 +5721,7 @@ impl AgentPanel {
                                 )
                                 .separator()
                                 .header(t!("agent_ui.agent_panel.context"))
-                                .action(
-                                    t!("agent_ui.agent_panel.skills"),
-                                    Box::new(ManageSkills),
-                                );
+                                .action(t!("agent_ui.agent_panel.skills"), Box::new(ManageSkills));
 
                             if project_agents_md_path.is_some() || global_agents_md_loaded {
                                 if global_agents_md_loaded {
@@ -5779,12 +5780,10 @@ impl AgentPanel {
                                 }
                             }
 
-                            menu = menu
-                                .separator()
-                                .action(
-                                    t!("agent_ui.agent_panel.profiles"),
-                                    Box::new(ManageProfiles::default()),
-                                );
+                            menu = menu.separator().action(
+                                t!("agent_ui.agent_panel.profiles"),
+                                Box::new(ManageProfiles::default()),
+                            );
                         }
 
                         menu = menu
@@ -5805,10 +5804,8 @@ impl AgentPanel {
                             )
                         }
                         if supports_logout {
-                            menu = menu.action(
-                                t!("agent_ui.agent_panel.log_out"),
-                                Box::new(LogoutAgent),
-                            )
+                            menu = menu
+                                .action(t!("agent_ui.agent_panel.log_out"), Box::new(LogoutAgent))
                         }
 
                         menu
@@ -5845,7 +5842,10 @@ impl AgentPanel {
         let showing_terminal = matches!(self.visible_surface(), VisibleSurface::Terminal(_));
 
         let (selected_agent_custom_icon, selected_agent_label) = if showing_terminal {
-            (None, SharedString::from(t!("agent_ui.agent_panel.terminal")))
+            (
+                None,
+                SharedString::from(t!("agent_ui.agent_panel.terminal")),
+            )
         } else if let Agent::Custom { id, .. } = &self.selected_agent {
             let store = agent_server_store.read(cx);
             let icon = store.agent_icon(&id);

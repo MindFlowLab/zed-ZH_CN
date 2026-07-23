@@ -33,7 +33,6 @@ use util::asset_str;
 
 pub use ::settings_content::*;
 pub use base_keymap_setting::*;
-pub use ui_language_setting::*;
 pub use content_into_gpui::IntoGpui;
 pub use editable_setting_control::*;
 pub use editorconfig_store::{
@@ -50,6 +49,7 @@ pub use settings_store::{
     LocalSettingsKind, LocalSettingsPath, MigrationStatus, Settings, SettingsFile,
     SettingsJsonSchemaParams, SettingsKey, SettingsLocation, SettingsParseResult, SettingsStore,
 };
+pub use ui_language_setting::*;
 
 pub use vscode_import::{VsCodeSettings, VsCodeSettingsSource};
 

@@ -402,7 +402,11 @@ impl LogStore {
                 id.session_id,
                 adapter_name,
                 session_label.unwrap_or_else(|| {
-                    t!("debugger_tools.dap_log.child_session_label", id = id.session_id.0).into()
+                    t!(
+                        "debugger_tools.dap_log.child_session_label",
+                        id = id.session_id.0
+                    )
+                    .into()
                 }),
                 has_adapter_logs,
             ));
@@ -568,7 +572,9 @@ impl Render for DapLogToolbarItemView {
                                     div()
                                         .w_full()
                                         .pl_4()
-                                        .child(Label::new(t!("debugger_tools.dap_log.adapter_logs")))
+                                        .child(Label::new(t!(
+                                            "debugger_tools.dap_log.adapter_logs"
+                                        )))
                                         .into_any_element()
                                 },
                                 window.handler_for(&log_view, {
@@ -590,7 +596,9 @@ impl Render for DapLogToolbarItemView {
                                     div()
                                         .w_full()
                                         .pl_4()
-                                        .child(Label::new(t!("debugger_tools.dap_log.rpc_messages")))
+                                        .child(Label::new(t!(
+                                            "debugger_tools.dap_log.rpc_messages"
+                                        )))
                                         .into_any_element()
                                 },
                                 window.handler_for(&log_view, {
@@ -609,9 +617,9 @@ impl Render for DapLogToolbarItemView {
                                     div()
                                         .w_full()
                                         .pl_4()
-                                        .child(Label::new(
-                                            t!("debugger_tools.dap_log.initialization_sequence"),
-                                        ))
+                                        .child(Label::new(t!(
+                                            "debugger_tools.dap_log.initialization_sequence"
+                                        )))
                                         .into_any_element()
                                 },
                                 window.handler_for(&log_view, {
@@ -641,19 +649,17 @@ impl Render for DapLogToolbarItemView {
                 div()
                     .child(
                         Button::new("clear_log_button", t!("debugger_tools.dap_log.clear"))
-                            .on_click(cx.listener(
-                                |this, _, window, cx| {
-                                    if let Some(log_view) = this.log_view.as_ref() {
-                                        log_view.update(cx, |log_view, cx| {
-                                            log_view.editor.update(cx, |editor, cx| {
-                                                editor.set_read_only(false);
-                                                editor.clear(window, cx);
-                                                editor.set_read_only(true);
-                                            });
-                                        })
-                                    }
-                                },
-                            )),
+                            .on_click(cx.listener(|this, _, window, cx| {
+                                if let Some(log_view) = this.log_view.as_ref() {
+                                    log_view.update(cx, |log_view, cx| {
+                                        log_view.editor.update(cx, |editor, cx| {
+                                            editor.set_read_only(false);
+                                            editor.clear(window, cx);
+                                            editor.set_read_only(true);
+                                        });
+                                    })
+                                }
+                            })),
                     )
                     .ml_2(),
             )

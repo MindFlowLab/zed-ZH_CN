@@ -121,11 +121,13 @@ impl AgentImportStatus {
         match self {
             Self::Loading => Some(t!("agent_ui.thread_import.fetching_sessions").into()),
             Self::Ready { .. } => None,
-            Self::Unsupported => {
-                Some(t!("agent_ui.thread_import.unsupported_agent").into())
-            }
+            Self::Unsupported => Some(t!("agent_ui.thread_import.unsupported_agent").into()),
             Self::Error(error) => Some(
-                t!("agent_ui.thread_import.failed_to_fetch_sessions", error = error).into(),
+                t!(
+                    "agent_ui.thread_import.failed_to_fetch_sessions",
+                    error = error
+                )
+                .into(),
             ),
         }
     }
@@ -394,14 +396,18 @@ impl ThreadImportModal {
 
     fn show_imported_threads_toast(&self, imported_count: usize, cx: &mut App) {
         let status_toast = if imported_count == 0 {
-            StatusToast::new(t!("agent_ui.thread_import.no_threads_to_import"), cx, |this, _cx| {
-                this.icon(
-                    Icon::new(IconName::Info)
-                        .size(IconSize::Small)
-                        .color(Color::Muted),
-                )
-                .dismiss_button(true)
-            })
+            StatusToast::new(
+                t!("agent_ui.thread_import.no_threads_to_import"),
+                cx,
+                |this, _cx| {
+                    this.icon(
+                        Icon::new(IconName::Info)
+                            .size(IconSize::Small)
+                            .color(Color::Muted),
+                    )
+                    .dismiss_button(true)
+                },
+            )
         } else {
             let message = if imported_count == 1 {
                 t!("agent_ui.thread_import.imported_one_thread")
@@ -581,7 +587,6 @@ impl Render for ThreadImportModal {
                             .headline(t!("agent_ui.thread_import.import_external_threads"))
                             .description(t!("agent_ui.thread_import.import_modal_description"))
                             .show_dismiss_button(true),
-
                     )
                     .section(
                         Section::new().child(
@@ -593,11 +598,9 @@ impl Render for ThreadImportModal {
                                 .when(has_agents, |this| this.children(agent_rows))
                                 .when(!has_agents, |this| {
                                     this.child(
-                                        Label::new(t!(
-                                            "agent_ui.thread_import.no_external_agents"
-                                        ))
-                                        .color(Color::Muted)
-                                        .size(LabelSize::Small),
+                                        Label::new(t!("agent_ui.thread_import.no_external_agents"))
+                                            .color(Color::Muted)
+                                            .size(LabelSize::Small),
                                     )
                                 }),
                         ),
@@ -614,12 +617,13 @@ impl Render for ThreadImportModal {
                                                 .color(Color::Muted)
                                                 .with_rotate_animation(3),
                                         )
-                                        .child(Label::new(t!(
-                                            "agent_ui.thread_import.fetching_agent_threads"
-                                        ))
+                                        .child(
+                                            Label::new(t!(
+                                                "agent_ui.thread_import.fetching_agent_threads"
+                                            ))
                                             .size(LabelSize::Small)
-                                            .color(Color::Muted))
-
+                                            .color(Color::Muted),
+                                        ),
                                 )
                             })
                             .when_some(self.last_error.clone(), |this, error| {
@@ -635,15 +639,17 @@ impl Render for ThreadImportModal {
                                     "import-threads",
                                     t!("agent_ui.thread_import.import_threads"),
                                 )
-                                    .loading(self.is_importing)
-                                    .disabled(disabled_import_thread)
-                                    .key_binding(
-                                        KeyBinding::for_action(&menu::SecondaryConfirm, cx)
-                                            .map(|kb| kb.size(rems_from_px(12.))),
-                                    )
-                                    .on_click(cx.listener(|this, _, window, cx| {
+                                .loading(self.is_importing)
+                                .disabled(disabled_import_thread)
+                                .key_binding(
+                                    KeyBinding::for_action(&menu::SecondaryConfirm, cx)
+                                        .map(|kb| kb.size(rems_from_px(12.))),
+                                )
+                                .on_click(cx.listener(
+                                    |this, _, window, cx| {
                                         this.import_threads(&menu::SecondaryConfirm, window, cx);
-                                    })),
+                                    },
+                                )),
                             ),
                     ),
             )
@@ -772,28 +778,27 @@ fn fetch_sessions_for_agent(
 
         let importable_counts_by_agent =
             count_importable_threads_by_agent(&sessions_by_agent, &existing_sessions);
-        let status = if stats.successful_attempt_count > 0 {
-            AgentImportStatus::Ready {
-                importable_count: importable_counts_by_agent
-                    .get(&agent_id)
-                    .copied()
-                    .unwrap_or(0),
-            }
-        } else if stats.supported_attempt_count > 0 {
-            AgentImportStatus::Error(
-                stats
-                    .errors
-                    .first()
-                    .cloned()
-                    .unwrap_or_else(|| t!("agent_ui.thread_import.failed_to_list_sessions").into()),
-            )
-        } else if stats.unsupported_attempt_count > 0 {
-            AgentImportStatus::Unsupported
-        } else if let Some(error) = stats.errors.first().cloned() {
-            AgentImportStatus::Error(error)
-        } else {
-            AgentImportStatus::Unsupported
-        };
+        let status =
+            if stats.successful_attempt_count > 0 {
+                AgentImportStatus::Ready {
+                    importable_count: importable_counts_by_agent
+                        .get(&agent_id)
+                        .copied()
+                        .unwrap_or(0),
+                }
+            } else if stats.supported_attempt_count > 0 {
+                AgentImportStatus::Error(
+                    stats.errors.first().cloned().unwrap_or_else(|| {
+                        t!("agent_ui.thread_import.failed_to_list_sessions").into()
+                    }),
+                )
+            } else if stats.unsupported_attempt_count > 0 {
+                AgentImportStatus::Unsupported
+            } else if let Some(error) = stats.errors.first().cloned() {
+                AgentImportStatus::Error(error)
+            } else {
+                AgentImportStatus::Unsupported
+            };
 
         AgentSessionFetchResult {
             agent_id,
@@ -973,10 +978,14 @@ fn show_cross_channel_import_toast(
     cx: &mut App,
 ) {
     let status_toast = if imported_count == 0 {
-        StatusToast::new(t!("agent_ui.thread_import.no_new_threads_to_import"), cx, |this, _cx| {
-            this.icon(Icon::new(IconName::Info).color(Color::Muted))
-                .dismiss_button(true)
-        })
+        StatusToast::new(
+            t!("agent_ui.thread_import.no_new_threads_to_import"),
+            cx,
+            |this, _cx| {
+                this.icon(Icon::new(IconName::Info).color(Color::Muted))
+                    .dismiss_button(true)
+            },
+        )
     } else {
         let message = if imported_count == 1 {
             t!("agent_ui.thread_import.imported_one_thread_cross_channel")

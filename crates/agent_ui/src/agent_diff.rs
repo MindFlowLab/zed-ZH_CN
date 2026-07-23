@@ -546,7 +546,8 @@ impl Item for AgentDiffPane {
             move |_, _| {
                 v_flex()
                     .child(Label::new(
-                        title.clone()
+                        title
+                            .clone()
                             .unwrap_or_else(|| t!("agent_ui.agent_diff.review")),
                     ))
                     .child(
@@ -717,21 +718,21 @@ impl Render for AgentDiffPane {
                                 "continue-iterating",
                                 t!("agent_ui.agent_diff.continue_iterating"),
                             )
-                                .style(ButtonStyle::Filled)
-                                .start_icon(
-                                    Icon::new(IconName::ForwardArrow)
-                                        .size(IconSize::Small)
-                                        .color(Color::Muted),
-                                )
-                                .full_width()
-                                .key_binding(KeyBinding::for_action_in(
-                                    &ToggleFocus,
-                                    &focus_handle.clone(),
-                                    cx,
-                                ))
-                                .on_click(|_event, window, cx| {
-                                    window.dispatch_action(ToggleFocus.boxed_clone(), cx)
-                                }),
+                            .style(ButtonStyle::Filled)
+                            .start_icon(
+                                Icon::new(IconName::ForwardArrow)
+                                    .size(IconSize::Small)
+                                    .color(Color::Muted),
+                            )
+                            .full_width()
+                            .key_binding(KeyBinding::for_action_in(
+                                &ToggleFocus,
+                                &focus_handle.clone(),
+                                cx,
+                            ))
+                            .on_click(|_event, window, cx| {
+                                window.dispatch_action(ToggleFocus.boxed_clone(), cx)
+                            }),
                         ),
                 )
             })

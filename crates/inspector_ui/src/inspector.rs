@@ -89,7 +89,11 @@ fn render_inspector(
                             window.refresh();
                         })),
                 )
-                .child(h_flex().justify_end().child(Label::new(t!("inspector_ui.toolbar.title")))),
+                .child(
+                    h_flex()
+                        .justify_end()
+                        .child(Label::new(t!("inspector_ui.toolbar.title"))),
+                ),
         )
         .child(
             v_flex()

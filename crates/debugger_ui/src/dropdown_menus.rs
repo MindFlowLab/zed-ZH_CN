@@ -30,14 +30,10 @@ impl SessionListEntry {
             }));
             label.push_str(" » ");
         }
-        label.push_str(
-            &self
-                .leaf
-                .update(cx, |leaf, cx| {
-                    leaf.label(cx)
-                        .unwrap_or_else(|| t!("debugger_ui.session.child_label").into())
-                }),
-        );
+        label.push_str(&self.leaf.update(cx, |leaf, cx| {
+            leaf.label(cx)
+                .unwrap_or_else(|| t!("debugger_ui.session.child_label").into())
+        }));
         let label = truncate_and_trailoff(&label, MAX_LABEL_CHARS);
 
         let is_terminated = self
@@ -220,7 +216,9 @@ impl DebugPanel {
         )
         .attach(Anchor::BottomLeft)
         .handle(self.session_picker_menu_handle.clone())
-        .trigger_tooltip(Tooltip::text(t!("debugger_ui.session.select_session_tooltip")));
+        .trigger_tooltip(Tooltip::text(t!(
+            "debugger_ui.session.select_session_tooltip"
+        )));
 
         Some(menu)
     }

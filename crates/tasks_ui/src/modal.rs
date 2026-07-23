@@ -20,8 +20,8 @@ use ui::{
 
 use util::{ResultExt, truncate_and_trailoff};
 use workspace::{ModalView, Workspace};
-use zed_i18n::t;
 pub use zed_actions::{Rerun, Spawn};
+use zed_i18n::t;
 
 /// A modal used to spawn new tasks.
 pub struct TasksModalDelegate {
@@ -649,7 +649,10 @@ impl PickerDelegate for TasksModalDelegate {
             .last_scheduled_task(None)
             .is_some()
         {
-            Some((t!("tasks_ui.rerun_last_task"), Rerun::default().boxed_clone()))
+            Some((
+                t!("tasks_ui.rerun_last_task"),
+                Rerun::default().boxed_clone(),
+            ))
         } else {
             None
         };

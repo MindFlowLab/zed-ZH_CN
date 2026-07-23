@@ -179,20 +179,20 @@ impl AddToolchainState {
                                     Label::new(t!("toolchain_selector.select_toolchain_path"))
                                         .color(Color::Muted)
                                         .map(|this| {
-                                        if is_loading {
-                                            this.with_animation(
-                                                "select-toolchain-label",
-                                                Animation::new(Duration::from_secs(2))
-                                                    .repeat()
-                                                    .with_easing(pulsating_between(0.4, 0.8)),
-                                                |label, delta| label.alpha(delta),
-                                            )
-                                            .into_any()
-                                        } else {
-                                            this.into_any_element()
-                                        }
-                                    },
-                                ))
+                                            if is_loading {
+                                                this.with_animation(
+                                                    "select-toolchain-label",
+                                                    Animation::new(Duration::from_secs(2))
+                                                        .repeat()
+                                                        .with_easing(pulsating_between(0.4, 0.8)),
+                                                    |label, delta| label.alpha(delta),
+                                                )
+                                                .into_any()
+                                            } else {
+                                                this.into_any_element()
+                                            }
+                                        }),
+                                )
                                 .when_some(error, |this, error| {
                                     this.child(Label::new(error).color(Color::Error))
                                 }),

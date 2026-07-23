@@ -28,9 +28,9 @@ use ui::{
     CommonAnimationExt, KeyBinding, Modal, ModalFooter, ModalHeader, Section, Tooltip,
     WithScrollbar, prelude::*,
 };
-use zed_i18n::t;
 use util::ResultExt as _;
 use workspace::{ModalView, Workspace};
+use zed_i18n::t;
 
 enum ConfigurationTarget {
     Existing {
@@ -563,7 +563,9 @@ impl ConfigureContextServerModal {
                     secret_editor: cx.new(|cx| {
                         let mut editor = Editor::single_line(window, cx);
                         editor.set_placeholder_text(
-                            &t!("agent_ui.configure_context_server_modal.client_secret_placeholder"),
+                            &t!(
+                                "agent_ui.configure_context_server_modal.client_secret_placeholder"
+                            ),
                             window,
                             cx,
                         );
@@ -910,10 +912,10 @@ impl ConfigureContextServerModal {
                                 )
                             }
                         })
-                            .on_click({
-                                let repository_url = repository_url.clone();
-                                move |_, _, cx| cx.open_url(&repository_url)
-                            }),
+                        .on_click({
+                            let repository_url = repository_url.clone();
+                            move |_, _, cx| cx.open_url(&repository_url)
+                        }),
                     )
                 } else {
                     None
@@ -944,14 +946,16 @@ impl ConfigureContextServerModal {
                             "configure-server",
                             t!("agent_ui.configure_context_server_modal.configure_server"),
                         )
-                            .disabled(is_busy)
-                            .key_binding(
-                                KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
-                                    .map(|kb| kb.size(rems_from_px(12.))),
-                            )
-                            .on_click(cx.listener(|this, _event, _window, cx| {
+                        .disabled(is_busy)
+                        .key_binding(
+                            KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
+                                .map(|kb| kb.size(rems_from_px(12.))),
+                        )
+                        .on_click(
+                            cx.listener(|this, _event, _window, cx| {
                                 this.confirm(&menu::Confirm, cx)
-                            }))
+                            }),
+                        )
                     })),
             )
     }
@@ -998,14 +1002,14 @@ impl ConfigureContextServerModal {
                     "authenticate-server",
                     t!("agent_ui.configure_context_server_modal.authenticate"),
                 )
-                    .style(ButtonStyle::Outlined)
-                    .label_size(LabelSize::Small)
-                    .on_click({
-                        let server_id = server_id.clone();
-                        cx.listener(move |this, _event, _window, cx| {
-                            this.authenticate(server_id.clone(), cx);
-                        })
-                    }),
+                .style(ButtonStyle::Outlined)
+                .label_size(LabelSize::Small)
+                .on_click({
+                    let server_id = server_id.clone();
+                    cx.listener(move |this, _event, _window, cx| {
+                        this.authenticate(server_id.clone(), cx);
+                    })
+                }),
             )
     }
 
@@ -1110,14 +1114,14 @@ impl ConfigureContextServerModal {
                     "cancel-authentication",
                     t!("agent_ui.configure_context_server_modal.cancel"),
                 )
-                    .style(ButtonStyle::Outlined)
-                    .label_size(LabelSize::Small)
-                    .on_click({
-                        let server_id = server_id.clone();
-                        cx.listener(move |this, _event, _window, cx| {
-                            this.cancel_authentication(&server_id, cx);
-                        })
-                    }),
+                .style(ButtonStyle::Outlined)
+                .label_size(LabelSize::Small)
+                .on_click({
+                    let server_id = server_id.clone();
+                    cx.listener(move |this, _event, _window, cx| {
+                        this.cancel_authentication(&server_id, cx);
+                    })
+                }),
             )
     }
 

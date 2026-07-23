@@ -172,7 +172,10 @@ impl RenderOnce for ModelSelectorListItem {
                         let tooltip_text = if cost_info.ends_with('×') {
                             t!("agent_ui.model_selector.cost_multiplier", cost = cost_info)
                         } else if cost_info.contains('$') {
-                            t!("agent_ui.model_selector.cost_per_million_tokens", cost = cost_info)
+                            t!(
+                                "agent_ui.model_selector.cost_per_million_tokens",
+                                cost = cost_info
+                            )
                         } else {
                             t!("agent_ui.model_selector.cost", cost = cost_info)
                         };
@@ -300,7 +303,9 @@ impl RenderOnce for ModelSelectorTooltip {
                         .border_t_1()
                         .border_color(cx.theme().colors().border_variant)
                         .justify_between()
-                        .child(Label::new(t!("agent_ui.model_selector.cycle_favorite_models")))
+                        .child(Label::new(t!(
+                            "agent_ui.model_selector.cycle_favorite_models"
+                        )))
                         .child(KeyBinding::for_action(&CycleFavoriteModels, cx)),
                 )
             })

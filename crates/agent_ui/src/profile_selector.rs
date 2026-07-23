@@ -833,23 +833,21 @@ impl PickerDelegate for ProfilePickerDelegate {
                                     "restricted-mode",
                                     t!("agent_ui.profile_selector.restricted_mode"),
                                 )
-                                    .full_width()
-                                    .style(ButtonStyle::Tinted(TintColor::Warning))
-                                    .color(Color::Warning)
-                                    .start_icon(
-                                        Icon::new(IconName::Warning)
-                                            .size(IconSize::Small)
-                                            .color(Color::Warning),
-                                    )
-                                    .tooltip(Tooltip::text(t!(
-                                        "agent_ui.profile_selector.restricted_mode_tooltip"
-                                    )))
-                                    .on_click(|_, window, cx| {
-                                        window.dispatch_action(
-                                            ToggleWorktreeSecurity.boxed_clone(),
-                                            cx,
-                                        );
-                                    }),
+                                .full_width()
+                                .style(ButtonStyle::Tinted(TintColor::Warning))
+                                .color(Color::Warning)
+                                .start_icon(
+                                    Icon::new(IconName::Warning)
+                                        .size(IconSize::Small)
+                                        .color(Color::Warning),
+                                )
+                                .tooltip(Tooltip::text(t!(
+                                    "agent_ui.profile_selector.restricted_mode_tooltip"
+                                )))
+                                .on_click(|_, window, cx| {
+                                    window
+                                        .dispatch_action(ToggleWorktreeSecurity.boxed_clone(), cx);
+                                }),
                             ),
                     )
                 })

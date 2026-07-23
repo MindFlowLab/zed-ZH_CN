@@ -70,7 +70,8 @@ impl Render for ApiKeysWithProviders {
             .border_color(cx.theme().colors().border.opacity(0.5))
             .bg(cx.theme().colors().background.alpha(0.5))
             .shadow(vec![
-                gpui::BoxShadow::new(px(1.), px(-1.), gpui::black().opacity(0.15)).blur_radius(px(3.)),
+                gpui::BoxShadow::new(px(1.), px(-1.), gpui::black().opacity(0.15))
+                    .blur_radius(px(3.)),
             ])
             .child(
                 h_flex()
@@ -91,18 +92,16 @@ impl Render for ApiKeysWithProviders {
                             .child(
                                 Icon::new(IconName::Info)
                                     .size(IconSize::XSmall)
-                                    .color(Color::Muted)
+                                    .color(Color::Muted),
                             )
                             .child(
-                                div()
-                                    .w_full()
-                                    .child(
-                                        Label::new(t!("ai_onboarding.api_keys.start_now"))
-                                            .color(Color::Muted)
-                                    )
-                            )
+                                div().w_full().child(
+                                    Label::new(t!("ai_onboarding.api_keys.start_now"))
+                                        .color(Color::Muted),
+                                ),
+                            ),
                     )
-                    .children(configured_providers_list)
+                    .children(configured_providers_list),
             )
     }
 }
@@ -136,12 +135,15 @@ impl RenderOnce for ApiKeysWithoutProviders {
                 "ai_onboarding.api_keys.add_own_keys"
             ))))
             .child(
-                Button::new("configure-providers", t!("ai_onboarding.api_keys.configure_providers"))
-                    .full_width()
-                    .style(ButtonStyle::Outlined)
-                    .on_click(move |_, window, cx| {
-                        window.dispatch_action(zed_actions::agent::OpenSettings.boxed_clone(), cx);
-                    }),
+                Button::new(
+                    "configure-providers",
+                    t!("ai_onboarding.api_keys.configure_providers"),
+                )
+                .full_width()
+                .style(ButtonStyle::Outlined)
+                .on_click(move |_, window, cx| {
+                    window.dispatch_action(zed_actions::agent::OpenSettings.boxed_clone(), cx);
+                }),
             )
     }
 }

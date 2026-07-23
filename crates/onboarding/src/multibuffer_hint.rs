@@ -179,7 +179,9 @@ impl Render for MultibufferHint {
                             ToolbarItemLocation::Hidden,
                         ))
                     }))
-                    .tooltip(Tooltip::text(t!("onboarding.multibuffer_hint.dismiss_tooltip"))),
+                    .tooltip(Tooltip::text(t!(
+                        "onboarding.multibuffer_hint.dismiss_tooltip"
+                    ))),
             )
             .into_any_element()
     }

@@ -492,20 +492,23 @@ impl MessageEditor {
                 let has_selection = editor.has_non_empty_selection(&editor.display_snapshot(cx));
 
                 Some(ContextMenu::build(window, cx, |menu, _, _| {
-                    menu.action(t!("agent_ui.message_editor.cut"), Box::new(editor::actions::Cut))
-                        .action_disabled_when(
-                            !has_selection,
-                            t!("agent_ui.message_editor.copy"),
-                            Box::new(editor::actions::Copy),
-                        )
-                        .action(
-                            t!("agent_ui.message_editor.paste"),
-                            Box::new(editor::actions::Paste),
-                        )
-                        .action(
-                            t!("agent_ui.message_editor.paste_as_plain_text"),
-                            Box::new(PasteRaw),
-                        )
+                    menu.action(
+                        t!("agent_ui.message_editor.cut"),
+                        Box::new(editor::actions::Cut),
+                    )
+                    .action_disabled_when(
+                        !has_selection,
+                        t!("agent_ui.message_editor.copy"),
+                        Box::new(editor::actions::Copy),
+                    )
+                    .action(
+                        t!("agent_ui.message_editor.paste"),
+                        Box::new(editor::actions::Paste),
+                    )
+                    .action(
+                        t!("agent_ui.message_editor.paste_as_plain_text"),
+                        Box::new(PasteRaw),
+                    )
                 }))
             });
 

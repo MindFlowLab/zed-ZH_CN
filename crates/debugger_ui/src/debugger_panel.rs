@@ -1346,16 +1346,13 @@ impl DebugPanel {
                                 .read(cx)
                                 .historic_snapshots();
 
-                            context_menu = context_menu.entry(
-                                t!("debugger_ui.panel.current_state"),
-                                None,
-                                {
+                            context_menu =
+                                context_menu.entry(t!("debugger_ui.panel.current_state"), None, {
                                     let running_state = running_state.clone();
                                     move |_window, cx| {
                                         handler(None, running_state.clone(), cx);
                                     }
-                                },
-                            );
+                                });
 
                             if !history.is_empty() {
                                 context_menu = context_menu.separator();

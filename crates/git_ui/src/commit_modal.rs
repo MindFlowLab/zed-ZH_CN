@@ -451,7 +451,11 @@ impl CommitModal {
                             .layer(ElevationIndex::ModalSurface)
                             .size(ButtonSize::Compact)
                             .disabled(!can_commit)
-                            .child(Label::new(commit_label.clone()).size(LabelSize::Small).mr_0p5())
+                            .child(
+                                Label::new(commit_label.clone())
+                                    .size(LabelSize::Small)
+                                    .mr_0p5(),
+                            )
                             .on_click(cx.listener(move |this, _: &ClickEvent, window, cx| {
                                 telemetry::event!("Git Committed", source = "Git Modal");
                                 this.git_panel.update(cx, |git_panel, cx| {

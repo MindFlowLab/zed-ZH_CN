@@ -146,11 +146,11 @@ impl Render for ProjectSharedNotification {
                         this.join(cx);
                     },
                 )),
-                Button::new("dismiss", t!("collab_ui.project_shared.dismiss")).on_click(cx.listener(
-                    move |this, _event, _, cx| {
+                Button::new("dismiss", t!("collab_ui.project_shared.dismiss")).on_click(
+                    cx.listener(move |this, _event, _, cx| {
                         this.dismiss(cx);
-                    },
-                )),
+                    }),
+                ),
             )
             .child(Label::new(main_label))
             .when(!no_worktree_root_names, |this| {

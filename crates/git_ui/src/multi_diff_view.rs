@@ -20,12 +20,12 @@ use std::{
 use ui::{Color, Icon, IconName, Label, LabelCommon as _};
 use util::paths::PathStyle;
 use util::rel_path::RelPath;
-use zed_i18n::t;
 use workspace::{
     Item, ItemHandle as _, ItemNavHistory, ToolbarItemLocation, Workspace,
     item::{ItemEvent, SaveOptions, TabContentParams},
     searchable::SearchableItemHandle,
 };
+use zed_i18n::t;
 
 pub struct MultiDiffView {
     editor: Entity<Editor>,
@@ -213,7 +213,10 @@ impl MultiDiffView {
         if self.file_count == 1 {
             t!("git_ui.multi_diff_view.diff_title_singular")
         } else {
-            t!("git_ui.multi_diff_view.diff_title_plural", count = self.file_count)
+            t!(
+                "git_ui.multi_diff_view.diff_title_plural",
+                count = self.file_count
+            )
         }
         .into()
     }

@@ -293,17 +293,17 @@ impl Render for WorktreeFetchFailedToast {
                     "view-worktree-fetch-log",
                     t!("git_ui.worktree_service.show_error_logs"),
                 )
-                    .color(Color::Muted)
-                    .on_click(cx.listener(move |_, _event, window, cx| {
-                        cx.emit(DismissEvent);
-                        let output = output.clone();
-                        let operation = operation.clone();
-                        workspace_for_log
-                            .update(cx, move |workspace, cx| {
-                                open_output(operation, workspace, &output, window, cx)
-                            })
-                            .ok();
-                    })),
+                .color(Color::Muted)
+                .on_click(cx.listener(move |_, _event, window, cx| {
+                    cx.emit(DismissEvent);
+                    let output = output.clone();
+                    let operation = operation.clone();
+                    workspace_for_log
+                        .update(cx, move |workspace, cx| {
+                            open_output(operation, workspace, &output, window, cx)
+                        })
+                        .ok();
+                })),
             )
             .child(
                 IconButton::new("dismiss-worktree-fetch-failed-toast", IconName::Close)

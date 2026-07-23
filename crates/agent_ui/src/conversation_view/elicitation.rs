@@ -1727,25 +1727,25 @@ impl<'a> ElicitationCard<'a> {
                     ("elicitation-decline", self.entry_ix),
                     t!("agent_ui.elicitation.decline"),
                 )
-                    .start_icon(
-                        Icon::new(IconName::Close)
-                            .size(IconSize::XSmall)
-                            .color(Color::Error),
-                    )
-                    .label_size(LabelSize::Small)
-                    .on_click(move |_, window, cx| {
-                        on_decline(decline_id.clone(), window, cx);
-                    }),
+                .start_icon(
+                    Icon::new(IconName::Close)
+                        .size(IconSize::XSmall)
+                        .color(Color::Error),
+                )
+                .label_size(LabelSize::Small)
+                .on_click(move |_, window, cx| {
+                    on_decline(decline_id.clone(), window, cx);
+                }),
             )
             .child(
                 Button::new(
                     ("elicitation-cancel", self.entry_ix),
                     t!("agent_ui.elicitation.cancel"),
                 )
-                    .label_size(LabelSize::Small)
-                    .on_click(move |_, window, cx| {
-                        on_cancel(cancel_id.clone(), window, cx);
-                    }),
+                .label_size(LabelSize::Small)
+                .on_click(move |_, window, cx| {
+                    on_cancel(cancel_id.clone(), window, cx);
+                }),
             )
             .into_any_element()
     }

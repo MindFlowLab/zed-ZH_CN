@@ -180,9 +180,13 @@ impl Render for ChannelModal {
                             )
                             .children(
                                 Some(
-                                    Button::new("copy-link", t!("collab_ui.channel_modal.copy_link"))
-                                        .label_size(LabelSize::Small)
-                                        .on_click(cx.listener(move |this, _, _, cx| {
+                                    Button::new(
+                                        "copy-link",
+                                        t!("collab_ui.channel_modal.copy_link"),
+                                    )
+                                    .label_size(LabelSize::Small)
+                                    .on_click(cx.listener(
+                                        move |this, _, _, cx| {
                                             if let Some(channel) = this
                                                 .channel_store
                                                 .read(cx)
@@ -192,7 +196,8 @@ impl Render for ChannelModal {
                                                     ClipboardItem::new_string(channel.link(cx));
                                                 cx.write_to_clipboard(item);
                                             }
-                                        })),
+                                        },
+                                    )),
                                 )
                                 .filter(|_| visibility == ChannelVisibility::Public),
                             ),
@@ -436,14 +441,23 @@ impl PickerDelegate for ChannelModalDelegate {
                                 },
                             )
                             .children(match membership.map(|m| m.role) {
-                                Some(ChannelRole::Admin) => Some(Label::new(t!("collab_ui.channel_modal.admin"))),
-                                Some(ChannelRole::Guest) => Some(Label::new(t!("collab_ui.channel_modal.guest"))),
+                                Some(ChannelRole::Admin) => {
+                                    Some(Label::new(t!("collab_ui.channel_modal.admin")))
+                                }
+                                Some(ChannelRole::Guest) => {
+                                    Some(Label::new(t!("collab_ui.channel_modal.guest")))
+                                }
                                 _ => None,
                             })
                             .when(!is_me, |el| {
                                 el.child(IconButton::new("ellipsis", IconName::Ellipsis))
                             })
-                            .when(is_me, |el| el.child(Label::new(t!("collab_ui.channel_modal.you")).color(Color::Muted)))
+                            .when(is_me, |el| {
+                                el.child(
+                                    Label::new(t!("collab_ui.channel_modal.you"))
+                                        .color(Color::Muted),
+                                )
+                            })
                             .children(
                                 if let (Some((menu, _)), true) = (&self.context_menu, selected) {
                                     Some(
@@ -459,12 +473,10 @@ impl PickerDelegate for ChannelModalDelegate {
                                 },
                             ),
                         Mode::InviteMembers => match request_status {
-                            Some(proto::channel_member::Kind::Invitee) => {
-                                slot.children(Some(Label::new(t!("collab_ui.channel_modal.invited"))))
-                            }
-                            Some(proto::channel_member::Kind::Member) => {
-                                slot.children(Some(Label::new(t!("collab_ui.channel_modal.member"))))
-                            }
+                            Some(proto::channel_member::Kind::Invitee) => slot
+                                .children(Some(Label::new(t!("collab_ui.channel_modal.invited")))),
+                            Some(proto::channel_member::Kind::Member) => slot
+                                .children(Some(Label::new(t!("collab_ui.channel_modal.member")))),
                             _ => slot,
                         },
                     }
@@ -627,13 +639,17 @@ impl ChannelModalDelegate {
 
             if role == ChannelRole::Admin || role == ChannelRole::Member {
                 let picker = picker.clone();
-                menu = menu.entry(t!("collab_ui.channel_modal.demote_to_guest"), None, move |window, cx| {
-                    picker.update(cx, |picker, cx| {
-                        picker
-                            .delegate
-                            .set_user_role(user_id, ChannelRole::Guest, window, cx);
-                    })
-                });
+                menu = menu.entry(
+                    t!("collab_ui.channel_modal.demote_to_guest"),
+                    None,
+                    move |window, cx| {
+                        picker.update(cx, |picker, cx| {
+                            picker
+                                .delegate
+                                .set_user_role(user_id, ChannelRole::Guest, window, cx);
+                        })
+                    },
+                );
             }
 
             if role == ChannelRole::Admin || role == ChannelRole::Guest {
@@ -655,13 +671,17 @@ impl ChannelModalDelegate {
 
             if role == ChannelRole::Member || role == ChannelRole::Guest {
                 let picker = picker.clone();
-                menu = menu.entry(t!("collab_ui.channel_modal.promote_to_admin"), None, move |window, cx| {
-                    picker.update(cx, |picker, cx| {
-                        picker
-                            .delegate
-                            .set_user_role(user_id, ChannelRole::Admin, window, cx);
-                    })
-                });
+                menu = menu.entry(
+                    t!("collab_ui.channel_modal.promote_to_admin"),
+                    None,
+                    move |window, cx| {
+                        picker.update(cx, |picker, cx| {
+                            picker
+                                .delegate
+                                .set_user_role(user_id, ChannelRole::Admin, window, cx);
+                        })
+                    },
+                );
             };
 
             menu = menu.separator();

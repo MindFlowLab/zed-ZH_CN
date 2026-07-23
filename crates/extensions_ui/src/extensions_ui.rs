@@ -77,14 +77,21 @@ impl WorkspaceError for DevExtensionNotInstalledError {
         match &self.extension_id {
             Some(extension_id) => {
                 // 插值:开发扩展未安装提示 / interpolated: dev extension not installed
-                t!("extensions_ui.dev_extension.not_installed_with_id", extension_id = extension_id).into()
+                t!(
+                    "extensions_ui.dev_extension.not_installed_with_id",
+                    extension_id = extension_id
+                )
+                .into()
             }
             None => t!("extensions_ui.dev_extension.not_installed").into(),
         }
     }
 
     fn primary_action(&self) -> ErrorAction {
-        ErrorAction::new(t!("extensions_ui.dev_extension.install_action"), InstallDevExtension)
+        ErrorAction::new(
+            t!("extensions_ui.dev_extension.install_action"),
+            InstallDevExtension,
+        )
     }
 
     fn severity(&self) -> ErrorSeverity {
@@ -465,7 +472,11 @@ impl ExtensionsPage {
 
             let query_editor = cx.new(|cx| {
                 let mut input = Editor::single_line(window, cx);
-                input.set_placeholder_text(t!("extensions_ui.search.placeholder").as_str(), window, cx);
+                input.set_placeholder_text(
+                    t!("extensions_ui.search.placeholder").as_str(),
+                    window,
+                    cx,
+                );
                 if let Some(id) = focus_extension_id {
                     input.set_text(format!("id:{id}"), window, cx);
                 }
@@ -1257,39 +1268,42 @@ impl ExtensionsPage {
                     None
                 } else {
                     Some(
-                        Button::new(extension_button_id(&extension.id, ExtensionOperation::Upgrade), t!("extensions_ui.button.upgrade"))
-                          .style(ButtonStyle::Tinted(ui::TintColor::Accent))
-                            .when(!is_compatible, |upgrade_button| {
-                                upgrade_button.disabled(true).tooltip({
-                                    let version = extension.manifest.version.clone();
-                                    move |_, cx| {
-                                        Tooltip::simple(
-                                            t!(
-                                                "extensions_ui.card.version_incompatible",
-                                                version = version
-                                            ),
-                                             cx,
-                                        )
-                                    }
-                                })
-                            })
-                            .disabled(!is_compatible)
-                            .on_click({
-                                let extension_id = extension.id.clone();
+                        Button::new(
+                            extension_button_id(&extension.id, ExtensionOperation::Upgrade),
+                            t!("extensions_ui.button.upgrade"),
+                        )
+                        .style(ButtonStyle::Tinted(ui::TintColor::Accent))
+                        .when(!is_compatible, |upgrade_button| {
+                            upgrade_button.disabled(true).tooltip({
                                 let version = extension.manifest.version.clone();
-                                move |_, _, cx| {
-                                    telemetry::event!("Extension Installed", extension_id, version);
-                                    ExtensionStore::global(cx).update(cx, |store, cx| {
-                                        store
-                                            .upgrade_extension(
-                                                extension_id.clone(),
-                                                version.clone(),
-                                                cx,
-                                            )
-                                            .detach_and_log_err(cx)
-                                    });
+                                move |_, cx| {
+                                    Tooltip::simple(
+                                        t!(
+                                            "extensions_ui.card.version_incompatible",
+                                            version = version
+                                        ),
+                                        cx,
+                                    )
                                 }
-                            }),
+                            })
+                        })
+                        .disabled(!is_compatible)
+                        .on_click({
+                            let extension_id = extension.id.clone();
+                            let version = extension.manifest.version.clone();
+                            move |_, _, cx| {
+                                telemetry::event!("Extension Installed", extension_id, version);
+                                ExtensionStore::global(cx).update(cx, |store, cx| {
+                                    store
+                                        .upgrade_extension(
+                                            extension_id.clone(),
+                                            version.clone(),
+                                            cx,
+                                        )
+                                        .detach_and_log_err(cx)
+                                });
+                            }
+                        }),
                     )
                 },
             },
@@ -1567,18 +1581,19 @@ impl ExtensionsPage {
         vim: bool,
         cx: &mut Context<Self>,
     ) -> impl IntoElement {
-        let docs_url_button = Button::new("open_docs", t!("extensions_ui.upsell.view_documentation"))
-            .end_icon(Icon::new(IconName::ArrowUpRight).size(IconSize::Small))
-            .on_click({
-                move |_event, _window, cx| {
-                    telemetry::event!(
-                        "Documentation Viewed",
-                        source = "Feature Upsell",
-                        url = docs_url,
-                    );
-                    cx.open_url(&docs_url)
-                }
-            });
+        let docs_url_button =
+            Button::new("open_docs", t!("extensions_ui.upsell.view_documentation"))
+                .end_icon(Icon::new(IconName::ArrowUpRight).size(IconSize::Small))
+                .on_click({
+                    move |_event, _window, cx| {
+                        telemetry::event!(
+                            "Documentation Viewed",
+                            source = "Feature Upsell",
+                            url = docs_url,
+                        );
+                        cx.open_url(&docs_url)
+                    }
+                });
 
         div()
             .pt_4()
@@ -1598,7 +1613,9 @@ impl ExtensionsPage {
                                         h_flex()
                                             .pl_1()
                                             .gap_1()
-                                            .child(Label::new(t!("extensions_ui.upsell.enable_vim_mode")))
+                                            .child(Label::new(t!(
+                                                "extensions_ui.upsell.enable_vim_mode"
+                                            )))
                                             .child(
                                                 Switch::new(
                                                     "enable-vim",
@@ -1936,14 +1953,20 @@ impl Render for ExtensionsPage {
                             .w_full()
                             .gap_1p5()
                             .justify_between()
-                            .child(Headline::new(t!("extensions_ui.page.title")).size(HeadlineSize::Large))
                             .child(
-                                Button::new("install-dev-extension", t!("extensions_ui.button.install_dev_extension"))
-                                    .style(ButtonStyle::Outlined)
-                                    .size(ButtonSize::Medium)
-                                    .on_click(|_event, window, cx| {
-                                        window.dispatch_action(Box::new(InstallDevExtension), cx)
-                                    }),
+                                Headline::new(t!("extensions_ui.page.title"))
+                                    .size(HeadlineSize::Large),
+                            )
+                            .child(
+                                Button::new(
+                                    "install-dev-extension",
+                                    t!("extensions_ui.button.install_dev_extension"),
+                                )
+                                .style(ButtonStyle::Outlined)
+                                .size(ButtonSize::Medium)
+                                .on_click(|_event, window, cx| {
+                                    window.dispatch_action(Box::new(InstallDevExtension), cx)
+                                }),
                             ),
                     )
                     .child(

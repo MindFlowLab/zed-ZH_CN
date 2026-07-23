@@ -328,14 +328,17 @@ impl PickerDelegate for DevContainerPickerDelegate {
                 .border_t_1()
                 .border_color(cx.theme().colors().border_variant)
                 .child(
-                    Button::new("run-action", t!("recent_projects.remote.start_dev_container"))
-                        .key_binding(
-                            KeyBinding::for_action(&menu::Confirm, cx)
-                                .map(|kb| kb.size(rems_from_px(12.))),
-                        )
-                        .on_click(|_, window, cx| {
-                            window.dispatch_action(menu::Confirm.boxed_clone(), cx)
-                        }),
+                    Button::new(
+                        "run-action",
+                        t!("recent_projects.remote.start_dev_container"),
+                    )
+                    .key_binding(
+                        KeyBinding::for_action(&menu::Confirm, cx)
+                            .map(|kb| kb.size(rems_from_px(12.))),
+                    )
+                    .on_click(|_, window, cx| {
+                        window.dispatch_action(menu::Confirm.boxed_clone(), cx)
+                    }),
                 )
                 .child(
                     Button::new(
@@ -1611,8 +1614,11 @@ impl RemoteServerProjects {
                 self.mode = Mode::CreateRemoteServer(CreateRemoteServer {
                     address_editor: editor,
                     address_error: Some(
-                        t!("recent_projects.remote.could_not_parse", error = format!("{:?}", e))
-                            .into(),
+                        t!(
+                            "recent_projects.remote.could_not_parse",
+                            error = format!("{:?}", e)
+                        )
+                        .into(),
                     ),
                     ssh_prompt: None,
                     _creating: None,
@@ -2412,7 +2418,9 @@ impl RemoteServerProjects {
                                                 .color(Color::Muted)
                                                 .size(IconSize::Small),
                                         )
-                                        .child(Label::new(t!("recent_projects.remote.open_zed_log")))
+                                        .child(Label::new(t!(
+                                            "recent_projects.remote.open_zed_log"
+                                        )))
                                         .on_click(cx.listener(|_, _, window, cx| {
                                             window.dispatch_action(Box::new(OpenLog), cx);
                                             cx.emit(DismissEvent);
@@ -2577,16 +2585,18 @@ impl RemoteServerProjects {
                                             "learn-more",
                                             t!("recent_projects.remote.learn_more"),
                                         )
-                                            .label_size(LabelSize::Small)
-                                            .end_icon(
-                                                Icon::new(IconName::ArrowUpRight)
-                                                    .size(IconSize::XSmall),
-                                            )
-                                            .on_click(|_, _, cx| {
+                                        .label_size(LabelSize::Small)
+                                        .end_icon(
+                                            Icon::new(IconName::ArrowUpRight)
+                                                .size(IconSize::XSmall),
+                                        )
+                                        .on_click(
+                                            |_, _, cx| {
                                                 cx.open_url(
                                                     "https://zed.dev/docs/remote-development",
                                                 );
-                                            }),
+                                            },
+                                        ),
                                     ),
                             )
                         }
@@ -2784,7 +2794,10 @@ impl RemoteServerProjects {
                         .inset(true)
                         .spacing(ui::ListItemSpacing::Sparse)
                         .start_slot(Icon::new(IconName::Trash).color(Color::Error))
-                        .child(Label::new(t!("recent_projects.remote.remove_distro")).color(Color::Error))
+                        .child(
+                            Label::new(t!("recent_projects.remote.remove_distro"))
+                                .color(Color::Error),
+                        )
                         .on_click(cx.listener(move |_, _, window, cx| {
                             remove_wsl_distro(cx.entity(), index, distro_name.clone(), window, cx);
                             cx.focus_self(window);
@@ -2946,7 +2959,10 @@ impl RemoteServerProjects {
                             .inset(true)
                             .spacing(ui::ListItemSpacing::Sparse)
                             .start_slot(Icon::new(IconName::Trash).color(Color::Error))
-                            .child(Label::new(t!("recent_projects.remote.remove_server")).color(Color::Error))
+                            .child(
+                                Label::new(t!("recent_projects.remote.remove_server"))
+                                    .color(Color::Error),
+                            )
                             .on_click(cx.listener(move |_, _, window, cx| {
                                 remove_ssh_server(
                                     cx.entity(),

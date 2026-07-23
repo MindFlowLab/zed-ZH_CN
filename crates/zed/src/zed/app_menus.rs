@@ -49,10 +49,7 @@ pub fn app_menus(cx: &mut App) -> Vec<Menu> {
             name: t!("app_menus.view.editor_layout").into(),
             disabled: false,
             items: vec![
-                MenuItem::action(
-                    t!("app_menus.view.split_up"),
-                    workspace::SplitUp::default(),
-                ),
+                MenuItem::action(t!("app_menus.view.split_up"), workspace::SplitUp::default()),
                 MenuItem::action(
                     t!("app_menus.view.split_down"),
                     workspace::SplitDown::default(),
@@ -103,16 +100,10 @@ pub fn app_menus(cx: &mut App) -> Vec<Menu> {
             disabled: false,
             items: vec![
                 MenuItem::action(t!("app_menus.zed.about"), zed_actions::About),
-                MenuItem::action(
-                    t!("app_menus.zed.check_for_updates"),
-                    auto_update::Check,
-                ),
+                MenuItem::action(t!("app_menus.zed.check_for_updates"), auto_update::Check),
                 MenuItem::separator(),
                 MenuItem::submenu(Menu::new(t!("app_menus.zed.settings")).items([
-                    MenuItem::action(
-                        t!("app_menus.zed.open_settings"),
-                        zed_actions::OpenSettings,
-                    ),
+                    MenuItem::action(t!("app_menus.zed.open_settings"), zed_actions::OpenSettings),
                     MenuItem::action(
                         t!("app_menus.zed.open_settings_file"),
                         super::OpenSettingsFile,
@@ -130,10 +121,7 @@ pub fn app_menus(cx: &mut App) -> Vec<Menu> {
                         super::OpenDefaultSettings,
                     ),
                     MenuItem::separator(),
-                    MenuItem::action(
-                        t!("app_menus.zed.open_keymap"),
-                        zed_actions::OpenKeymap,
-                    ),
+                    MenuItem::action(t!("app_menus.zed.open_keymap"), zed_actions::OpenKeymap),
                     MenuItem::action(
                         t!("app_menus.zed.open_keymap_file"),
                         zed_actions::OpenKeymapFile,
@@ -154,17 +142,17 @@ pub fn app_menus(cx: &mut App) -> Vec<Menu> {
                 ])),
                 MenuItem::separator(),
                 #[cfg(target_os = "macos")]
-                MenuItem::os_submenu(
-                    t!("app_menus.zed.services"),
-                    gpui::SystemMenuType::Services,
-                ),
+                MenuItem::os_submenu(t!("app_menus.zed.services"), gpui::SystemMenuType::Services),
                 MenuItem::separator(),
                 MenuItem::action(
                     t!("app_menus.zed.extensions"),
                     zed_actions::Extensions::default(),
                 ),
                 #[cfg(not(target_os = "windows"))]
-                MenuItem::action(t!("app_menus.zed.install_cli"), install_cli::InstallCliBinary),
+                MenuItem::action(
+                    t!("app_menus.zed.install_cli"),
+                    install_cli::InstallCliBinary,
+                ),
                 MenuItem::separator(),
                 #[cfg(target_os = "macos")]
                 MenuItem::action(t!("app_menus.zed.hide_zed"), super::Hide),
@@ -243,7 +231,11 @@ pub fn app_menus(cx: &mut App) -> Vec<Menu> {
                     OsAction::Redo,
                 ),
                 MenuItem::separator(),
-                MenuItem::os_action(t!("app_menus.edit.cut"), editor::actions::Cut, OsAction::Cut),
+                MenuItem::os_action(
+                    t!("app_menus.edit.cut"),
+                    editor::actions::Cut,
+                    OsAction::Cut,
+                ),
                 MenuItem::os_action(
                     t!("app_menus.edit.copy"),
                     editor::actions::Copy,
@@ -458,7 +450,10 @@ pub fn app_menus(cx: &mut App) -> Vec<Menu> {
                     t!("app_menus.help.release_notes"),
                     auto_update_ui::ViewReleaseNotesLocally,
                 ),
-                MenuItem::action(t!("app_menus.help.telemetry"), zed_actions::OpenTelemetryLog),
+                MenuItem::action(
+                    t!("app_menus.help.telemetry"),
+                    zed_actions::OpenTelemetryLog,
+                ),
                 MenuItem::action(t!("app_menus.help.licenses"), zed_actions::OpenLicenses),
                 MenuItem::action(t!("app_menus.help.welcome"), onboarding::ShowWelcome),
                 MenuItem::separator(),

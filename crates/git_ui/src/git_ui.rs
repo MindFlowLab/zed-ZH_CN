@@ -456,7 +456,12 @@ impl RenameBranchModal {
                 Err(_) => Err(anyhow!("Operation was canceled")),
             }
         })
-        .detach_and_prompt_err(&t!("git_ui.git_ui.rename_branch_failed"), window, cx, |_, _, _| None);
+        .detach_and_prompt_err(
+            &t!("git_ui.git_ui.rename_branch_failed"),
+            window,
+            cx,
+            |_, _, _| None,
+        );
         cx.emit(DismissEvent);
     }
 }
@@ -742,7 +747,9 @@ impl Render for RefPickerModal {
                     .w_full()
                     .gap_1p5()
                     .child(Icon::new(IconName::Hash).size(IconSize::XSmall))
-                    .child(Headline::new(t!("git_ui.common.view_commit")).size(HeadlineSize::XSmall)),
+                    .child(
+                        Headline::new(t!("git_ui.common.view_commit")).size(HeadlineSize::XSmall),
+                    ),
             )
             .child(div().px_3().w_full().child(self.editor.clone()))
             .when_some(commit_preview, |el, preview| {
@@ -827,12 +834,12 @@ fn render_remote_button(
 mod remote_button {
     use crate::git_panel::RemoteOperationKind;
     // 嵌套模块需独立导入翻译宏 / nested modules need their own `t!` import
-    use zed_i18n::t;
     use gpui::{Action, Anchor, AnyView, ClickEvent, FocusHandle};
     use ui::{
         ButtonLike, CommonAnimationExt, ContextMenu, ElevationIndex, PopoverMenu,
         PopoverMenuHandle, SplitButton, Tooltip, prelude::*,
     };
+    use zed_i18n::t;
 
     pub fn render_fetch_button(
         keybinding_target: Option<FocusHandle>,

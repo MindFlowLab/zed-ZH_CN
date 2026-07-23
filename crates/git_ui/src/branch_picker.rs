@@ -822,7 +822,10 @@ const BRANCH_DELETE_FORCE_DELETE_PROMPTS: &[BranchDeleteForceDeletePrompt] =
     }];
 
 fn unmerged_branch_force_delete_prompt(branch_name: &str) -> String {
-    t!("git_ui.branch_picker.unmerged_force_delete_prompt", branch = branch_name)
+    t!(
+        "git_ui.branch_picker.unmerged_force_delete_prompt",
+        branch = branch_name
+    )
 }
 
 // Git only reports these cases via localized stderr, so this best-effort check
@@ -1067,9 +1070,12 @@ impl BranchListDelegate {
 
             Ok(())
         })
-        .detach_and_prompt_err(&t!("git_ui.branch_picker.create_branch_failed"), window, cx, |e, _, _| {
-            Some(e.to_string())
-        });
+        .detach_and_prompt_err(
+            &t!("git_ui.branch_picker.create_branch_failed"),
+            window,
+            cx,
+            |e, _, _| Some(e.to_string()),
+        );
         cx.emit(DismissEvent);
     }
 
@@ -1087,9 +1093,12 @@ impl BranchListDelegate {
         let receiver = repo.update(cx, |repo, _| repo.create_remote(remote_name, remote_url));
 
         cx.background_spawn(async move { receiver.await? })
-            .detach_and_prompt_err(&t!("git_ui.branch_picker.create_remote_failed"), window, cx, |e, _, _cx| {
-                Some(e.to_string())
-            });
+            .detach_and_prompt_err(
+                &t!("git_ui.branch_picker.create_remote_failed"),
+                window,
+                cx,
+                |e, _, _cx| Some(e.to_string()),
+            );
         cx.emit(DismissEvent);
     }
 
@@ -1255,9 +1264,9 @@ impl PickerDelegate for BranchListDelegate {
 
     fn no_matches_text(&self, _window: &mut Window, _cx: &mut App) -> Option<SharedString> {
         match self.state {
-            PickerState::CreateRemote(_) => {
-                Some(SharedString::from(t!("git_ui.branch_picker.remote_name_empty")))
-            }
+            PickerState::CreateRemote(_) => Some(SharedString::from(t!(
+                "git_ui.branch_picker.remote_name_empty"
+            ))),
             _ => None,
         }
     }
@@ -1274,10 +1283,7 @@ impl PickerDelegate for BranchListDelegate {
 
         let warning_banner = || {
             self.branch_list_error.as_deref().map(|error| {
-                let message = t!(
-                    "git_ui.branch_picker.branches_load_warning",
-                    error = error
-                );
+                let message = t!("git_ui.branch_picker.branches_load_warning", error = error);
                 div().p_1p5().child(
                     Banner::new()
                         .severity(Severity::Warning)
@@ -1698,20 +1704,18 @@ impl PickerDelegate for BranchListDelegate {
                 .single_line()
                 .truncate()
                 .into_any_element(),
-            Entry::NewBranch { name } => Label::new(t!(
-                "git_ui.branch_picker.create_branch_entry",
-                name = name
-            ))
-            .single_line()
-            .truncate()
-            .into_any_element(),
-            Entry::NewRemoteName { name, .. } => Label::new(t!(
-                "git_ui.branch_picker.create_remote_entry",
-                name = name
-            ))
-            .single_line()
-            .truncate()
-            .into_any_element(),
+            Entry::NewBranch { name } => {
+                Label::new(t!("git_ui.branch_picker.create_branch_entry", name = name))
+                    .single_line()
+                    .truncate()
+                    .into_any_element()
+            }
+            Entry::NewRemoteName { name, .. } => {
+                Label::new(t!("git_ui.branch_picker.create_remote_entry", name = name))
+                    .single_line()
+                    .truncate()
+                    .into_any_element()
+            }
             Entry::Branch { branch, positions } => {
                 HighlightedLabel::new(branch.name().to_string(), positions.clone())
                     .single_line()
@@ -1827,7 +1831,10 @@ impl PickerDelegate for BranchListDelegate {
                                                 repo.read(cx).branch.as_ref().map(|b| b.name())
                                             })
                                         {
-                                            t!("git_ui.branch_picker.based_off", base = current_branch)
+                                            t!(
+                                                "git_ui.branch_picker.based_off",
+                                                base = current_branch
+                                            )
                                         } else {
                                             t!("git_ui.branch_picker.based_off_current_branch")
                                         }
@@ -1881,9 +1888,11 @@ impl PickerDelegate for BranchListDelegate {
                                         })
                                         .when(!has_commit, |this| {
                                             this.child(
-                                                Label::new(t!("git_ui.branch_picker.no_commits_found"))
-                                                    .color(Color::Muted)
-                                                    .size(LabelSize::Small),
+                                                Label::new(t!(
+                                                    "git_ui.branch_picker.no_commits_found"
+                                                ))
+                                                .color(Color::Muted)
+                                                .size(LabelSize::Small),
                                             )
                                         })
                                         .into_any_element()

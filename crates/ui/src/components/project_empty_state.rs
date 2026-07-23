@@ -88,10 +88,7 @@ impl RenderOnce for ProjectEmptyState {
                             .child(Divider::horizontal().color(DividerColor::Border)),
                     )
                     .child(
-                        Button::new(
-                            "clone_repo",
-                            t!("ui.project_empty_state.clone_repository"),
-                        )
+                        Button::new("clone_repo", t!("ui.project_empty_state.clone_repository"))
                             .full_width()
                             .when_some(self.on_clone_repo, |button, handler| {
                                 button.on_click(handler)

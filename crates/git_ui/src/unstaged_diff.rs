@@ -845,7 +845,9 @@ impl Render for UnstagedDiffToolbar {
                 Button::new("restore-all", t!("git_ui.common.restore_all"))
                     .width(rems_from_px(80.))
                     .disabled(!button_states.restore_all)
-                    .tooltip(Tooltip::text(t!("git_ui.unstaged_diff.restore_all_changes")))
+                    .tooltip(Tooltip::text(t!(
+                        "git_ui.unstaged_diff.restore_all_changes"
+                    )))
                     .on_click(cx.listener(|this, _, window, cx| this.restore_all(window, cx))),
             )
     }

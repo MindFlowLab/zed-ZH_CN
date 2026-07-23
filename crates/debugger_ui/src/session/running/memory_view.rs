@@ -403,14 +403,22 @@ impl MemoryView {
         if !self.is_writing_memory {
             self.query_editor.update(cx, |this, cx| {
                 this.clear(window, cx);
-                this.set_placeholder_text(&t!("debugger_ui.memory_view.write_placeholder"), window, cx);
+                this.set_placeholder_text(
+                    &t!("debugger_ui.memory_view.write_placeholder"),
+                    window,
+                    cx,
+                );
             });
             self.is_writing_memory = true;
             self.query_editor.focus_handle(cx).focus(window, cx);
         } else {
             self.query_editor.update(cx, |this, cx| {
                 this.clear(window, cx);
-                this.set_placeholder_text(&t!("debugger_ui.memory_view.goto_placeholder"), window, cx);
+                this.set_placeholder_text(
+                    &t!("debugger_ui.memory_view.goto_placeholder"),
+                    window,
+                    cx,
+                );
             });
             self.is_writing_memory = false;
         }
@@ -474,18 +482,27 @@ impl MemoryView {
                         // We cannot write memory with this adapter.
                         _ = self.workspace.update(cx, |this, cx| {
                             this.toggle_status_toast(
-                                StatusToast::new(t!(
-                                    "debugger_ui.memory_view.no_write_support",
-                                    adapter = adapter_name
-                                ), cx, |this, cx| {
-                                    cx.spawn(async move |this, cx| {
-                                        cx.background_executor().timer(Duration::from_secs(2)).await;
-                                        _ = this.update(cx, |_, cx| {
-                                            cx.emit(DismissEvent)
-                                        });
-                                    }).detach();
-                                    this.icon(Icon::new(IconName::XCircle).size(IconSize::Small).color(Color::Error))
-                                }),
+                                StatusToast::new(
+                                    t!(
+                                        "debugger_ui.memory_view.no_write_support",
+                                        adapter = adapter_name
+                                    ),
+                                    cx,
+                                    |this, cx| {
+                                        cx.spawn(async move |this, cx| {
+                                            cx.background_executor()
+                                                .timer(Duration::from_secs(2))
+                                                .await;
+                                            _ = this.update(cx, |_, cx| cx.emit(DismissEvent));
+                                        })
+                                        .detach();
+                                        this.icon(
+                                            Icon::new(IconName::XCircle)
+                                                .size(IconSize::Small)
+                                                .color(Color::Error),
+                                        )
+                                    },
+                                ),
                                 cx,
                             );
                         });

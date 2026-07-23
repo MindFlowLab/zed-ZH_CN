@@ -1437,13 +1437,13 @@ impl PickerDelegate for WorktreePickerDelegate {
                     "configure-worktree-tasks",
                     t!("git_ui.worktree_picker.automate_setup"),
                 )
-                    .key_binding(
-                        KeyBinding::for_action_in(&OpenWorktreeSetupTasks, &focus_handle, cx)
-                            .map(|kb| kb.size(rems_from_px(12.))),
-                    )
-                    .on_click(|_, window, cx| {
-                        window.dispatch_action(OpenWorktreeSetupTasks.boxed_clone(), cx)
-                    }),
+                .key_binding(
+                    KeyBinding::for_action_in(&OpenWorktreeSetupTasks, &focus_handle, cx)
+                        .map(|kb| kb.size(rems_from_px(12.))),
+                )
+                .on_click(|_, window, cx| {
+                    window.dispatch_action(OpenWorktreeSetupTasks.boxed_clone(), cx)
+                }),
             );
 
         if is_creating {
@@ -1498,20 +1498,22 @@ impl PickerDelegate for WorktreePickerDelegate {
                                         "open-in-new-window",
                                         t!("git_ui.worktree_picker.open_in_new_window"),
                                     )
-                                        .key_binding(
-                                            KeyBinding::for_action_in(
-                                                &menu::SecondaryConfirm,
-                                                &focus_handle,
-                                                cx,
-                                            )
-                                            .map(|kb| kb.size(rems_from_px(12.))),
+                                    .key_binding(
+                                        KeyBinding::for_action_in(
+                                            &menu::SecondaryConfirm,
+                                            &focus_handle,
+                                            cx,
                                         )
-                                        .on_click(|_, window, cx| {
+                                        .map(|kb| kb.size(rems_from_px(12.))),
+                                    )
+                                    .on_click(
+                                        |_, window, cx| {
                                             window.dispatch_action(
                                                 menu::SecondaryConfirm.boxed_clone(),
                                                 cx,
                                             )
-                                        }),
+                                        },
+                                    ),
                                 )
                             })
                             .when(!is_deleting, |this| {
@@ -1605,7 +1607,12 @@ pub async fn open_remote_worktree(
             window,
             cx,
         )
-        .prompt_err(&t!("git_ui.worktree_picker.connect_failed"), window, cx, |_, _, _| None)
+        .prompt_err(
+            &t!("git_ui.worktree_picker.connect_failed"),
+            window,
+            cx,
+            |_, _, _| None,
+        )
     })?;
 
     let session = connect_task.await;

@@ -127,8 +127,13 @@ mod shader_compilation {
             .output()
             && output.status.success()
         {
+            // `where.exe` may return multiple matches (one per line) when several
+            // Windows SDK versions are installed; only use the first one, otherwise
+            // the embedded newline makes the path invalid (os error 123).
             let path = String::from_utf8_lossy(&output.stdout);
-            return path.trim().to_string();
+            if let Some(first) = path.lines().next().map(str::trim).filter(|p| !p.is_empty()) {
+                return first.to_string();
+            }
         }
 
         if let Ok(Some(path)) = find_latest_windows_sdk_binary("fxc.exe") {

@@ -452,11 +452,9 @@ impl Item for BranchDiff {
 
     fn tab_content_text(&self, _detail: usize, cx: &App) -> SharedString {
         match self.diff_base(cx) {
-            DiffBase::Merge { base_ref } => t!(
-                "git_ui.branch_diff.changes_since",
-                base_ref = base_ref
-            )
-            .into(),
+            DiffBase::Merge { base_ref } => {
+                t!("git_ui.branch_diff.changes_since", base_ref = base_ref).into()
+            }
             DiffBase::Head | DiffBase::Index | DiffBase::Staged => {
                 t!("git_ui.branch_diff.changes").into()
             }

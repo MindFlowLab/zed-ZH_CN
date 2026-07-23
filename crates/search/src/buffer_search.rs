@@ -120,9 +120,15 @@ impl Render for BufferSearchBar {
                 .map(|editor: Entity<Editor>| editor.read(cx).has_any_buffer_folded(cx))
                 .unwrap_or_default();
             let (icon, tooltip_label) = if is_collapsed {
-                (IconName::ChevronUpDown, t!("search.buffer.expand_all_files"))
+                (
+                    IconName::ChevronUpDown,
+                    t!("search.buffer.expand_all_files"),
+                )
             } else {
-                (IconName::ChevronDownUp, t!("search.buffer.collapse_all_files"))
+                (
+                    IconName::ChevronDownUp,
+                    t!("search.buffer.collapse_all_files"),
+                )
             };
 
             let collapse_expand_icon_button = |id| {
@@ -182,7 +188,11 @@ impl Render for BufferSearchBar {
 
         self.query_editor.update(cx, |query_editor, cx| {
             if query_editor.placeholder_text(cx).is_none() {
-                query_editor.set_placeholder_text(&t!("search.buffer.search_placeholder"), window, cx);
+                query_editor.set_placeholder_text(
+                    &t!("search.buffer.search_placeholder"),
+                    window,
+                    cx,
+                );
             }
         });
 

@@ -897,56 +897,77 @@ impl ProjectPanel {
                     allow_preview,
                 } => {
                     if let Some(worktree) = project.read(cx).worktree_for_entry(entry_id, cx)
-                        && let Some(entry) = worktree.read(cx).entry_for_id(entry_id) {
-                            let file_path = entry.path.clone();
-                            let worktree_id = worktree.read(cx).id();
-                            let entry_id = entry.id;
-                            let is_via_ssh = project.read(cx).is_via_remote_server();
+                        && let Some(entry) = worktree.read(cx).entry_for_id(entry_id)
+                    {
+                        let file_path = entry.path.clone();
+                        let worktree_id = worktree.read(cx).id();
+                        let entry_id = entry.id;
+                        let is_via_ssh = project.read(cx).is_via_remote_server();
 
-                            workspace
-                                .open_path_preview(
-                                    ProjectPath {
-                                        worktree_id,
-                                        path: file_path.clone(),
-                                    },
-                                    None,
-                                    focus_opened_item,
-                                    allow_preview,
-                                    true,
-                                    window, cx,
-                                )
-                                .detach_and_prompt_err(&t!("project_panel.prompt.failed_to_open_file"), window, cx, move |e, _, _| {
+                        workspace
+                            .open_path_preview(
+                                ProjectPath {
+                                    worktree_id,
+                                    path: file_path.clone(),
+                                },
+                                None,
+                                focus_opened_item,
+                                allow_preview,
+                                true,
+                                window,
+                                cx,
+                            )
+                            .detach_and_prompt_err(
+                                &t!("project_panel.prompt.failed_to_open_file"),
+                                window,
+                                cx,
+                                move |e, _, _| {
                                     match e.error_code() {
-                                        ErrorCode::Disconnected => if is_via_ssh {
-                                            Some(t!("project_panel.prompt.disconnected_from_ssh"))
-                                        } else {
-                                            Some(t!("project_panel.prompt.disconnected_from_remote"))
-                                        },
+                                        ErrorCode::Disconnected => {
+                                            if is_via_ssh {
+                                                Some(t!(
+                                                    "project_panel.prompt.disconnected_from_ssh"
+                                                ))
+                                            } else {
+                                                Some(t!(
+                                                    "project_panel.prompt.disconnected_from_remote"
+                                                ))
+                                            }
+                                        }
                                         ErrorCode::UnsharedItem => Some(t!(
                                             "project_panel.prompt.not_shared_by_host",
                                             path = file_path.display(path_style)
                                         )),
                                         // See note in worktree.rs where this error originates. Returning Some in this case prevents
                                         // the error popup from saying "Try Again", which is a red herring in this case
-                                        ErrorCode::Internal if e.to_string().contains("File is too large to load") => Some(e.to_string()),
+                                        ErrorCode::Internal
+                                            if e.to_string()
+                                                .contains("File is too large to load") =>
+                                        {
+                                            Some(e.to_string())
+                                        }
                                         _ => None,
                                     }
-                                });
+                                },
+                            );
 
-                            if let Some(project_panel) = project_panel.upgrade() {
-                                // Always select and mark the entry, regardless of whether it is opened or not.
-                                project_panel.update(cx, |project_panel, _| {
-                                    let entry = SelectedEntry { worktree_id, entry_id };
-                                    project_panel.marked_entries.clear();
-                                    project_panel.marked_entries.push(entry);
-                                    project_panel.selection = Some(entry);
-                                });
-                                if !focus_opened_item {
-                                    let focus_handle = project_panel.read(cx).focus_handle.clone();
-                                    window.focus(&focus_handle, cx);
-                                }
+                        if let Some(project_panel) = project_panel.upgrade() {
+                            // Always select and mark the entry, regardless of whether it is opened or not.
+                            project_panel.update(cx, |project_panel, _| {
+                                let entry = SelectedEntry {
+                                    worktree_id,
+                                    entry_id,
+                                };
+                                project_panel.marked_entries.clear();
+                                project_panel.marked_entries.push(entry);
+                                project_panel.selection = Some(entry);
+                            });
+                            if !focus_opened_item {
+                                let focus_handle = project_panel.read(cx).focus_handle.clone();
+                                window.focus(&focus_handle, cx);
                             }
                         }
+                    }
                 }
                 &Event::SplitEntry {
                     entry_id,
@@ -954,19 +975,21 @@ impl ProjectPanel {
                     split_direction,
                 } => {
                     if let Some(worktree) = project.read(cx).worktree_for_entry(entry_id, cx)
-                        && let Some(entry) = worktree.read(cx).entry_for_id(entry_id) {
-                            workspace
-                                .split_path_preview(
-                                    ProjectPath {
-                                        worktree_id: worktree.read(cx).id(),
-                                        path: entry.path.clone(),
-                                    },
-                                    allow_preview,
-                                    split_direction,
-                                    window, cx,
-                                )
-                                .detach_and_log_err(cx);
-                        }
+                        && let Some(entry) = worktree.read(cx).entry_for_id(entry_id)
+                    {
+                        workspace
+                            .split_path_preview(
+                                ProjectPath {
+                                    worktree_id: worktree.read(cx).id(),
+                                    path: entry.path.clone(),
+                                },
+                                allow_preview,
+                                split_direction,
+                                window,
+                                cx,
+                            )
+                            .detach_and_log_err(cx);
+                    }
                 }
 
                 _ => {}
@@ -1256,8 +1279,10 @@ impl ProjectPanel {
                                     })
                             })
                             .when(!should_hide_rename, |menu| {
-                                menu.separator()
-                                    .action(t!("project_panel.context_menu.rename"), Box::new(Rename))
+                                menu.separator().action(
+                                    t!("project_panel.context_menu.rename"),
+                                    Box::new(Rename),
+                                )
                             })
                             .when(!is_root && !is_collab, |menu| {
                                 menu.action(
@@ -2573,10 +2598,8 @@ impl ProjectPanel {
                 if let Err(e) = receiver.await? {
                     if let Some(workspace) = workspace.upgrade() {
                         cx.update(|cx| {
-                            let message = t!(
-                                "project_panel.toast.failed_to_add_gitignore",
-                                error = e
-                            );
+                            let message =
+                                t!("project_panel.toast.failed_to_add_gitignore", error = e);
                             let toast = StatusToast::new(message, cx, |this, _| {
                                 this.icon(Icon::new(IconName::XCircle).color(Color::Error))
                                     .dismiss_button(true)
@@ -2750,7 +2773,10 @@ impl ProjectPanel {
                     PromptLevel::Info,
                     &prompt,
                     detail.as_deref(),
-                    &[operation, PromptButton::cancel(t!("project_panel.prompt.cancel"))],
+                    &[
+                        operation,
+                        PromptButton::cancel(t!("project_panel.prompt.cancel")),
+                    ],
                     cx,
                 ))
             } else {

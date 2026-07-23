@@ -335,9 +335,7 @@ impl Output {
                                 IconName::FileTextOutlined,
                             )
                             .style(ButtonStyle::Transparent)
-                            .tooltip(Tooltip::text(t!(
-                                "repl.outputs.open_full_error_in_buffer"
-                            )))
+                            .tooltip(Tooltip::text(t!("repl.outputs.open_full_error_in_buffer")))
                             .on_click({
                                 let ename = err.ename.clone();
                                 let evalue = err.evalue.clone();
@@ -358,8 +356,10 @@ impl Output {
                                             let multibuffer = cx.new(|cx| {
                                                 let mut multi_buffer =
                                                     MultiBuffer::singleton(buffer.clone(), cx);
-                                                multi_buffer
-                                                    .set_title(t!("repl.outputs.full_error_title"), cx);
+                                                multi_buffer.set_title(
+                                                    t!("repl.outputs.full_error_title"),
+                                                    cx,
+                                                );
                                                 multi_buffer
                                             });
                                             Editor::for_multibuffer(multibuffer, None, window, cx)
@@ -427,10 +427,9 @@ impl Output {
                     content: cx.new(|_| view),
                     display_id,
                 },
-                Err(error) => Output::Message(t!(
-                    "repl.outputs.failed_to_load_image",
-                    error = error
-                )),
+                Err(error) => {
+                    Output::Message(t!("repl.outputs.failed_to_load_image", error = error))
+                }
             },
             Some(MimeType::DataTable(data)) => Output::Table {
                 content: cx.new(|cx| TableView::new(data, window, cx)),

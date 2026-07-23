@@ -233,7 +233,10 @@ impl RenderOnce for TerminalToolHeader {
                             Tooltip::with_meta(
                                 title.clone(),
                                 None,
-                                t!("agent_ui.terminal_tool_header.sandbox_learn_more", detail = detail),
+                                t!(
+                                    "agent_ui.terminal_tool_header.sandbox_learn_more",
+                                    detail = detail
+                                ),
                                 cx,
                             )
                         })

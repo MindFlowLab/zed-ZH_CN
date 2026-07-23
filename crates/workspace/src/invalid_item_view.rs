@@ -108,11 +108,11 @@ impl Render for InvalidItemView {
                                         "open-with-system",
                                         t!("workspace.invalid_item.open_in_default_app"),
                                     )
-                                        .on_click(move |_, _, cx| {
-                                            cx.open_with_system(&abs_path);
-                                        })
-                                        .style(ButtonStyle::Outlined)
-                                        .key_binding(KeyBinding::for_action(&OpenWithSystem, cx)),
+                                    .on_click(move |_, _, cx| {
+                                        cx.open_with_system(&abs_path);
+                                    })
+                                    .style(ButtonStyle::Outlined)
+                                    .key_binding(KeyBinding::for_action(&OpenWithSystem, cx)),
                                 ),
                             )
                         }),

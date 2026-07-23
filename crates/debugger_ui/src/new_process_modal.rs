@@ -757,22 +757,19 @@ impl Render for NewProcessModal {
                                 ),
                             )
                             .child(
-                                Button::new(
-                                    "debugger-spawn",
-                                    t!("debugger_ui.new_process.start"),
-                                )
-                                .on_click(cx.listener(|this, _, window, cx| {
-                                    this.start_new_session(window, cx)
-                                }))
-                                .disabled(
-                                    self.debugger.is_none()
-                                        || self
-                                            .configure_mode
-                                            .read(cx)
-                                            .program
-                                            .read(cx)
-                                            .is_empty(cx),
-                                ),
+                                Button::new("debugger-spawn", t!("debugger_ui.new_process.start"))
+                                    .on_click(cx.listener(|this, _, window, cx| {
+                                        this.start_new_session(window, cx)
+                                    }))
+                                    .disabled(
+                                        self.debugger.is_none()
+                                            || self
+                                                .configure_mode
+                                                .read(cx)
+                                                .program
+                                                .read(cx)
+                                                .is_empty(cx),
+                                    ),
                             ),
                     ),
                     NewProcessMode::Attach => el.child({
@@ -946,7 +943,10 @@ impl ConfigureMode {
             .child(
                 h_flex()
                     .gap_1()
-                    .child(Label::new(t!("debugger_ui.new_process.debugger_label")).color(Color::Muted))
+                    .child(
+                        Label::new(t!("debugger_ui.new_process.debugger_label"))
+                            .color(Color::Muted),
+                    )
                     .child(adapter_menu),
             )
             .child(self.program.clone())
@@ -1095,9 +1095,10 @@ impl DebugDelegate {
             Some(TaskSourceKind::AbsPath { abs_path, .. }) => {
                 Some(abs_path.to_string_lossy().into_owned())
             }
-            Some(TaskSourceKind::Lsp { language_name, .. }) => {
-                Some(t!("debugger_ui.new_process.subtitle_lsp", language = language_name))
-            }
+            Some(TaskSourceKind::Lsp { language_name, .. }) => Some(t!(
+                "debugger_ui.new_process.subtitle_lsp",
+                language = language_name
+            )),
             Some(TaskSourceKind::Language { name }) => {
                 Some(t!("debugger_ui.new_process.subtitle_language", name = name))
             }
@@ -1509,38 +1510,29 @@ impl PickerDelegate for DebugDelegate {
                         "edit-debug-json",
                         t!("debugger_ui.new_process.edit_debug_json"),
                     )
-                    .on_click(cx.listener(
-                        |_picker, _, window, cx| {
-                            window.dispatch_action(
-                                zed_actions::OpenProjectDebugTasks.boxed_clone(),
-                                cx,
-                            );
-                            cx.emit(DismissEvent);
-                        },
-                    ))
+                    .on_click(cx.listener(|_picker, _, window, cx| {
+                        window
+                            .dispatch_action(zed_actions::OpenProjectDebugTasks.boxed_clone(), cx);
+                        cx.emit(DismissEvent);
+                    }))
                 } else {
                     Button::new(
                         "edit-debug-task",
                         t!("debugger_ui.new_process.edit_in_debug_json"),
                     )
                     .key_binding(KeyBinding::for_action(&*action, cx))
-                    .on_click(move |_, window, cx| {
-                        window.dispatch_action(action.boxed_clone(), cx)
-                    })
+                    .on_click(move |_, window, cx| window.dispatch_action(action.boxed_clone(), cx))
                 }
             })
             .map(|this| {
                 if (current_modifiers.alt || self.matches.is_empty()) && !self.prompt.is_empty() {
                     let action = picker::ConfirmInput { secondary: false }.boxed_clone();
                     this.child({
-                        Button::new(
-                            "launch-custom",
-                            t!("debugger_ui.new_process.launch_custom"),
-                        )
-                        .key_binding(KeyBinding::for_action(&*action, cx))
-                        .on_click(move |_, window, cx| {
-                            window.dispatch_action(action.boxed_clone(), cx)
-                        })
+                        Button::new("launch-custom", t!("debugger_ui.new_process.launch_custom"))
+                            .key_binding(KeyBinding::for_action(&*action, cx))
+                            .on_click(move |_, window, cx| {
+                                window.dispatch_action(action.boxed_clone(), cx)
+                            })
                     })
                 } else {
                     this.child({

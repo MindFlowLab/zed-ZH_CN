@@ -121,7 +121,11 @@ impl Render for DiagnosticIndicator {
                     .tab_index(0isize)
                     .aria_label(diagnostics_label)
                     .tooltip(move |_window, cx| {
-                        Tooltip::for_action(t!("diagnostics.indicator.project_diagnostics"), &Deploy, cx)
+                        Tooltip::for_action(
+                            t!("diagnostics.indicator.project_diagnostics"),
+                            &Deploy,
+                            cx,
+                        )
                     })
                     .on_click(cx.listener(|this, _, window, cx| {
                         if let Some(workspace) = this.workspace.upgrade() {

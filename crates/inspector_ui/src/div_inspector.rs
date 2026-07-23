@@ -589,7 +589,10 @@ fn render_layout_state(inspector_state: &DivInspectorState, cx: &App) -> Div {
                     origin = inspector_state.bounds.origin,
                     bottom_right = inspector_state.bounds.bottom_right()
                 ))
-                .child(t!("inspector_ui.layout.size", size = inspector_state.bounds.size)),
+                .child(t!(
+                    "inspector_ui.layout.size",
+                    size = inspector_state.bounds.size
+                )),
         )
         .child(
             div()

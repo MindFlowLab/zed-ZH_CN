@@ -64,9 +64,9 @@ use gpui::{
     Context, CursorStyle, Decorations, DragMoveEvent, Entity, EntityId, EventEmitter, FocusHandle,
     Focusable, Global, HitboxBehavior, Hsla, KeyContext, Keystroke, ManagedView, MouseButton,
     PathPromptOptions, Point, PromptButton, PromptLevel, Render, ResizeEdge, Size, Stateful,
-    Subscription,
-    SystemWindowTabController, Task, TaskExt, Tiling, WeakEntity, WindowBounds, WindowHandle,
-    WindowId, WindowOptions, actions, canvas, point, relative, size, transparent_black,
+    Subscription, SystemWindowTabController, Task, TaskExt, Tiling, WeakEntity, WindowBounds,
+    WindowHandle, WindowId, WindowOptions, actions, canvas, point, relative, size,
+    transparent_black,
 };
 pub use history_manager::*;
 pub use item::{
@@ -10079,10 +10079,8 @@ pub fn join_channel(
                             ErrorCode::Disconnected => {
                                 t!("workspace.workspace.join_channel_disconnected").into()
                             }
-                            _ => {
-                                t!("workspace.workspace.join_channel_error_retry", error = err)
-                                    .into()
-                            }
+                            _ => t!("workspace.workspace.join_channel_error_retry", error = err)
+                                .into(),
                         };
                         window.prompt(
                             PromptLevel::Critical,

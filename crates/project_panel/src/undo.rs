@@ -139,12 +139,12 @@ use project::{ProjectPath, WorktreeId};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::{collections::VecDeque, sync::Arc};
 use ui::App;
-use zed_i18n::t;
 use workspace::{
     Workspace,
     notifications::{NotificationId, simple_message_notification::MessageNotification},
 };
 use worktree::CreatedEntry;
+use zed_i18n::t;
 
 enum Operation {
     Trash(ProjectPath),

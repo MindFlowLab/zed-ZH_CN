@@ -88,7 +88,17 @@ pub fn toggle_screen_sharing(
         }
         Err(e) => Task::ready(Err(e)),
     };
-    toggle_screen_sharing.detach_and_prompt_err(&t!("title_bar.collab.share_screen_failed"), window, cx, |e, _, _| Some(t!("title_bar.collab.share_screen_permission", error = format!("{:?}", e))));
+    toggle_screen_sharing.detach_and_prompt_err(
+        &t!("title_bar.collab.share_screen_failed"),
+        window,
+        cx,
+        |e, _, _| {
+            Some(t!(
+                "title_bar.collab.share_screen_permission",
+                error = format!("{:?}", e)
+            ))
+        },
+    );
 }
 
 pub fn toggle_mute(cx: &mut App) {
@@ -461,14 +471,8 @@ impl TitleBar {
                             .child(
                                 v_flex()
                                     .gap_0p5()
-                                    .child(stat_row(
-                                        t!("title_bar.collab.stat.latency"),
-                                        latency,
-                                    ))
-                                    .child(stat_row(
-                                        t!("title_bar.collab.stat.jitter"),
-                                        jitter,
-                                    ))
+                                    .child(stat_row(t!("title_bar.collab.stat.latency"), latency))
+                                    .child(stat_row(t!("title_bar.collab.stat.jitter"), jitter))
                                     .child(stat_row(
                                         t!("title_bar.collab.stat.packet_loss"),
                                         packet_loss,
@@ -610,7 +614,11 @@ impl TitleBar {
                     let share_meta: SharedString = if folder_list.is_empty() {
                         t!("title_bar.collab.share_meta").into()
                     } else {
-                        t!("title_bar.collab.share_meta_with_folders", folders = folder_list).into()
+                        t!(
+                            "title_bar.collab.share_meta_with_folders",
+                            folders = folder_list
+                        )
+                        .into()
                     };
 
                     this.child(

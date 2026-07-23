@@ -239,7 +239,10 @@ impl PickerDelegate for ExtensionVersionSelectorDelegate {
                     h_flex()
                         .gap_2()
                         .when(!is_version_compatible, |this| {
-                            this.child(Label::new(t!("extensions_ui.version_selector.incompatible")).color(Color::Muted))
+                            this.child(
+                                Label::new(t!("extensions_ui.version_selector.incompatible"))
+                                    .color(Color::Muted),
+                            )
                         })
                         .child(
                             Label::new(

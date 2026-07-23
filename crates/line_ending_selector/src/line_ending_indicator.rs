@@ -48,7 +48,11 @@ impl Render for LineEndingIndicator {
                         }
                     }))
                     .tooltip(|_window, cx| {
-                        Tooltip::for_action(t!("line_ending_selector.select_line_ending"), &Toggle, cx)
+                        Tooltip::for_action(
+                            t!("line_ending_selector.select_line_ending"),
+                            &Toggle,
+                            cx,
+                        )
                     }),
             )
         })

@@ -707,7 +707,7 @@ impl PickerDelegate for OpenPathDelegate {
                             &prompt_title,
                             Some(&prompt_detail),
                             &["Replace", "Cancel"],
-                            cx
+                            cx,
                         );
                         self.replace_prompt = cx.spawn_in(window, async move |picker, cx| {
                             let answer = answer.await.ok();

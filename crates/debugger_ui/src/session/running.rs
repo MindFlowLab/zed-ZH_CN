@@ -380,10 +380,7 @@ impl Item for SubView {
 impl Render for SubView {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         v_flex()
-            .id(format!(
-                "subview-container-{:?}",
-                self.kind
-            ))
+            .id(format!("subview-container-{:?}", self.kind))
             .size_full()
             .border_1()
             .when(self.item_focus_handle.contains_focused(window, cx), |el| {

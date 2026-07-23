@@ -168,7 +168,9 @@ pub fn suggest_on_worktree_updated(
                         .tooltip(Tooltip::text(tooltip_text.clone()))
                         .into_any_element()
                 })
-                .primary_message(t!("recent_projects.dev_container_suggest.open_in_container"))
+                .primary_message(t!(
+                    "recent_projects.dev_container_suggest.open_in_container"
+                ))
                 .primary_icon(IconName::Check)
                 .primary_icon_color(Color::Success)
                 .primary_on_click({
@@ -184,9 +186,7 @@ pub fn suggest_on_worktree_updated(
                         let key = key_for_dismiss.clone();
                         let kvp = KeyValueStore::global(cx);
                         cx.background_spawn(async move {
-                            kvp.write_kvp(key, "dismissed".to_string())
-                                .await
-                                .log_err();
+                            kvp.write_kvp(key, "dismissed".to_string()).await.log_err();
                         })
                         .detach();
                     }

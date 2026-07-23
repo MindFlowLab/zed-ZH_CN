@@ -936,16 +936,11 @@ impl Render for Session {
                         })),
                 ),
             ),
-            Kernel::StartingKernel(_) => (Some(t!("repl.session.status_starting").into()), None),
-            Kernel::ErroredLaunch(err) => {
-                (Some(t!("repl.session.status_error", err = err).into()), None)
-            }
-            Kernel::ShuttingDown => (
-                Some(t!("repl.session.status_shutting_down").into()),
-                None,
-            ),
-            Kernel::Shutdown => (Some(t!("repl.session.status_shutdown").into()), None),
-            Kernel::Restarting => (Some(t!("repl.session.status_restarting").into()), None),
+            Kernel::StartingKernel(_) => (Some(t!("repl.session.status_starting")), None),
+            Kernel::ErroredLaunch(err) => (Some(t!("repl.session.status_error", err = err)), None),
+            Kernel::ShuttingDown => (Some(t!("repl.session.status_shutting_down")), None),
+            Kernel::Shutdown => (Some(t!("repl.session.status_shutdown")), None),
+            Kernel::Restarting => (Some(t!("repl.session.status_restarting")), None),
         };
 
         KernelListItem::new(self.kernel_specification.clone())

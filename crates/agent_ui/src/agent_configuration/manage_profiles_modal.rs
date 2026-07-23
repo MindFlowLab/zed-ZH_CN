@@ -185,7 +185,11 @@ impl ManageProfilesModal {
     ) {
         let name_editor = cx.new(|cx| Editor::single_line(window, cx));
         name_editor.update(cx, |editor, cx| {
-            editor.set_placeholder_text(&t!("agent_ui.manage_profiles_modal.profile_name"), window, cx);
+            editor.set_placeholder_text(
+                &t!("agent_ui.manage_profiles_modal.profile_name"),
+                window,
+                cx,
+            );
         });
 
         self.mode = Mode::NewProfile(NewProfileMode {
@@ -944,7 +948,9 @@ impl ManageProfilesModal {
                                                 .size(IconSize::Small)
                                                 .color(Color::Muted),
                                         )
-                                        .child(Label::new(t!("agent_ui.manage_profiles_modal.go_back")))
+                                        .child(Label::new(t!(
+                                            "agent_ui.manage_profiles_modal.go_back"
+                                        )))
                                         .end_slot(
                                             div().child(
                                                 KeyBinding::for_action_in(

@@ -95,7 +95,11 @@ impl AgentRegistryPage {
             let registry_store = AgentRegistryStore::global(cx);
             let query_editor = cx.new(|cx| {
                 let mut input = Editor::single_line(window, cx);
-                input.set_placeholder_text(&t!("agent_ui.agent_registry_ui.search_agents"), window, cx);
+                input.set_placeholder_text(
+                    &t!("agent_ui.agent_registry_ui.search_agents"),
+                    window,
+                    cx,
+                );
                 input
             });
             cx.subscribe(&query_editor, Self::on_query_change).detach();
@@ -352,12 +356,15 @@ impl AgentRegistryPage {
             .when_some(fetch_error, |this, _| {
                 let registry_store = self.registry_store.clone();
                 this.child(
-                    Button::new("retry-agent-registry", t!("agent_ui.agent_registry_ui.retry"))
-                        .style(ButtonStyle::Outlined)
-                        .size(ButtonSize::Compact)
-                        .on_click(move |_, _, cx| {
-                            registry_store.update(cx, |store, cx| store.refresh(cx));
-                        }),
+                    Button::new(
+                        "retry-agent-registry",
+                        t!("agent_ui.agent_registry_ui.retry"),
+                    )
+                    .style(ButtonStyle::Outlined)
+                    .size(ButtonSize::Compact)
+                    .on_click(move |_, _, cx| {
+                        registry_store.update(cx, |store, cx| store.refresh(cx));
+                    }),
                 )
             })
     }
@@ -570,12 +577,11 @@ impl AgentRegistryPage {
                         });
                     })
             }
-            RegistryInstallStatus::InstalledCustom => Button::new(
-                button_id,
-                t!("agent_ui.agent_registry_ui.installed"),
-            )
-            .style(ButtonStyle::OutlinedGhost)
-            .disabled(true),
+            RegistryInstallStatus::InstalledCustom => {
+                Button::new(button_id, t!("agent_ui.agent_registry_ui.installed"))
+                    .style(ButtonStyle::OutlinedGhost)
+                    .disabled(true)
+            }
         }
     }
 }
@@ -605,16 +611,16 @@ impl Render for AgentRegistryPage {
                                     "learn-more",
                                     t!("agent_ui.agent_registry_ui.learn_more"),
                                 )
-                                    .style(ButtonStyle::Outlined)
-                                    .size(ButtonSize::Medium)
-                                    .end_icon(
-                                        Icon::new(IconName::ArrowUpRight)
-                                            .size(IconSize::Small)
-                                            .color(Color::Muted),
-                                    )
-                                    .on_click(move |_, _, cx| {
-                                        cx.open_url(&zed_urls::acp_registry_blog(cx))
-                                    }),
+                                .style(ButtonStyle::Outlined)
+                                .size(ButtonSize::Medium)
+                                .end_icon(
+                                    Icon::new(IconName::ArrowUpRight)
+                                        .size(IconSize::Small)
+                                        .color(Color::Muted),
+                                )
+                                .on_click(move |_, _, cx| {
+                                    cx.open_url(&zed_urls::acp_registry_blog(cx))
+                                }),
                             ),
                     )
                     .child(

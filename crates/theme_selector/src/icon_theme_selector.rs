@@ -346,12 +346,8 @@ impl PickerDelegate for IconThemeSelectorDelegate {
                         }),
                 )
                 .child(
-                    Button::new(
-                        "more-icon-themes",
-                        t!("theme_selector.install_icon_themes"),
-                    )
-                    .on_click(
-                        move |_event, window, cx| {
+                    Button::new("more-icon-themes", t!("theme_selector.install_icon_themes"))
+                        .on_click(move |_event, window, cx| {
                             window.dispatch_action(
                                 Box::new(Extensions {
                                     category_filter: Some(ExtensionCategoryFilter::IconThemes),
@@ -359,8 +355,7 @@ impl PickerDelegate for IconThemeSelectorDelegate {
                                 }),
                                 cx,
                             );
-                        },
-                    ),
+                        }),
                 )
                 .into_any_element(),
         )

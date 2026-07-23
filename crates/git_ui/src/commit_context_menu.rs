@@ -53,7 +53,10 @@ pub(crate) fn commit_context_menu(
     );
     let header = match &ref_name {
         Some(ref_name) => t!("git_ui.commit_context_menu.ref_header", ref_name = ref_name),
-        None => t!("git_ui.commit_context_menu.commit_header", sha_short = sha_short),
+        None => t!(
+            "git_ui.commit_context_menu.commit_header",
+            sha_short = sha_short
+        ),
     };
 
     ContextMenu::build(window, cx, move |context_menu, _, _| {
@@ -64,23 +67,24 @@ pub(crate) fn commit_context_menu(
                 t!("git_ui.commit_context_menu.view_commit"),
                 Some(OpenCommitView.boxed_clone()),
                 {
-                let repository = repository.clone();
-                let workspace = workspace.clone();
-                move |window, cx| {
-                    let Some(repository) = repository.clone() else {
-                        return;
-                    };
-                    CommitView::open(
-                        sha.to_string(),
-                        repository,
-                        workspace.clone(),
-                        None,
-                        None,
-                        window,
-                        cx,
-                    );
-                }
-            })
+                    let repository = repository.clone();
+                    let workspace = workspace.clone();
+                    move |window, cx| {
+                        let Some(repository) = repository.clone() else {
+                            return;
+                        };
+                        CommitView::open(
+                            sha.to_string(),
+                            repository,
+                            workspace.clone(),
+                            None,
+                            None,
+                            window,
+                            cx,
+                        );
+                    }
+                },
+            )
             .entry(
                 t!("git_ui.common.copy_sha"),
                 Some(CopyCommitSha.boxed_clone()),

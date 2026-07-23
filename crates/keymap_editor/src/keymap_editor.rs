@@ -1193,7 +1193,7 @@ impl KeymapEditor {
                     }))
             } else {
                 base_button_style(index, IconName::Info)
-                    .tooltip(|_window, cx|  {
+                    .tooltip(|_window, cx| {
                         Tooltip::with_meta(
                             t!("keymap_editor.editor.show_matching_keybinds"),
                             Some(&ShowMatchingKeybinds),
@@ -1222,7 +1222,12 @@ impl KeymapEditor {
                 })
                 .when(
                     self.show_hover_menus && !self.context_menu_deployed(),
-                    |this| this.tooltip(Tooltip::for_action_title(t!("keymap_editor.editor.edit_keybinding"), &EditBinding)),
+                    |this| {
+                        this.tooltip(Tooltip::for_action_title(
+                            t!("keymap_editor.editor.edit_keybinding"),
+                            &EditBinding,
+                        ))
+                    },
                 )
                 .on_click(cx.listener(move |this, _, window, cx| {
                     this.select_index(index, None, window, cx);
@@ -2513,9 +2518,10 @@ impl KeybindingEditorModal {
             .new(|cx| KeystrokeInput::new(editing_keybind.keystrokes().map(Vec::from), window, cx));
 
         let context_editor: Entity<InputField> = cx.new(|cx| {
-            let input = InputField::new(window, cx, &t!("keymap_editor.editor.context_placeholder"))
-                .label(t!("keymap_editor.editor.edit_context_label"))
-                .label_size(LabelSize::Default);
+            let input =
+                InputField::new(window, cx, &t!("keymap_editor.editor.context_placeholder"))
+                    .label(t!("keymap_editor.editor.edit_context_label"))
+                    .label_size(LabelSize::Default);
 
             if let Some(context) = editing_keybind
                 .context()
@@ -2569,9 +2575,10 @@ impl KeybindingEditorModal {
                 .collect();
 
             let editor = cx.new(|cx| {
-                let input = InputField::new(window, cx, &t!("keymap_editor.editor.action_placeholder"))
-                    .label(t!("keymap_editor.editor.action_label"))
-                    .label_size(LabelSize::Default);
+                let input =
+                    InputField::new(window, cx, &t!("keymap_editor.editor.action_placeholder"))
+                        .label(t!("keymap_editor.editor.action_label"))
+                        .label_size(LabelSize::Default);
 
                 let editor_entity = input.editor();
                 let editor_entity = editor_entity
@@ -2813,46 +2820,53 @@ impl KeybindingEditorModal {
                 self.creating.not().then_some(self.editing_keybind_idx),
             );
 
-        conflicting_indices.map(|KeybindConflict {
-            first_conflict_index,
-            remaining_conflict_amount,
-        }|
-        {
-            let conflicting_action_name = self
-                .keymap_editor
-                .read(cx)
-                .keybindings
-                .get(first_conflict_index)
-                .map(|keybind| keybind.action().name);
+        conflicting_indices
+            .map(
+                |KeybindConflict {
+                     first_conflict_index,
+                     remaining_conflict_amount,
+                 }| {
+                    let conflicting_action_name = self
+                        .keymap_editor
+                        .read(cx)
+                        .keybindings
+                        .get(first_conflict_index)
+                        .map(|keybind| keybind.action().name);
 
-            let warning_message = match conflicting_action_name {
-                Some(name) => {
-                     if remaining_conflict_amount > 0 {
-                        t!(
-                            "keymap_editor.editor.conflict_with_action_and_others",
-                            action = name,
-                            count = remaining_conflict_amount
-                        )
+                    let warning_message = match conflicting_action_name {
+                        Some(name) => {
+                            if remaining_conflict_amount > 0 {
+                                t!(
+                                    "keymap_editor.editor.conflict_with_action_and_others",
+                                    action = name,
+                                    count = remaining_conflict_amount
+                                )
+                            } else {
+                                t!("keymap_editor.editor.conflict_with_action", action = name)
+                            }
+                        }
+                        None => {
+                            log::info!(
+                                "Could not find action in keybindings with index {}",
+                                first_conflict_index
+                            );
+                            t!("keymap_editor.editor.conflict_with_other_actions")
+                        }
+                    };
+
+                    let warning = InputError::warning(warning_message);
+                    if self
+                        .error
+                        .as_ref()
+                        .is_some_and(|old_error| *old_error == warning)
+                    {
+                        Ok(())
                     } else {
-                        t!("keymap_editor.editor.conflict_with_action", action = name)
+                        Err(warning)
                     }
-                }
-                None => {
-                    log::info!(
-                        "Could not find action in keybindings with index {}",
-                        first_conflict_index
-                    );
-                    t!("keymap_editor.editor.conflict_with_other_actions")
-                }
-            };
-
-            let warning = InputError::warning(warning_message);
-            if self.error.as_ref().is_some_and(|old_error| *old_error == warning) {
-                Ok(())
-           } else {
-                Err(warning)
-            }
-        }).unwrap_or(Ok(()))?;
+                },
+            )
+            .unwrap_or(Ok(()))?;
 
         let create = self.creating;
         let keyboard_mapper = cx.keyboard_mapper().clone();
@@ -2900,7 +2914,10 @@ impl KeybindingEditorModal {
                                 fallback: keymap.table_interaction_state.read(cx).scroll_offset(),
                             });
                             let status_toast = StatusToast::new(
-                                t!("keymap_editor.editor.saved_edits_toast", action = humanized_action_name),
+                                t!(
+                                    "keymap_editor.editor.saved_edits_toast",
+                                    action = humanized_action_name
+                                ),
                                 cx,
                                 move |this, _cx| {
                                     this.icon(
@@ -3399,7 +3416,11 @@ impl ActionArgumentsEditor {
             editor.set_text(arguments, window, cx);
         } else {
             // TODO: default value from schema?
-            editor.set_placeholder_text(&t!("keymap_editor.editor.action_arguments_placeholder"), window, cx);
+            editor.set_placeholder_text(
+                &t!("keymap_editor.editor.action_arguments_placeholder"),
+                window,
+                cx,
+            );
         }
     }
 

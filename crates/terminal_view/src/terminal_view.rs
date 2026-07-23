@@ -529,22 +529,31 @@ impl TerminalView {
         let context_menu = ContextMenu::build(window, cx, |menu, _, _| {
             menu.context(self.focus_handle.clone())
                 .when(self.shows_workspace_actions(), |menu| {
-                    menu.action(t!("terminal_view.context_menu.new_terminal"), Box::new(NewTerminal::default()))
-                        .action(
-                            t!("terminal_view.context_menu.new_center_terminal"),
-                            Box::new(NewCenterTerminal::default()),
-                        )
-                        .separator()
+                    menu.action(
+                        t!("terminal_view.context_menu.new_terminal"),
+                        Box::new(NewTerminal::default()),
+                    )
+                    .action(
+                        t!("terminal_view.context_menu.new_center_terminal"),
+                        Box::new(NewCenterTerminal::default()),
+                    )
+                    .separator()
                 })
                 .action(t!("terminal_view.context_menu.copy"), Box::new(Copy))
                 .when(
                     !matches!(self.mode, TerminalMode::Embedded { .. }),
                     |menu| {
                         menu.action(t!("terminal_view.context_menu.paste"), Box::new(Paste))
-                            .action(t!("terminal_view.context_menu.paste_text"), Box::new(PasteText))
+                            .action(
+                                t!("terminal_view.context_menu.paste_text"),
+                                Box::new(PasteText),
+                            )
                     },
                 )
-                .action(t!("terminal_view.context_menu.select_all"), Box::new(SelectAll))
+                .action(
+                    t!("terminal_view.context_menu.select_all"),
+                    Box::new(SelectAll),
+                )
                 .when(
                     !matches!(self.mode, TerminalMode::Embedded { .. }),
                     |menu| menu.action(t!("terminal_view.context_menu.clear"), Box::new(Clear)),
@@ -1734,7 +1743,10 @@ impl Item for TerminalView {
     ) -> Vec<(SharedString, Box<dyn gpui::Action>)> {
         let terminal = self.terminal.read(cx);
         if terminal.task().is_none() {
-            vec![(t!("terminal_view.tab.rename").into(), Box::new(RenameTerminal))]
+            vec![(
+                t!("terminal_view.tab.rename").into(),
+                Box::new(RenameTerminal),
+            )]
         } else {
             Vec::new()
         }

@@ -860,7 +860,11 @@ impl CommitView {
         let sha = commit_view.read(cx).commit.sha.clone();
         let answer = window.prompt(
             PromptLevel::Info,
-            &t!("git_ui.commit_view.stash_confirm", action = str_action, index = stash),
+            &t!(
+                "git_ui.commit_view.stash_confirm",
+                action = str_action,
+                index = stash
+            ),
             None,
             &[
                 PromptButton::new(str_action.to_owned()),

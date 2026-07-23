@@ -189,9 +189,10 @@ impl Render for DisconnectedOverlay {
             .child(
                 Modal::new("disconnected", None)
                     .header(
-                        ModalHeader::new()
-                            .show_dismiss_button(true)
-                            .child(Headline::new(t!("recent_projects.disconnected.title")).size(HeadlineSize::Small)),
+                        ModalHeader::new().show_dismiss_button(true).child(
+                            Headline::new(t!("recent_projects.disconnected.title"))
+                                .size(HeadlineSize::Small),
+                        ),
                     )
                     .section(Section::new().child(Label::new(message)))
                     .footer(
@@ -203,11 +204,13 @@ impl Render for DisconnectedOverlay {
                                         "close-window",
                                         t!("recent_projects.disconnected.close_window"),
                                     )
-                                        .style(ButtonStyle::Filled)
-                                        .layer(ElevationIndex::ModalSurface)
-                                        .on_click(cx.listener(move |_, _, window, _| {
+                                    .style(ButtonStyle::Filled)
+                                    .layer(ElevationIndex::ModalSurface)
+                                    .on_click(cx.listener(
+                                        move |_, _, window, _| {
                                             window.remove_window();
-                                        })),
+                                        },
+                                    )),
                                 )
                                 .when(can_reconnect, |el| {
                                     el.child(
@@ -215,10 +218,10 @@ impl Render for DisconnectedOverlay {
                                             "reconnect",
                                             t!("recent_projects.disconnected.reconnect"),
                                         )
-                                            .style(ButtonStyle::Filled)
-                                            .layer(ElevationIndex::ModalSurface)
-                                            .start_icon(Icon::new(IconName::ArrowCircle))
-                                            .on_click(cx.listener(Self::handle_reconnect)),
+                                        .style(ButtonStyle::Filled)
+                                        .layer(ElevationIndex::ModalSurface)
+                                        .start_icon(Icon::new(IconName::ArrowCircle))
+                                        .on_click(cx.listener(Self::handle_reconnect)),
                                     )
                                 }),
                         ),

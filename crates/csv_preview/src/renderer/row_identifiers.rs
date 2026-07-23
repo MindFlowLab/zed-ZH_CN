@@ -123,7 +123,9 @@ impl CsvPreviewView {
                 )
                 .style(ButtonStyle::Subtle)
                 .size(ButtonSize::Compact)
-                .tooltip(Tooltip::text(t!("csv_preview.row_identifier.toggle_tooltip")))
+                .tooltip(Tooltip::text(t!(
+                    "csv_preview.row_identifier.toggle_tooltip"
+                )))
                 .on_click(move |_event, _window, cx| {
                     view.update(cx, |this, cx| {
                         this.settings.numbering_type = match this.settings.numbering_type {
