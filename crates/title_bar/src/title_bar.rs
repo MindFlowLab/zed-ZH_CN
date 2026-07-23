@@ -612,9 +612,11 @@ impl TitleBar {
                 (None, t!("title_bar.remote.dev_container"), IconName::Box)
             }
             #[cfg(any(test, feature = "test-support"))]
-            RemoteConnectionOptions::Mock(_) => {
-                (None, t!("title_bar.remote.mock_remote_project"), IconName::Server)
-            }
+            RemoteConnectionOptions::Mock(_) => (
+                None,
+                t!("title_bar.remote.mock_remote_project"),
+                IconName::Server,
+            ),
         };
 
         let nickname = nickname.unwrap_or_else(|| host.clone());
