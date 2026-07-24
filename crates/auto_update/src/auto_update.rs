@@ -1482,6 +1482,48 @@ mod tests {
         assert_eq!(std::fs::read_to_string(path).unwrap(), "<fake-zed-update>");
     }
 
+    #[test]
+    fn test_select_github_asset() {
+        fn asset(name: &str) -> github::GithubReleaseAsset {
+            github::GithubReleaseAsset {
+                name: name.to_string(),
+                browser_download_url: format!("https://example.com/{name}"),
+                digest: None,
+            }
+        }
+
+        // 与 MindFlowLab/zed-ZH_CN 实际 release 资产名保持一致
+        let assets = vec![
+            asset("zed-linux-x86_64.tar.gz"),
+            asset("Zed-x86_64.exe"),
+            asset("zed-remote-server-linux-x86_64.gz"),
+            asset("zed-remote-server-windows-x86_64.zip"),
+        ];
+
+        // 主程序
+        assert_eq!(
+            select_github_asset(&assets, "zed", "linux", "x86_64").unwrap(),
+            "https://example.com/zed-linux-x86_64.tar.gz"
+        );
+        assert_eq!(
+            select_github_asset(&assets, "zed", "windows", "x86_64").unwrap(),
+            "https://example.com/Zed-x86_64.exe"
+        );
+
+        // 远程服务器（remote server）
+        assert_eq!(
+            select_github_asset(&assets, "zed-remote-server", "linux", "x86_64").unwrap(),
+            "https://example.com/zed-remote-server-linux-x86_64.gz"
+        );
+        assert_eq!(
+            select_github_asset(&assets, "zed-remote-server", "windows", "x86_64").unwrap(),
+            "https://example.com/zed-remote-server-windows-x86_64.zip"
+        );
+
+        // 缺少对应平台资产时应报错
+        assert!(select_github_asset(&assets, "zed", "macos", "aarch64").is_err());
+    }
+
     #[gpui::test]
     async fn test_download_release_reports_progress(cx: &mut TestAppContext) {
         cx.background_executor.allow_parking();
