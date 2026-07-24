@@ -159,6 +159,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y clang-18 lld-18 llvm-18
 
+      # 公共 runner 无 GPU，gpui_wgpu 的 wgpu_atlas 测试需一个 Vulkan 适配器。
+      # mesa-vulkan-drivers 提供 lavapipe 软件 Vulkan 驱动，使无头环境下
+      # wgpu request_adapter 能成功，避免 before_frame_skips_uploads_for_removed_texture
+      # 与 remove_deallocates_tile_space_for_reuse 因缺少适配器而失败。
+      - name: 安装软件 Vulkan 驱动（lavapipe）
+        run: sudo apt-get install -y mesa-vulkan-drivers
+
       - name: 下载 wasi-sdk
         run: ./script/download-wasi-sdk
 
